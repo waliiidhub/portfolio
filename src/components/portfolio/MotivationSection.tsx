@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Heart, Target, Lightbulb, Shield, Globe, Users, Zap, BookOpen } from "lucide-react";
+import { motion } from "framer-motion";
 
 const MotivationSection = () => {
  const motivations = [
@@ -67,7 +68,14 @@ Today, what drives me is the desire to build software that feels natural, depend
 
 
   return (
-    <section id="motivation" className="py-24 bg-surface-dark">
+    <motion.section
+      id="motivation"
+      className="py-24 bg-surface-card"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.6, ease: [0, 0, 0.2, 1] }}
+    >
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <div className="flex items-center justify-center gap-2 text-primary mb-4">
@@ -159,7 +167,7 @@ Today, what drives me is the desire to build software that feels natural, depend
 </Card>
 
       </div>
-    </section>
+    </motion.section>
   );
 };
 

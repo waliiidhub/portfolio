@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { GraduationCap, Calendar, Award, BookOpen } from "lucide-react";
+import { motion } from "framer-motion";
 
 const EducationSection = () => {
   const education = [
@@ -49,7 +50,14 @@ const EducationSection = () => {
   ];
 
   return (
-    <section id="education" className="py-24 bg-surface-dark">
+    <motion.section
+      id="education"
+      className="py-24 bg-surface-card"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.6, ease: [0, 0, 0.2, 1] }}
+    >
       <div className="container mx-auto px-4">
         {/* Section header */}
         <div className="text-center mb-16">
@@ -144,7 +152,7 @@ const EducationSection = () => {
 
        
       </div>
-    </section>
+    </motion.section>
   );
 };
 

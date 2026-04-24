@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
 const InternshipsSection = () => {
   const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
@@ -50,7 +51,14 @@ const InternshipsSection = () => {
   ];
 
   return (
-    <section id="internships" className="py-24">
+    <motion.section
+      id="internships"
+      className="py-24"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.6, ease: [0, 0, 0.2, 1] }}
+    >
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-6">Internships</h2>
@@ -204,7 +212,7 @@ const InternshipsSection = () => {
           </div>
         </div>
       )}
-    </section>
+    </motion.section>
   );
 };
 

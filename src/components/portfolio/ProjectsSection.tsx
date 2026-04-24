@@ -10,6 +10,7 @@ import {
   Shield,
   PlayCircle,
 } from "lucide-react";
+import { motion } from "framer-motion";
 
 const ProjectsSection = () => {
   const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
@@ -73,7 +74,14 @@ const ProjectsSection = () => {
   };
 
   return (
-    <section id="projects" className="py-24">
+    <motion.section
+      id="projects"
+      className="py-24"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.6, ease: [0, 0, 0.2, 1] }}
+    >
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16">
@@ -284,7 +292,7 @@ const ProjectsSection = () => {
           </div>
         </div>
       )}
-    </section>
+    </motion.section>
   );
 };
 
