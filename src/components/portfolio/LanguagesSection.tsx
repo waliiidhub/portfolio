@@ -1,202 +1,185 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  Languages,
-  Globe,
-  BookOpen,
-  ArrowUpNarrowWideIcon,
-  Shield,
-} from "lucide-react";
+import { BookOpen, Shield, Globe, Wrench } from "lucide-react";
 import { motion } from "framer-motion";
 
-const LanguagesSection = () => {
-  const skills = [
-    "Flutter",
-    "Dart",
-    "React.js",
-    "JavaScript",
-    "TypeScript",
-    "PHP",
-    "Symfony",
-    "Java",
-    "Spring Boot",
-    "Node.js",
-    "NestJS",
-    "SQL",
-    "PostgreSQL",
-    "Oracle",
-    "MongoDB",
-    "HTML",
-    "CSS",
-    "Tailwind",
-    "Python",
-    "Bash",
-    "PowerShell",
-    "Git",
-    "GitLab CI/CD",
-    "Docker",
-    "Docker Compose",
-    "Kubernetes",
-    "REST APIs",
-    "WebSockets",
-    "Matrix (Synapse, Olm/Megolm)",
-    "CI/CD Pipelines",
-    "DevOps Fundamentals",
-    "Mobile UI/UX Design",
-    "Figma",
-    "Secure Development Practices",
-  ];
+const skillGroups = [
+  {
+    label: "Mobile",
+    skills: ["Flutter", "Dart"],
+  },
+  {
+    label: "Frontend",
+    skills: ["React.js", "TypeScript", "JavaScript", "HTML", "CSS", "Tailwind"],
+  },
+  {
+    label: "Backend",
+    skills: ["Java", "Spring Boot", "Node.js", "NestJS", "PHP", "Symfony", "Python"],
+  },
+  {
+    label: "Databases",
+    skills: ["PostgreSQL", "SQL", "Oracle", "MongoDB"],
+  },
+  {
+    label: "DevOps & Tools",
+    skills: [
+      "Docker",
+      "Docker Compose",
+      "Kubernetes",
+      "GitLab CI/CD",
+      "Git",
+      "Bash",
+      "PowerShell",
+      "CI/CD Pipelines",
+      "DevOps Fundamentals",
+    ],
+  },
+  {
+    label: "APIs & Protocols",
+    skills: ["REST APIs", "WebSockets", "Matrix (Synapse, Olm/Megolm)"],
+  },
+  {
+    label: "Design & Security",
+    skills: ["Figma", "Mobile UI/UX Design", "Secure Development Practices"],
+  },
+];
 
+const LanguagesSection = () => {
   return (
     <motion.section
       id="languages"
-      className="py-24"
+      className="py-24 bg-surface-card"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.6, ease: [0, 0, 0.2, 1] }}
     >
       <div className="container mx-auto px-4">
-        {/* Section header */}
+        {/* Header */}
         <div className="text-center mb-16">
-          <div className="flex items-center justify-center gap-2 text-primary mb-4">
-            <ArrowUpNarrowWideIcon className="h-6 w-6" />
-            <span className="text-sm uppercase tracking-wide">Skills</span>
+          <div className="flex justify-center mb-4">
+            <span className="section-label">
+              <Wrench className="h-3.5 w-3.5" />
+              Skills
+            </span>
           </div>
-          <h2 className="text-4xl font-bold mb-6">Technical Skills & Growth</h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            A solid engineering toolkit, continuously expanded with DevSecOps
-            and applied AI.
+          <h2 className="text-4xl font-display font-bold mb-3 tracking-tight">
+            Technical Skills & Growth
+          </h2>
+          <div className="section-heading-line" />
+          <p className="text-base text-muted-foreground max-w-xl mx-auto mt-5 leading-relaxed">
+            A solid engineering toolkit, continuously expanded with DevSecOps and applied AI.
           </p>
         </div>
 
-        {/* Main layout: skills cloud + growth card */}
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.4fr)] items-start">
-          {/* Core skills */}
-          <Card className="bg-card border-border/70">
-            <CardHeader className="pb-3">
-              <div className="flex items-center gap-3 mb-1">
-                <div className="p-2 rounded-lg bg-primary/10">
-                  <Languages className="h-5 w-5 text-primary" />
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.4fr)] items-start max-w-5xl mx-auto">
+
+          {/* Core skills — grouped */}
+          <div className="rounded-2xl bg-card border border-border/60 overflow-hidden">
+            <div className="px-6 pt-5 pb-4 border-b border-border/50">
+              <h3 className="font-display font-semibold text-foreground">Core Technical Toolkit</h3>
+              <p className="text-xs text-muted-foreground mt-1">
+                Languages, frameworks and tools I use to build production-ready systems.
+              </p>
+            </div>
+            <div className="px-6 py-5 space-y-5">
+              {skillGroups.map((group) => (
+                <div key={group.label}>
+                  <span className="skill-category-label mb-2.5 inline-block">
+                    {group.label}
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {group.skills.map((skill) => (
+                      <span key={skill} className="badge-tech">{skill}</span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Growth card */}
+          <div
+            className="rounded-2xl border border-violet/25 overflow-hidden"
+            style={{
+              background:
+                "linear-gradient(135deg, hsl(262 83% 68% / 0.08) 0%, hsl(243 22% 8%) 50%, hsl(245 18% 14% / 0.4) 100%)",
+            }}
+          >
+            <div className="p-6">
+              {/* Header */}
+              <div className="flex items-start gap-3 mb-5">
+                <div className="p-2.5 rounded-xl bg-violet/15 border border-violet/20 shrink-0">
+                  <BookOpen className="h-5 w-5 text-violet" />
                 </div>
                 <div>
-                  <CardTitle className="text-lg md:text-xl">
-                    Core technical toolkit
-                  </CardTitle>
-                  <p className="text-xs md:text-sm text-muted-foreground">
-                    Languages, frameworks and tools I use daily to build
-                    production-ready systems.
-                  </p>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-3">
-                {skills.map((skill, index) => (
-                  <Badge
-                    key={index}
-                    variant="outline"
-                    className="text-xs md:text-sm px-3 py-1 rounded-full"
-                  >
-                    {skill}
-                  </Badge>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Ongoing learning / skills growth */}
-          <Card className="bg-gradient-to-br from-primary/10 via-card to-secondary/20 border-primary/30 shadow-lg shadow-primary/10">
-            <CardContent className="py-6 px-5 flex flex-col gap-4">
-              <div className="flex items-start gap-3">
-                <div className="p-3 rounded-xl bg-primary/20 flex items-center justify-center">
-                  <BookOpen className="h-6 w-6 text-primary" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-[11px] uppercase tracking-[0.25em] text-primary mb-1">
+                  <p className="text-[10px] uppercase tracking-[0.25em] font-mono font-semibold text-violet mb-1">
                     Currently growing
                   </p>
-                  <h3 className="font-semibold text-lg mb-1 text-foreground">
-                    Deepening my expertise in DevSecOps & Applied AI
+                  <h3 className="font-display font-semibold text-foreground leading-snug">
+                    Deepening my expertise in<br />DevSecOps & Applied AI
                   </h3>
-                  <p className="text-sm text-muted-foreground mb-3">
-                    I’m actively strengthening my profile as a software engineer
-                    by focusing on secure delivery pipelines, automated
-                    security testing, and AI-assisted development workflows to
-                    build reliable and secure products end-to-end.
-                  </p>
                 </div>
               </div>
 
-              {/* Two mini tracks: DevSecOps & AI */}
-              <div className="grid gap-4 md:grid-cols-2">
-                {/* DevSecOps track */}
-                <div className="rounded-lg border border-primary/30 bg-background/40 p-3">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="p-1.5 rounded-md bg-primary/15">
-                      <Shield className="h-4 w-4 text-primary" />
+              <p className="text-xs text-muted-foreground leading-relaxed mb-5">
+                I'm actively strengthening my profile as a software engineer by focusing on
+                secure delivery pipelines, automated security testing, and AI-assisted
+                development workflows to build reliable and secure products end-to-end.
+              </p>
+
+              {/* Two mini-tracks */}
+              <div className="space-y-3">
+                {/* DevSecOps */}
+                <div className="rounded-xl border border-violet/20 bg-background/40 p-4">
+                  <div className="flex items-center gap-2 mb-2.5">
+                    <div className="p-1.5 rounded-md bg-violet/12">
+                      <Shield className="h-3.5 w-3.5 text-violet" />
                     </div>
-                    <span className="text-xs font-semibold uppercase tracking-wide text-primary">
-                      DevSecOps track
+                    <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-violet">
+                      DevSecOps Track
                     </span>
                   </div>
-                  <p className="text-xs text-muted-foreground mb-2">
+                  <p className="text-[11px] text-muted-foreground mb-2.5 leading-relaxed">
                     Bringing security earlier into the development lifecycle.
                   </p>
                   <div className="flex flex-wrap gap-1.5">
-                    <Badge variant="outline" className="text-[10px] px-2 py-0.5">
-                      Secure CI/CD
-                    </Badge>
-                    <Badge variant="outline" className="text-[10px] px-2 py-0.5">
-                      SAST & DAST
-                    </Badge>
-                    <Badge variant="outline" className="text-[10px] px-2 py-0.5">
-                      Container Security
-                    </Badge>
-                    <Badge variant="outline" className="text-[10px] px-2 py-0.5">
-                      Threat Modeling
-                    </Badge>
+                    {["Secure CI/CD", "SAST & DAST", "Container Security", "Threat Modeling"].map((s) => (
+                      <Badge key={s} variant="outline" className="text-[10px] px-2 py-0.5 border-border/60">
+                        {s}
+                      </Badge>
+                    ))}
                   </div>
                 </div>
 
-                {/* AI track */}
-                <div className="rounded-lg border border-primary/30 bg-background/40 p-3">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="p-1.5 rounded-md bg-primary/15">
-                      <Globe className="h-4 w-4 text-primary" />
+                {/* Applied AI */}
+                <div className="rounded-xl border border-violet/20 bg-background/40 p-4">
+                  <div className="flex items-center gap-2 mb-2.5">
+                    <div className="p-1.5 rounded-md bg-violet/12">
+                      <Globe className="h-3.5 w-3.5 text-violet" />
                     </div>
-                    <span className="text-xs font-semibold uppercase tracking-wide text-primary">
-                      Applied AI track
+                    <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-violet">
+                      Applied AI Track
                     </span>
                   </div>
-                  <p className="text-xs text-muted-foreground mb-2">
-                    Using AI to improve developer productivity and product
-                    intelligence.
+                  <p className="text-[11px] text-muted-foreground mb-2.5 leading-relaxed">
+                    Using AI to improve developer productivity and product intelligence.
                   </p>
                   <div className="flex flex-wrap gap-1.5">
-                    <Badge variant="outline" className="text-[10px] px-2 py-0.5">
-                      AI for Developers
-                    </Badge>
-                    <Badge variant="outline" className="text-[10px] px-2 py-0.5">
-                      LLMs & Automation
-                    </Badge>
-                    <Badge variant="outline" className="text-[10px] px-2 py-0.5">
-                      Code Assistants
-                    </Badge>
-                    <Badge variant="outline" className="text-[10px] px-2 py-0.5">
-                      Intelligent Features
-                    </Badge>
+                    {["AI for Developers", "LLMs & Automation", "Code Assistants", "Intelligent Features"].map((s) => (
+                      <Badge key={s} variant="outline" className="text-[10px] px-2 py-0.5 border-border/60">
+                        {s}
+                      </Badge>
+                    ))}
                   </div>
                 </div>
               </div>
 
-              {/* Small footer line */}
-              <p className="text-[11px] text-muted-foreground mt-1">
-                This learning path directly reinforces my work on secure,
-                production-ready applications and AI-powered features.
+              <p className="text-[10px] text-muted-foreground mt-4 leading-relaxed">
+                This learning path directly reinforces my work on secure, production-ready
+                applications and AI-powered features.
               </p>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </div>
     </motion.section>

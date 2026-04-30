@@ -105,7 +105,8 @@ const HeroSection = () => {
               <motion.div variants={fadeUp} className="flex flex-wrap gap-3">
                 <Button
                   size="lg"
-                  className="bg-violet hover:bg-violet-bright text-white font-semibold shadow-glow animate-pulse-glow px-7 transition-all duration-normal"
+                  className="relative overflow-hidden text-white font-semibold shadow-glow px-7 transition-all duration-300 hover:shadow-glow-lg hover:scale-[1.03]"
+                  style={{ background: "linear-gradient(135deg, hsl(262 83% 64%), hsl(230 68% 60%))" }}
                   onClick={() => setCvModalOpen(true)}
                 >
                   <Download className="mr-2 h-4 w-4" />
@@ -114,7 +115,7 @@ const HeroSection = () => {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-violet/40 text-violet hover:bg-violet/10 hover:border-violet font-semibold px-7 transition-all duration-normal"
+                  className="border-violet/40 text-violet hover:bg-violet/10 hover:border-violet/70 font-semibold px-7 transition-all duration-200 hover:shadow-[0_0_20px_hsl(262_83%_68%/0.15)]"
                   onClick={() => setContactFormOpen(true)}
                 >
                   <Mail className="mr-2 h-4 w-4" />
@@ -123,7 +124,7 @@ const HeroSection = () => {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-violet/40 text-violet hover:bg-violet/10 hover:border-violet font-semibold px-7 transition-all duration-normal"
+                  className="border-violet/30 text-muted-foreground hover:text-violet hover:bg-violet/8 hover:border-violet/50 font-semibold px-7 transition-all duration-200"
                   onClick={() => setSkillsMatrixOpen(true)}
                 >
                   <Shield className="mr-2 h-4 w-4" />
@@ -160,37 +161,61 @@ const HeroSection = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2, ease: [0, 0, 0.2, 1] }}
             >
+              {/* Orbital rings */}
+              {!prefersReduced && (
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <svg viewBox="0 0 440 440" className="absolute w-[440px] h-[440px] opacity-60">
+                    <circle cx="220" cy="220" r="213" fill="none" stroke="hsl(262 83% 68% / 0.12)" strokeWidth="1" strokeDasharray="5 8" />
+                    <circle cx="220" cy="220" r="178" fill="none" stroke="hsl(230 68% 62% / 0.07)" strokeWidth="1" />
+                    <circle
+                      cx="220" cy="220" r="213"
+                      fill="none"
+                      stroke="hsl(262 83% 68% / 0.55)"
+                      strokeWidth="1.5"
+                      strokeDasharray="68 348"
+                      className="animate-spin-slow"
+                      style={{ transformOrigin: "220px 220px" }}
+                    />
+                  </svg>
+                </div>
+              )}
+
+              {/* Ambient glow */}
               <div
-                className="absolute inset-0 rounded-full blur-3xl opacity-30"
-                style={{ background: "radial-gradient(circle, hsl(262 83% 68%) 0%, transparent 70%)" }}
+                className="absolute inset-0 rounded-full blur-3xl opacity-25"
+                style={{ background: "radial-gradient(circle, hsl(262 83% 68%) 0%, transparent 65%)" }}
               />
+
+              {/* Photo */}
               <motion.img
                 src="/walid-hero-image.png"
                 alt="Walid Marzouk — Software Engineer"
-                className="relative w-72 h-72 lg:w-96 lg:h-96 rounded-full object-cover shadow-glow-lg"
-                style={{ border: "2px solid hsl(262 83% 68% / 0.3)" }}
-                animate={prefersReduced ? {} : { y: [0, -12, 0] }}
+                className="relative w-72 h-72 lg:w-[22rem] lg:h-[22rem] rounded-full object-cover shadow-glow-lg"
+                style={{ border: "2.5px solid hsl(262 83% 68% / 0.4)" }}
+                animate={prefersReduced ? {} : { y: [0, -10, 0] }}
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
               />
 
+              {/* Floating stat: internships */}
               <motion.div
-                className="absolute bottom-8 -left-4 lg:-left-8 glass rounded-2xl px-4 py-3 shadow-elevated"
-                initial={{ opacity: 0, x: -20 }}
+                className="absolute bottom-8 -left-4 lg:-left-10 glass rounded-2xl px-4 py-3 shadow-elevated border border-violet/20"
+                initial={{ opacity: 0, x: -24 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 1, duration: 0.6 }}
               >
-                <p className="text-xs text-muted-foreground font-mono">Internships</p>
-                <p className="text-lg font-display font-bold text-gradient">6+</p>
+                <p className="text-[10px] text-muted-foreground font-mono tracking-wider uppercase mb-0.5">Internships</p>
+                <p className="text-xl font-display font-bold text-gradient leading-none">6+</p>
               </motion.div>
 
+              {/* Floating stat: projects */}
               <motion.div
-                className="absolute top-8 -right-4 lg:-right-8 glass rounded-2xl px-4 py-3 shadow-elevated"
-                initial={{ opacity: 0, x: 20 }}
+                className="absolute top-8 -right-4 lg:-right-10 glass rounded-2xl px-4 py-3 shadow-elevated border border-violet/20"
+                initial={{ opacity: 0, x: 24 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 1.2, duration: 0.6 }}
               >
-                <p className="text-xs text-muted-foreground font-mono">Projects</p>
-                <p className="text-lg font-display font-bold text-gradient">20+</p>
+                <p className="text-[10px] text-muted-foreground font-mono tracking-wider uppercase mb-0.5">Projects</p>
+                <p className="text-xl font-display font-bold text-gradient leading-none">20+</p>
               </motion.div>
             </motion.div>
           </div>
