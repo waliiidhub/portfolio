@@ -350,6 +350,17 @@
   }
 }
 
+/* ── Project carousel animations ── */
+@keyframes progress-deplete {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0); }
+}
+
+@keyframes ring-deplete {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: 43.98; }
+}
+
 /* ── Custom scrollbar ── */
 ::-webkit-scrollbar          { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track    { background: transparent; }
