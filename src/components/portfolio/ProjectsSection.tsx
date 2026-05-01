@@ -1,252 +1,422 @@
-import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Briefcase, Github, ExternalLink, Shield, PlayCircle } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { ChevronLeft, ChevronRight, Download, ExternalLink, Github } from "lucide-react";
 
-const projects = [
+interface Project {
+  title: string;
+  category: string;
+  description: string;
+  technologies: string[];
+  github?: string;
+  downloadUrl?: string;
+  videoId?: string;
+  imageUrl: string;
+  visualMode: "wide-pan" | "cover";
+}
+
+const projects: Project[] = [
   {
-    title: "Mouqawel.tn Mobile App",
-    company: "Independent Freelance Project",
-    period: "2024",
-    location: "Mouqawel",
+    title: "Sunshine Vacances",
+    category: "Travel · Mobile App",
     description:
-      "Created a mobile application for Mouqawel.tn to provide contractors with on-the-go access to services, improving usability and customer satisfaction.",
-    icon: Shield,
-    category: "Mobile Development",
-    technologies: ["Flutter", "MVVM", "Provider", "Figma", "ValueNotifier", "Git"],
-    highlights: [
-      "Role-based UX for contractors",
-      "Optimized for mobile-first usage",
-      "Improved customer satisfaction",
-    ],
-    status: "Stopped",
-    github: "https://github.com/walidmz/Mouqawel-app",
-    demo: "",
-    imageUrl: "/image.png",
+      "Travel agency app for Sunshine Vacances, helping customers browse trips and reach the agency from a polished mobile experience.",
+    technologies: ["Flutter", "Travel", "Mobile UX", "Android", "iOS"],
+    github: "",
+    downloadUrl:
+      "https://play.google.com/store/apps/details?id=com.zenifytrip.sunshinevacances.app&hl=en-US",
+    imageUrl: "/sunshine_demo.png",
+    visualMode: "wide-pan",
   },
   {
-    title: "Bisou Mobile App",
-    company: "Independent Freelance Project",
-    period: "2025",
-    location: "Bisou Café",
+    title: "TunisiePromo",
+    category: "Retail · Mobile App",
     description:
-      "Designed and developed a modern mobile application for Bisou Café, focused on delivering a smooth customer experience and a strong visual identity aligned with the brand. The app is built to be extendable, ready for future features such as digital menus, ordering, loyalty, and customer engagement.",
-    icon: Briefcase,
-    category: "Mobile Development",
-    technologies: ["Flutter", "Git"],
-    highlights: [
-      "Mobile-first UX tailored to Bisou Café's branding",
-      "Clean, maintainable Flutter codebase ready for future features",
-      "End-to-end delivery: from UI design to implementation and testing",
-    ],
-    status: "Completed",
+      "Deals and promotions discovery platform for Tunisian consumers — browse real-time offers across retail, food, and services with a fast, clean mobile experience.",
+    technologies: ["Flutter", "REST APIs", "Android", "iOS"],
     github: "",
-    demo: "",
+    imageUrl: "/tunisiepormo_demo.png",
+    visualMode: "wide-pan",
+  },
+  {
+    title: "Mouqawel.tn",
+    category: "Construction · Mobile App",
+    description:
+      "Mobile application designed for contractors, delivering fast access to services with a mobile-first UX.",
+    technologies: ["Flutter", "MVVM", "Provider", "Figma"],
+    github: "https://github.com/walidmz/Mouqawel-app",
+    imageUrl: "/image.png",
+    visualMode: "cover",
+  },
+  {
+    title: "Bisou",
+    category: "Food & Beverage · Mobile App",
+    description:
+      "Modern mobile app with strong branding, designed for scalability and future features like loyalty and ordering.",
+    technologies: ["Flutter", "Git"],
+    github: "",
     videoId: "qRSv_clT194",
     imageUrl: "/bisou.png",
+    visualMode: "cover",
   },
 ];
 
-const statusStyle = (status: string) => {
-  if (status === "Completed")
-    return "bg-emerald-500/80 text-white border border-emerald-400/30 backdrop-blur-sm";
-  if (status === "In Progress")
-    return "bg-sky-500/80 text-white border border-sky-400/30 backdrop-blur-sm";
-  return "bg-amber-500/70 text-white border border-amber-400/30 backdrop-blur-sm";
-};
+const LOOP_COPIES = 5;
+const MIDDLE_COPY = Math.floor(LOOP_COPIES / 2);
+const FIRST_SAFE = projects.length;
+const LAST_SAFE = projects.length * (LOOP_COPIES - 1);
 
 const ProjectsSection = () => {
-  const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const scrollFrameRef = useRef<number | null>(null);
+  const [activeLoopIndex, setActiveLoopIndex] = useState(projects.length * MIDDLE_COPY);
+  const [isPaused, setIsPaused] = useState(false);
+
+  const loopedProjects = useMemo(
+    () => Array.from({ length: LOOP_COPIES }, () => projects).flat(),
+    []
+  );
+  const activeProjectIndex = activeLoopIndex % projects.length;
+
+  const scrollToSlide = useCallback((index: number, behavior: ScrollBehavior = "smooth") => {
+    const container = containerRef.current;
+    const slide = slideRefs.current[index];
+    if (!container || !slide) return;
+    container.scrollTo({
+      left: slide.offsetLeft - (container.clientWidth - slide.clientWidth) / 2,
+      behavior,
+    });
+  }, []);
+
+  const goToProject = useCallback(
+    (projectIndex: number) => {
+      // Navigate to the safest, closest copy of the target project
+      const safeCopies = Array.from({ length: LOOP_COPIES }, (_, i) => i * projects.length + projectIndex)
+        .filter((idx) => idx >= FIRST_SAFE && idx < LAST_SAFE);
+      const closest = safeCopies.reduce((a, b) =>
+        Math.abs(a - activeLoopIndex) < Math.abs(b - activeLoopIndex) ? a : b
+      );
+      setActiveLoopIndex(closest);
+      scrollToSlide(closest);
+    },
+    [activeLoopIndex, scrollToSlide]
+  );
+
+  const goPrev = useCallback(() => {
+    scrollToSlide(activeLoopIndex - 1);
+  }, [activeLoopIndex, scrollToSlide]);
+
+  const goNext = useCallback(() => {
+    scrollToSlide(activeLoopIndex + 1);
+  }, [activeLoopIndex, scrollToSlide]);
+
+  useEffect(() => {
+    scrollToSlide(projects.length * MIDDLE_COPY, "auto");
+  }, [scrollToSlide]);
+
+  useEffect(() => {
+    if (isPaused) return;
+    const interval = window.setInterval(() => {
+      scrollToSlide(activeLoopIndex + 1);
+    }, 4200);
+    return () => window.clearInterval(interval);
+  }, [activeLoopIndex, isPaused, scrollToSlide]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const getClosestSlideIndex = () => {
+      const containerRect = container.getBoundingClientRect();
+      const containerCenter = containerRect.left + containerRect.width / 2;
+      return slideRefs.current.reduce((closestIndex, slide, index) => {
+        if (!slide) return closestIndex;
+        const slideRect = slide.getBoundingClientRect();
+        const slideCenter = slideRect.left + slideRect.width / 2;
+        const currentDistance = Math.abs(slideCenter - containerCenter);
+        const closestSlide = slideRefs.current[closestIndex];
+        if (!closestSlide) return index;
+        const closestRect = closestSlide.getBoundingClientRect();
+        const closestCenter = closestRect.left + closestRect.width / 2;
+        const closestDistance = Math.abs(closestCenter - containerCenter);
+        return currentDistance < closestDistance ? index : closestIndex;
+      }, 0);
+    };
+
+    const keepLoopCentered = (index: number) => {
+      if (index < FIRST_SAFE || index >= LAST_SAFE) {
+        const normalizedIndex = index % projects.length;
+        const resetIndex = projects.length * MIDDLE_COPY + normalizedIndex;
+        setActiveLoopIndex(resetIndex);
+        scrollToSlide(resetIndex, "auto");
+        return;
+      }
+      setActiveLoopIndex(index);
+    };
+
+    const handleScroll = () => {
+      if (scrollFrameRef.current) window.cancelAnimationFrame(scrollFrameRef.current);
+      scrollFrameRef.current = window.requestAnimationFrame(() => {
+        keepLoopCentered(getClosestSlideIndex());
+      });
+    };
+
+    container.addEventListener("scroll", handleScroll);
+    return () => {
+      container.removeEventListener("scroll", handleScroll);
+      if (scrollFrameRef.current) window.cancelAnimationFrame(scrollFrameRef.current);
+    };
+  }, [scrollToSlide]);
 
   return (
-    <motion.section
-      id="projects"
-      className="py-24"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.6, ease: [0, 0, 0.2, 1] }}
-    >
-      <div className="container mx-auto px-4">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <div className="flex justify-center mb-4">
-            <span className="section-label">
-              <Briefcase className="h-3.5 w-3.5" />
-              Portfolio
-            </span>
-          </div>
-          <h2 className="text-4xl font-display font-bold mb-3 tracking-tight">
-            Featured Projects
-          </h2>
-          <div className="section-heading-line" />
-          <p className="text-base text-muted-foreground max-w-xl mx-auto mt-5 leading-relaxed">
-            A selection of web and mobile projects highlighting both technical
-            depth and real-world impact.
-          </p>
-        </div>
+    <section id="projects" className="py-24 overflow-hidden">
+      {/* ── Section Header ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="mb-16 text-center"
+      >
+        <span className="section-label mb-5 inline-flex">Featured Work</span>
+        <h2 className="text-4xl font-display font-bold mt-5 mb-3 tracking-tight">
+          Built With{" "}
+          <span className="text-gradient">Purpose</span>
+        </h2>
+        <div className="section-heading-line" />
+        <p className="text-muted-foreground max-w-xl mx-auto mt-5 text-sm leading-relaxed">
+          A curated selection of projects showcasing real-world impact and engineering depth.
+        </p>
+      </motion.div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 gap-8 max-w-3xl mx-auto">
-          {projects.map((project, index) => (
-            <Card
-              key={index}
-              className="group relative overflow-hidden bg-card border-border/60 hover:border-violet/35 transition-all duration-300 hover:shadow-[0_12px_50px_hsl(262_83%_68%/0.1)]"
+      {/* ── Carousel ── */}
+      <div
+        ref={containerRef}
+        className="flex gap-6 overflow-x-auto px-[12vw] snap-x snap-mandatory scroll-smooth no-scrollbar [mask-image:linear-gradient(90deg,transparent,black_12%,black_88%,transparent)]"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onFocus={() => setIsPaused(true)}
+        onBlur={() => setIsPaused(false)}
+      >
+        {loopedProjects.map((project, index) => {
+          const isActive = index === activeLoopIndex;
+
+          return (
+            <motion.div
+              key={`${project.title}-${index}`}
+              ref={(node) => { slideRefs.current[index] = node; }}
+              className="snap-center shrink-0 w-[82vw] max-w-5xl rounded-2xl border overflow-hidden"
+              animate={{
+                scale: isActive ? 1 : 0.88,
+                opacity: isActive ? 1 : 0.4,
+                filter: isActive ? "blur(0px)" : "blur(2px)",
+                borderColor: isActive
+                  ? "rgba(168, 85, 247, 0.4)"
+                  : "rgba(168, 85, 247, 0.1)",
+                boxShadow: isActive
+                  ? "0 0 0 1px rgba(168,85,247,0.12), 0 32px 80px rgba(0,0,0,0.6), 0 0 60px rgba(168,85,247,0.08)"
+                  : "0 8px 32px rgba(0,0,0,0.3)",
+              }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+              aria-hidden={!isActive}
+              style={{ background: "rgba(16, 16, 31, 0.92)" }}
             >
-              {/* Top accent line */}
-              <div className="card-top-accent" />
-
-              {/* Image header */}
-              {project.imageUrl && (
-                <div className="relative h-64 overflow-hidden">
-                  <img
-                    src={project.imageUrl}
-                    alt={`${project.title} preview`}
-                    className="w-full h-full object-cover transform group-hover:scale-[1.05] transition-transform duration-700 ease-out"
-                  />
-                  {/* Gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
-
-                  {/* Project number */}
-                  <div className="absolute top-4 left-4 font-mono text-[11px] font-semibold tracking-[0.25em] text-violet/60">
-                    {String(index + 1).padStart(2, "0")}
-                  </div>
-
-                  {/* Badges top-right */}
-                  <div className="absolute top-4 right-4 flex items-center gap-2">
-                    <span className="text-[10px] font-medium px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-sm border border-white/15 text-white/75">
+              <div className="grid lg:grid-cols-2">
+                {/* ── Left: Content ── */}
+                <div className="p-8 flex flex-col justify-center space-y-4">
+                  {/* Category label */}
+                  <motion.div
+                    animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 4 }}
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <span className="section-label" style={{ fontSize: "0.6rem", letterSpacing: "0.18em" }}>
                       {project.category}
                     </span>
-                    <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full ${statusStyle(project.status)}`}>
-                      {project.status}
-                    </span>
-                  </div>
+                  </motion.div>
 
-                  {/* Title overlaid at bottom of image */}
-                  <div className="absolute bottom-4 left-5 right-5">
-                    <h3 className="text-xl font-display font-bold text-foreground group-hover:text-violet transition-colors duration-200">
-                      {project.title}
-                    </h3>
-                    <p className="text-sm text-white/55 mt-0.5">{project.company}</p>
-                  </div>
-                </div>
-              )}
+                  {/* Title */}
+                  <motion.h3
+                    animate={{
+                      opacity: isActive ? 1 : 0.6,
+                      y: isActive ? 0 : 6,
+                    }}
+                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: 0.04 }}
+                    className="text-2xl font-display font-bold tracking-tight"
+                  >
+                    {project.title}
+                  </motion.h3>
 
-              <CardContent className="pt-5 space-y-4">
-                {/* Meta */}
-                <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground font-mono">
-                  {project.period && <span>{project.period}</span>}
-                  {project.location && (
-                    <>
-                      <span className="h-1 w-1 rounded-full bg-muted-foreground/40" />
-                      <span>{project.location}</span>
-                    </>
-                  )}
-                </div>
+                  {/* Description */}
+                  <motion.p
+                    animate={{ opacity: isActive ? 1 : 0.45 }}
+                    transition={{ duration: 0.35, delay: 0.08 }}
+                    className="text-muted-foreground text-sm leading-relaxed"
+                  >
+                    {project.description}
+                  </motion.p>
 
-                {/* Description */}
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {project.description}
-                </p>
-
-                {/* Highlights */}
-                {project.highlights.length > 0 && (
-                  <ul className="space-y-1.5">
-                    {project.highlights.map((hl, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                        <span className="mt-[5px] h-1.5 w-1.5 rounded-full bg-violet/70 shrink-0" />
-                        {hl}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-
-                {/* Tech badges */}
-                {project.technologies.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5">
-                    {project.technologies.map((tech, i) => (
-                      <span key={i} className="badge-tech">{tech}</span>
+                  {/* Tech badges */}
+                  <div className="flex flex-wrap gap-2">
+                    {project.technologies.map((tech) => (
+                      <span key={tech} className="badge-tech">
+                        {tech}
+                      </span>
                     ))}
                   </div>
-                )}
 
-                {/* Action buttons */}
-                {(project.github || project.demo || project.videoId) && (
-                  <div className="flex flex-wrap gap-2 pt-3 border-t border-border/50">
+                  {/* Action buttons — only fully visible on active card */}
+                  <motion.div
+                    animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 8 }}
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1], delay: 0.12 }}
+                    className="flex flex-wrap gap-3 pt-2"
+                  >
                     {project.github && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        asChild
-                        className="gap-1.5 text-xs border-border/60 hover:border-violet/50 hover:text-violet transition-all duration-200"
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="btn-outline flex items-center gap-2"
+                        tabIndex={isActive ? 0 : -1}
                       >
-                        <a href={project.github} target="_blank" rel="noreferrer">
-                          <Github className="h-3.5 w-3.5" />
-                          Source Code
-                        </a>
-                      </Button>
+                        <Github size={15} />
+                        Code
+                      </a>
                     )}
-                    {project.demo && (
-                      <Button
-                        size="sm"
-                        asChild
-                        className="gap-1.5 text-xs text-white"
-                        style={{ background: "linear-gradient(135deg, hsl(262 83% 64%), hsl(230 68% 60%))" }}
+                    {project.downloadUrl ? (
+                      <a
+                        href={project.downloadUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="btn-primary flex items-center gap-2"
+                        tabIndex={isActive ? 0 : -1}
                       >
-                        <a href={project.demo} target="_blank" rel="noreferrer">
-                          <ExternalLink className="h-3.5 w-3.5" />
-                          Live Demo
-                        </a>
-                      </Button>
-                    )}
-                    {project.videoId && (
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="gap-1.5 text-xs text-violet hover:bg-violet/10 hover:text-violet transition-all duration-200"
-                        onClick={() => setActiveVideoId(project.videoId as string)}
+                        <Download size={15} />
+                        Play Store
+                      </a>
+                    ) : !project.github ? (
+                      <button
+                        className="btn-primary flex items-center gap-2"
+                        tabIndex={isActive ? 0 : -1}
                       >
-                        <PlayCircle className="h-3.5 w-3.5" />
-                        Watch Demo
-                      </Button>
-                    )}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                        <ExternalLink size={15} />
+                        View
+                      </button>
+                    ) : null}
+                  </motion.div>
+                </div>
+
+                {/* ── Right: Visual ── */}
+                <div className="relative h-[380px] lg:h-full overflow-hidden bg-black">
+                  {project.videoId && isActive ? (
+                    <iframe
+                      title={`${project.title} preview`}
+                      className="w-full h-full"
+                      src={`https://www.youtube.com/embed/${project.videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${project.videoId}`}
+                      allow="autoplay"
+                    />
+                  ) : project.visualMode === "wide-pan" ? (
+                    <div className="relative h-full w-full overflow-hidden bg-[#07131f]">
+                      {/* Blurred background atmosphere */}
+                      <img
+                        src={project.imageUrl}
+                        alt=""
+                        className="absolute inset-0 h-full w-full object-cover opacity-20 blur-xl scale-110"
+                        aria-hidden="true"
+                      />
+                      {/* Phone frame container */}
+                      <div className="absolute inset-y-6 left-1/2 w-[72%] -translate-x-1/2 overflow-hidden rounded-[1.75rem] border border-white/15 bg-black/40 shadow-2xl shadow-black/50">
+                        <motion.img
+                          src={project.imageUrl}
+                          alt={`${project.title} preview`}
+                          className="h-full max-w-none object-contain"
+                          animate={
+                            isActive
+                              ? { x: ["0%", "-56%", "0%"] }
+                              : { x: "-18%" }
+                          }
+                          transition={
+                            isActive
+                              ? {
+                                  duration: 12,
+                                  ease: "easeInOut",
+                                  repeat: Infinity,
+                                  repeatDelay: 0.8,
+                                }
+                              : { duration: 0.45 }
+                          }
+                        />
+                        {/* Side fade masks */}
+                        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.45),transparent_18%,transparent_82%,rgba(0,0,0,0.45))]" />
+                        {/* Top shine */}
+                        <div className="pointer-events-none absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-white/10 to-transparent" />
+                      </div>
+                      {/* Pagination dots indicator */}
+                      <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-white/15 bg-black/45 px-3 py-1.5 backdrop-blur-md">
+                        <span className="h-1.5 w-6 rounded-full bg-white/80" />
+                        <span className="h-1.5 w-1.5 rounded-full bg-white/35" />
+                        <span className="h-1.5 w-1.5 rounded-full bg-white/35" />
+                      </div>
+                    </div>
+                  ) : (
+                    <img
+                      src={project.imageUrl}
+                      alt={`${project.title} preview`}
+                      className="w-full h-full object-cover"
+                    />
+                  )}
+
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent pointer-events-none" />
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
       </div>
 
-      {/* Video modal */}
-      {activeVideoId && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4"
-          onClick={() => setActiveVideoId(null)}
+      {/* ── Navigation ── */}
+      <div className="mt-8 flex items-center justify-center gap-4">
+        {/* Prev arrow */}
+        <motion.button
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.92 }}
+          onClick={goPrev}
+          className="w-9 h-9 rounded-full border border-border/50 bg-card flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-violet-500/40 hover:shadow-[0_0_14px_rgba(168,85,247,0.18)] transition-all duration-200"
+          aria-label="Previous project"
         >
-          <div
-            className="relative w-full max-w-4xl aspect-video bg-black rounded-xl overflow-hidden shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={() => setActiveVideoId(null)}
-              className="absolute -top-10 right-0 text-sm text-white/80 hover:text-white px-3 py-1 rounded-full border border-white/30 bg-black/50 backdrop-blur-sm transition-colors"
-            >
-              Close ✕
-            </button>
-            <iframe
-              className="w-full h-full"
-              src={`https://www.youtube.com/embed/${activeVideoId}?autoplay=1`}
-              title="Project demo"
-              loading="lazy"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
+          <ChevronLeft size={16} />
+        </motion.button>
+
+        {/* Animated pill dots */}
+        <div className="flex items-center gap-2">
+          {projects.map((proj, i) => (
+            <motion.button
+              key={i}
+              onClick={() => goToProject(i)}
+              animate={{
+                width: activeProjectIndex === i ? 28 : 8,
+                opacity: activeProjectIndex === i ? 1 : 0.3,
+                backgroundColor: activeProjectIndex === i ? "#a855f7" : "#a855f7",
+              }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="h-2 rounded-full"
+              aria-label={`Go to ${proj.title}`}
             />
-          </div>
+          ))}
         </div>
-      )}
-    </motion.section>
+
+        {/* Next arrow */}
+        <motion.button
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.92 }}
+          onClick={goNext}
+          className="w-9 h-9 rounded-full border border-border/50 bg-card flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-violet-500/40 hover:shadow-[0_0_14px_rgba(168,85,247,0.18)] transition-all duration-200"
+          aria-label="Next project"
+        >
+          <ChevronRight size={16} />
+        </motion.button>
+      </div>
+    </section>
   );
 };
 
