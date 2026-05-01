@@ -344,29 +344,33 @@ const ProjectsSection = () => {
                         className="flex flex-wrap gap-3 pt-2"
                       >
                         {project.github && (
-                          <a
+                          <motion.a
                             href={project.github}
                             target="_blank"
                             rel="noreferrer"
-                            className="btn-outline flex items-center gap-2"
                             tabIndex={isActive ? 0 : -1}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border border-violet-500/40 bg-violet-500/10 text-violet-300 hover:bg-violet-500/20 hover:border-violet-400/60 hover:text-violet-200 transition-all duration-200"
                           >
                             <Github size={15} /> Code
-                          </a>
+                          </motion.a>
                         )}
                         {(project.playStoreUrl || project.appStoreUrl) && (() => {
                           const href = getAppStoreLink(project);
                           if (!href) return null;
                           return (
-                            <a
+                            <motion.a
                               href={href}
                               target="_blank"
                               rel="noreferrer"
-                              className="btn-primary flex items-center gap-2"
                               tabIndex={isActive ? 0 : -1}
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-gradient-to-r from-violet-600 to-indigo-500 text-white shadow-[0_0_18px_rgba(168,85,247,0.35)] hover:shadow-[0_0_26px_rgba(168,85,247,0.55)] hover:from-violet-500 hover:to-indigo-400 transition-all duration-200"
                             >
                               <Smartphone size={15} /> Get the App
-                            </a>
+                            </motion.a>
                           );
                         })()}
                       </motion.div>
