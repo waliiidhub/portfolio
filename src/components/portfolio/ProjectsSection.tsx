@@ -118,6 +118,7 @@ const projects: Project[] = [
       "AI-powered recruitment platform combining web, mobile, and ML to streamline hiring — managing job offers, candidate applications, intelligent assessments, and recruiter workflows end-to-end.",
     technologies: ["React.js", "TypeScript", "Python", "Machine Learning", "Flutter", "Figma", "REST APIs", "Git"],
     videoEmbedUrl: "https://drive.google.com/file/d/1UkhCBSk97n5u746UANV6P1crr8pApDP2/preview",
+    demoUrl: "https://drive.google.com/file/d/1UkhCBSk97n5u746UANV6P1crr8pApDP2/view",
     award: "2nd Place · Esprit Project Fair 2024",
     imageUrl: "/airecruit_demo.png",
     visualMode: "cover",
@@ -696,8 +697,38 @@ const ProjectsSection = () => {
                           <span className="absolute top-[32%] right-[16%] w-1 h-1 rounded-full pointer-events-none" style={{ background: "hsl(185 100% 62% / 0.18)" }} />
                           <span className="absolute bottom-[25%] left-[8%] w-1.5 h-1.5 rounded-full pointer-events-none" style={{ background: "hsl(185 100% 62% / 0.28)", boxShadow: "0 0 6px hsl(185 100% 62% / 0.35)" }} />
 
-                          {/* ── Video rectangle ── */}
-                          <div className="absolute inset-x-2 top-8 bottom-5 sm:inset-x-4 sm:top-14 sm:bottom-12">
+                          {/* ── Mobile: Watch Demo button ── */}
+                          {project.demoUrl && (
+                            <div className="absolute inset-0 sm:hidden flex flex-col items-center justify-center gap-5">
+                              <img
+                                src={project.imageUrl}
+                                alt={`${project.title} preview`}
+                                className="absolute inset-0 w-full h-full object-contain"
+                                style={{ background: "hsl(210 20% 5%)" }}
+                              />
+                              <div className="absolute inset-0 bg-black/55" />
+                              <motion.a
+                                href={project.demoUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                whileHover={{ scale: 1.06, y: -2, boxShadow: "0 0 32px hsl(185 100% 62% / 0.55), 0 8px 24px rgba(0,0,0,0.5)" }}
+                                whileTap={{ scale: 0.94 }}
+                                className="relative z-10 inline-flex items-center gap-2.5 px-6 py-3 rounded-full text-sm font-semibold overflow-hidden"
+                                style={{
+                                  background: "linear-gradient(135deg, hsl(185 83% 28%) 0%, hsl(185 83% 18%) 100%)",
+                                  border: "1.5px solid hsl(185 100% 62% / 0.55)",
+                                  color: "hsl(185 100% 78%)",
+                                  boxShadow: "0 0 18px hsl(185 100% 62% / 0.22), 0 4px 16px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08)",
+                                }}
+                              >
+                                <Play size={14} style={{ fill: "currentColor" }} />
+                                Watch Demo
+                              </motion.a>
+                            </div>
+                          )}
+
+                          {/* ── Video rectangle — desktop only ── */}
+                          <div className="absolute inset-x-2 top-8 bottom-5 sm:inset-x-4 sm:top-14 sm:bottom-12 hidden sm:block">
                             <motion.div
                               className="relative w-full h-full overflow-hidden rounded-2xl"
                               animate={isActive ? { opacity: 1, scale: 1 } : { opacity: 0.5, scale: 0.97 }}
