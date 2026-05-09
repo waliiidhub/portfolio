@@ -697,7 +697,7 @@ const ProjectsSection = () => {
                           <span className="absolute bottom-[25%] left-[8%] w-1.5 h-1.5 rounded-full pointer-events-none" style={{ background: "hsl(185 100% 62% / 0.28)", boxShadow: "0 0 6px hsl(185 100% 62% / 0.35)" }} />
 
                           {/* ── Video rectangle ── */}
-                          <div className="absolute inset-x-4 top-14 bottom-12">
+                          <div className="absolute inset-x-2 top-8 bottom-5 sm:inset-x-4 sm:top-14 sm:bottom-12">
                             <motion.div
                               className="relative w-full h-full overflow-hidden rounded-2xl"
                               animate={isActive ? { opacity: 1, scale: 1 } : { opacity: 0.5, scale: 0.97 }}
@@ -770,7 +770,7 @@ const ProjectsSection = () => {
                           </div>
 
                           {/* Label row below video */}
-                          <div className="absolute bottom-0 inset-x-4 h-12 flex items-center justify-between pointer-events-none select-none">
+                          <div className="absolute bottom-0 inset-x-2 h-5 sm:inset-x-4 sm:h-12 flex items-center justify-between pointer-events-none select-none">
                             <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-teal-400/35">
                               AI · Walkthrough
                             </span>
