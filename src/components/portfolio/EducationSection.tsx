@@ -96,7 +96,7 @@ const EducationSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center mb-14"
+          className="text-center mb-10 sm:mb-14"
         >
           <span className="section-label mb-5 inline-flex gap-2">
             <GraduationCap className="h-3.5 w-3.5" />
@@ -197,7 +197,7 @@ const EducationSection = () => {
                 {edu.index}
               </div>
 
-              <div className="relative p-7 flex flex-col gap-5">
+              <div className="relative p-5 sm:p-7 flex flex-col gap-5">
                 {/* Top row: icon + period + status */}
                 <div className="flex items-start justify-between gap-4">
                   <div

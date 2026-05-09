@@ -284,7 +284,7 @@ const ProjectsSection = () => {
   }, [isInView, goPrev, goNext]);
 
   return (
-    <section ref={sectionRef} id="projects" className="py-24 overflow-hidden relative">
+    <section ref={sectionRef} id="projects" className="py-14 md:py-24 overflow-hidden relative">
       {/* Section background ambiance */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -302,7 +302,7 @@ const ProjectsSection = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="mb-16 text-center relative z-10"
+        className="mb-10 md:mb-16 text-center relative z-10"
       >
         <span className="section-label mb-5 inline-flex">Featured Work</span>
         <h2 className="text-4xl md:text-5xl font-display font-bold mt-5 mb-3 tracking-tight">
@@ -357,7 +357,7 @@ const ProjectsSection = () => {
                 >
                   <div className="grid lg:grid-cols-2">
                     {/* ── Left: Content ───────────────────────────── */}
-                    <div className="p-8 flex flex-col justify-center space-y-4 lg:min-h-[420px]">
+                    <div className="p-5 md:p-8 flex flex-col justify-center space-y-4 lg:min-h-[420px]">
                       <motion.div
                         animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 4 }}
                         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
@@ -564,7 +564,7 @@ const ProjectsSection = () => {
                     </div>
 
                     {/* ── Right: Visual ───────────────────────────── */}
-                    <div className="relative h-[380px] lg:h-full overflow-hidden bg-black">
+                    <div className="relative h-[240px] sm:h-[320px] lg:h-full overflow-hidden bg-black">
                       {/* Status badge */}
                       <motion.div
                         animate={

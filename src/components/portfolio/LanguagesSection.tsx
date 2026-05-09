@@ -74,7 +74,7 @@ const LanguagesSection = () => {
 
   return (
     <>
-      <section id="languages" className="py-24 bg-surface-card relative overflow-hidden">
+      <section id="languages" className="py-14 md:py-24 bg-surface-card relative overflow-hidden">
         {/* Background ambiance */}
         <div
           className="absolute inset-0 pointer-events-none"
@@ -93,7 +93,7 @@ const LanguagesSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="text-center mb-14"
+            className="text-center mb-10 sm:mb-14"
           >
             <span className="section-label mb-5 inline-flex gap-2">
               <Sparkles className="h-3.5 w-3.5" />

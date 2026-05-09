@@ -83,12 +83,12 @@ const HeroSection = () => {
           }}
         />
 
-        <div className="relative z-10 container mx-auto px-6 pt-20">
-          <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[85vh]">
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 pt-14 sm:pt-20">
+          <div className="grid lg:grid-cols-2 gap-6 lg:gap-12 items-center min-h-[75vh] lg:min-h-[85vh]">
 
             {/* ── Left: Text ── */}
             <motion.div
-              className="space-y-8 order-2 lg:order-1"
+              className="space-y-5 sm:space-y-8 order-2 lg:order-1"
               variants={stagger}
               initial="hidden"
               animate="visible"
@@ -118,14 +118,14 @@ const HeroSection = () => {
 
               {/* Name + typing */}
               <motion.div variants={fadeUp} className="space-y-3">
-                <h1 className="font-display text-5xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
+                <h1 className="font-display text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
                   <span className="text-foreground">Walid</span>
                   <br />
                   <span className="text-gradient">Marzouk</span>
                 </h1>
 
                 <div className="flex items-center gap-2 h-10">
-                  <span className="font-display text-xl lg:text-2xl text-muted-foreground font-medium">
+                  <span className="font-display text-base sm:text-xl lg:text-2xl text-muted-foreground font-medium">
                     {displayed}
                   </span>
                   <span className="w-0.5 h-7 bg-violet animate-pulse rounded-full" />
@@ -160,12 +160,12 @@ const HeroSection = () => {
               </motion.div>
 
               {/* CTA buttons */}
-              <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-3">
+              <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-2 sm:gap-3">
 
                 {/* Primary — Download CV */}
                 <motion.button
                   onClick={() => setCvModalOpen(true)}
-                  className="group relative flex items-center gap-2.5 px-7 py-3.5 rounded-full text-sm font-semibold text-white overflow-hidden"
+                  className="group relative flex items-center gap-2.5 px-5 sm:px-7 py-3 sm:py-3.5 rounded-full text-sm font-semibold text-white overflow-hidden"
                   style={{
                     background: "linear-gradient(135deg, hsl(262 83% 64%) 0%, hsl(230 68% 58%) 100%)",
                     boxShadow: "0 0 22px hsl(262 83% 68% / 0.3), inset 0 1px 0 hsl(0 0% 100% / 0.12)",
@@ -182,7 +182,7 @@ const HeroSection = () => {
                 {/* Secondary — Get in Touch with flowing border glow */}
                 <motion.button
                   onClick={() => setContactFormOpen(true)}
-                  className="group relative flex items-center gap-2.5 px-7 py-3.5 rounded-full text-sm font-semibold text-violet overflow-hidden"
+                  className="group relative flex items-center gap-2.5 px-5 sm:px-7 py-3 sm:py-3.5 rounded-full text-sm font-semibold text-violet overflow-hidden"
                   style={{
                     background: "hsl(240 25% 7%)",
                     boxShadow: "0 0 0 1.5px hsl(262 83% 68% / 0.35)",
@@ -259,7 +259,7 @@ const HeroSection = () => {
               {/* Orbital rings */}
               {!prefersReduced && (
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <svg viewBox="0 0 440 440" className="absolute w-[440px] h-[440px] opacity-60">
+                  <svg viewBox="0 0 440 440" className="absolute w-[260px] h-[260px] sm:w-[360px] sm:h-[360px] lg:w-[440px] lg:h-[440px] opacity-60">
                     {/* Static dashed outer ring */}
                     <circle cx="220" cy="220" r="213" fill="none" stroke="hsl(262 83% 68% / 0.12)" strokeWidth="1" strokeDasharray="5 8" />
                     {/* Static inner ring */}
@@ -297,7 +297,7 @@ const HeroSection = () => {
               <motion.img
                 src="/walid-hero-image.png"
                 alt="Walid Marzouk — Software Engineer"
-                className="relative w-72 h-72 lg:w-[22rem] lg:h-[22rem] rounded-full object-cover shadow-glow-lg"
+                className="relative w-44 h-44 sm:w-60 sm:h-60 lg:w-[22rem] lg:h-[22rem] rounded-full object-cover shadow-glow-lg"
                 style={{ border: "2.5px solid hsl(262 83% 68% / 0.4)" }}
                 animate={prefersReduced ? {} : { y: [0, -10, 0] }}
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
@@ -305,7 +305,7 @@ const HeroSection = () => {
 
               {/* ── Floating card: Apps Deployed (bottom-left) ── */}
               <motion.div
-                className="absolute bottom-8 -left-4 lg:-left-12 glass rounded-2xl px-4 py-3 shadow-elevated border border-violet/20"
+                className="hidden sm:block absolute bottom-8 -left-4 lg:-left-12 glass rounded-2xl px-4 py-3 shadow-elevated border border-violet/20"
                 initial={{ opacity: 0, x: -24 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 1, duration: 0.6 }}
@@ -326,7 +326,7 @@ const HeroSection = () => {
 
               {/* ── Floating card: Servers Hosted (top-right) ── */}
               <motion.div
-                className="absolute top-8 -right-4 lg:-right-12 glass rounded-2xl px-4 py-3 shadow-elevated border border-violet/20"
+                className="hidden sm:block absolute top-8 -right-4 lg:-right-12 glass rounded-2xl px-4 py-3 shadow-elevated border border-violet/20"
                 initial={{ opacity: 0, x: 24 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 1.2, duration: 0.6 }}

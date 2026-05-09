@@ -77,7 +77,7 @@ const MotivationSection = () => {
   return (
     <motion.section
       id="motivation"
-      className="py-24"
+      className="py-14 md:py-24"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
@@ -85,7 +85,7 @@ const MotivationSection = () => {
     >
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 md:mb-16">
           <div className="flex justify-center mb-4">
             <span className="section-label">
               <Heart className="h-3.5 w-3.5" />
@@ -103,7 +103,7 @@ const MotivationSection = () => {
 
         {/* Personal story — with decorative quote mark */}
         <motion.div
-          className="relative overflow-hidden rounded-2xl bg-card border border-border/60 mb-16 max-w-4xl mx-auto"
+          className="relative overflow-hidden rounded-2xl bg-card border border-border/60 mb-10 md:mb-16 max-w-4xl mx-auto"
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
@@ -129,7 +129,7 @@ const MotivationSection = () => {
             }}
           />
 
-          <div className="relative z-10 p-8">
+          <div className="relative z-10 p-5 sm:p-8">
             <h3 className="text-xl font-display font-bold text-foreground mb-5">
               {personalStory.title}
             </h3>
@@ -144,7 +144,7 @@ const MotivationSection = () => {
         </motion.div>
 
         {/* What Motivates Me */}
-        <div className="mb-14 max-w-4xl mx-auto">
+        <div className="mb-10 md:mb-14 max-w-4xl mx-auto">
           <h3 className="text-xl font-display font-semibold text-center mb-8">
             What Motivates Me
           </h3>
@@ -179,7 +179,7 @@ const MotivationSection = () => {
         </div>
 
         {/* Core Values */}
-        <div className="mb-14 max-w-4xl mx-auto">
+        <div className="mb-10 md:mb-14 max-w-4xl mx-auto">
           <h3 className="text-xl font-display font-semibold text-center mb-8">
             Core Values
           </h3>

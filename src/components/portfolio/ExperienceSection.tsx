@@ -187,7 +187,7 @@ const ExperienceSection = () => {
   return (
     <motion.section
       id="internships"
-      className="py-24 bg-surface-card overflow-hidden relative"
+      className="py-14 md:py-24 bg-surface-card overflow-hidden relative"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
@@ -207,7 +207,7 @@ const ExperienceSection = () => {
       <div className="container mx-auto px-4">
 
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 md:mb-16">
           <div className="flex justify-center mb-4">
             <span className="section-label">
               <Briefcase className="h-3.5 w-3.5" />
@@ -954,7 +954,7 @@ const DetailCard = ({
              style={{ background: "radial-gradient(ellipse 100% 70% at 100% 40%, hsl(262 83% 68% / 0.10), transparent 65%)" }} />
 
         {/* ── HEADER ── */}
-        <div className="relative px-8 pt-8 pb-6 md:px-10 md:pt-9">
+        <div className="relative px-5 pt-6 pb-4 sm:px-8 sm:pt-8 sm:pb-6 md:px-10 md:pt-9">
           <div className="flex items-start gap-5">
             {/* Logo */}
             <div className={`relative shrink-0 w-[52px] h-[52px] rounded-2xl border border-violet/20 flex items-center justify-center p-2 overflow-hidden ${exp.id === "esprit" ? "bg-white/15" : "bg-black/40"}`}
@@ -1001,14 +1001,14 @@ const DetailCard = ({
         </div>
 
         {/* Header / body divider */}
-        <div className="mx-8 md:mx-10 h-px"
+        <div className="mx-5 sm:mx-8 md:mx-10 h-px"
              style={{ background: "linear-gradient(90deg, hsl(262 83% 68% / 0.28), hsl(230 68% 62% / 0.14) 50%, transparent)" }} />
 
         {/* ── BODY: description + highlights | phone ── */}
         <div className="relative flex flex-col lg:flex-row items-stretch">
 
           {/* Content */}
-          <div className="flex-1 min-w-0 px-8 py-6 md:px-10 space-y-4">
+          <div className="flex-1 min-w-0 px-5 py-5 sm:px-8 md:px-10 space-y-4">
             <ExpandableDescription
               text={exp.description}
               className="text-sm text-white/55 leading-relaxed"
@@ -1029,7 +1029,7 @@ const DetailCard = ({
                style={{ background: "linear-gradient(180deg, transparent, hsl(262 83% 68% / 0.18) 15%, hsl(262 83% 68% / 0.18) 85%, transparent)" }} />
 
           {/* Phone player */}
-          <div className="shrink-0 flex flex-col items-center justify-center gap-3 px-8 py-6 md:px-8 lg:px-10">
+          <div className="shrink-0 flex flex-col items-center justify-center gap-3 px-5 py-5 sm:px-8 lg:px-10">
             <div className="relative">
               {/* Screen glow beneath phone */}
               <div className="absolute left-1/2 -translate-x-1/2 -bottom-4 pointer-events-none"
@@ -1039,7 +1039,7 @@ const DetailCard = ({
               <div className="relative overflow-hidden bg-black"
                    style={{
                      aspectRatio: "9/16",
-                     width: "220px",
+                     width: "min(220px, 65vw)",
                      borderRadius: "2.25rem",
                      boxShadow: "0 0 0 2px hsl(262 83% 68% / 0.35), 0 0 0 8px hsl(0 0% 7%), 0 0 0 10px hsl(0 0% 14%), 0 32px 80px rgba(0,0,0,0.55), 0 8px 40px hsl(262 83% 68% / 0.12)",
                    }}>
@@ -1113,7 +1113,7 @@ const DetailCard = ({
         </div>
 
         {/* ── BOTTOM: metrics + tech + actions ── */}
-        <div className="px-8 pb-8 md:px-10 md:pb-9 space-y-5">
+        <div className="px-5 pb-6 sm:px-8 sm:pb-8 md:px-10 md:pb-9 space-y-5">
           <div className="h-px"
                style={{ background: "linear-gradient(90deg, hsl(262 83% 68% / 0.20), hsl(230 68% 62% / 0.10) 50%, transparent)" }} />
 
@@ -1158,7 +1158,7 @@ const DetailCard = ({
          }}>
       {chrome}
 
-      <div className="relative pl-8 pr-6 py-7 md:pl-10 md:pr-8 md:py-9">
+      <div className="relative pl-5 pr-4 py-5 sm:pl-8 sm:pr-6 sm:py-7 md:pl-10 md:pr-8 md:py-9">
 
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-start gap-5 mb-6">
