@@ -377,12 +377,12 @@ const HeroSection = () => {
               >
                 <div className="flex items-center gap-1.5 mb-1">
                   <Code2 className="h-3 w-3 text-violet/80" />
-                  <span className="text-[10px] text-muted-foreground font-mono tracking-wider uppercase">Technologies</span>
+                  <span className="text-[10px] text-muted-foreground font-mono tracking-wider uppercase">Months of Experience</span>
                 </div>
                 <AnimatedCounter
-                  value={15}
+                  value={9}
                   suffix="+"
-                  label="Technologies"
+                  label="Months of Experience"
                   labelClassName="sr-only"
                   numberClassName="text-xl font-display font-bold text-gradient leading-none"
                   className="block"

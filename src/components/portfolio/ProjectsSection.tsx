@@ -215,10 +215,10 @@ const ProjectsSection = () => {
 
   // ── Auto-advance: per-card duration, resets on every card change ────
   useEffect(() => {
-    if (isPaused || hasInteracted) return;
+    if (isPaused || hasInteracted || !isInView) return;
     const t = window.setTimeout(() => scrollToSlide(activeLoopIndex + 1), currentDuration);
     return () => window.clearTimeout(t);
-  }, [activeLoopIndex, isPaused, hasInteracted, currentDuration, scrollToSlide]);
+  }, [activeLoopIndex, isPaused, hasInteracted, isInView, currentDuration, scrollToSlide]);
 
   // ── Scroll tracking + infinite loop reset ──────────────────────────
   useEffect(() => {
