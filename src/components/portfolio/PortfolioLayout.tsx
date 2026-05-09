@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import Navigation from "./Navigation";
 import HeroSection from "./HeroSection";
 import ProjectsSection from "./ProjectsSection";
-import InternshipsSection from "./InternshipsSection";
+import ExperienceSection from "./ExperienceSection";
 import EducationSection from "./EducationSection";
 import LanguagesSection from "./LanguagesSection";
 import MotivationSection from "./MotivationSection";
@@ -76,7 +76,7 @@ const PortfolioLayout = () => {
       <main>
         <HeroSection />
         <ProjectsSection />
-        <InternshipsSection />
+        <ExperienceSection />
         <EducationSection />
         <LanguagesSection />
         <MotivationSection />

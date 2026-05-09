@@ -351,14 +351,14 @@
 }
 
 /* ── Project carousel animations ── */
-@keyframes progress-deplete {
-  from { transform: scaleX(1); }
-  to   { transform: scaleX(0); }
-}
-
 @keyframes ring-deplete {
   from { stroke-dashoffset: 0; }
   to   { stroke-dashoffset: 43.98; }
+}
+
+@keyframes progress-deplete {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0); }
 }
 
 /* ── Custom scrollbar ── */
@@ -369,3 +369,8 @@
 
 /* ── Text selection ── */
 ::selection { background: hsl(var(--violet) / 0.22); color: hsl(var(--foreground)); }
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}

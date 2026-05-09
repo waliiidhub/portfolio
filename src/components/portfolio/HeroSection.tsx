@@ -1,14 +1,18 @@
 import { useState, useEffect } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Download, Mail, Github, Linkedin, Phone, ChevronDown, Shield } from "lucide-react";
+import {
+  Download, Mail, Github, Linkedin, Phone,
+  Rocket, Server, Users2, Code2,
+} from "lucide-react";
 import ContactForm from "./ContactForm";
 import CvDownloadModal from "./CvDownloadModal";
 import SkillsMatrixModal from "./SkillsMatrixModal";
 import ParticleBackground from "./ParticleBackground";
 import AnimatedCounter from "./AnimatedCounter";
 
-const TYPING_WORDS = ["Full-Stack Engineer", "Flutter Developer", "DevOps Enthusiast", "Mobile Architect"];
+const TYPING_WORDS = ["Full-Stack Engineer", "Mobile Developer","Backend Expert"];
+const TECH_STACK = ["Flutter", "NestJs"];
 
 const HeroSection = () => {
   const [isContactFormOpen, setContactFormOpen] = useState(false);
@@ -44,7 +48,7 @@ const HeroSection = () => {
   };
   const fadeUp = {
     hidden: prefersReduced ? { opacity: 0 } : { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0, 0, 0.2, 1] } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0, 0, 0.2, 1] as [number, number, number, number] } },
   };
 
   return (
@@ -55,11 +59,27 @@ const HeroSection = () => {
       >
         <ParticleBackground />
 
+        {/* Ambient glows: violet top-right + indigo bottom-left + secondary hint top-left */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            background:
-              "radial-gradient(ellipse 80% 60% at 60% 40%, hsl(262 83% 68% / 0.12) 0%, transparent 70%)",
+            background: [
+              "radial-gradient(ellipse 80% 60% at 65% 35%, hsl(262 83% 68% / 0.17) 0%, transparent 70%)",
+              "radial-gradient(ellipse 55% 45% at 10% 80%, hsl(230 68% 62% / 0.12) 0%, transparent 65%)",
+              "radial-gradient(ellipse 35% 28% at 22% 10%, hsl(262 83% 68% / 0.08) 0%, transparent 60%)",
+            ].join(", "),
+          }}
+        />
+
+        {/* Dot grid — radial-masked to center, adds texture without noise */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: "radial-gradient(circle, hsl(262 83% 68% / 0.18) 1px, transparent 1px)",
+            backgroundSize: "30px 30px",
+            maskImage: "radial-gradient(ellipse 90% 80% at 50% 50%, black 15%, transparent 100%)",
+            WebkitMaskImage: "radial-gradient(ellipse 90% 80% at 50% 50%, black 15%, transparent 100%)",
+            opacity: 0.55,
           }}
         />
 
@@ -73,13 +93,30 @@ const HeroSection = () => {
               initial="hidden"
               animate="visible"
             >
-              <motion.div variants={fadeUp} className="space-y-2">
-                <span className="inline-flex items-center gap-2 text-xs font-mono font-medium tracking-[0.2em] uppercase text-violet px-3 py-1.5 rounded-full border border-violet/20 bg-violet/5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-violet animate-pulse" />
+              {/* Available badge */}
+              <motion.div variants={fadeUp}>
+                <motion.span
+                  className="inline-flex items-center gap-2.5 text-xs font-mono font-semibold tracking-[0.18em] uppercase text-emerald-400 px-4 py-2 rounded-full border border-emerald-400/30 relative overflow-hidden cursor-default select-none"
+                  style={{
+                    background: "linear-gradient(135deg, hsl(152 76% 50% / 0.08) 0%, hsl(160 60% 45% / 0.06) 100%)",
+                    boxShadow: "0 0 18px hsl(152 76% 50% / 0.12), inset 0 1px 0 hsl(152 76% 50% / 0.15)",
+                  }}
+                  whileHover={{ scale: 1.04, boxShadow: "0 0 28px hsl(152 76% 50% / 0.25), inset 0 1px 0 hsl(152 76% 50% / 0.2)" }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <span
+                    className="absolute inset-0 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-500"
+                    style={{ background: "linear-gradient(105deg, transparent 30%, hsl(152 76% 70% / 0.12) 50%, transparent 70%)" }}
+                  />
+                  <span className="relative flex items-center justify-center w-2 h-2 shrink-0">
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400/40 animate-ping" />
+                    <span className="relative w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_hsl(152_76%_50%/0.8)]" />
+                  </span>
                   Available for opportunities
-                </span>
+                </motion.span>
               </motion.div>
 
+              {/* Name + typing */}
               <motion.div variants={fadeUp} className="space-y-3">
                 <h1 className="font-display text-5xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
                   <span className="text-foreground">Walid</span>
@@ -95,43 +132,101 @@ const HeroSection = () => {
                 </div>
               </motion.div>
 
+              {/* Bio */}
               <motion.p
                 variants={fadeUp}
                 className="text-base text-muted-foreground max-w-md leading-relaxed"
               >
-                Full-stack Software Engineer passionate about creating reliable, high-performance web and mobile applications. Deeply interested in DevOps, AI, automation, and quality engineering.
+                I build and ship full-stack web and mobile products — from polished UIs to
+                production-grade APIs. I care deeply about clean architecture, SOLID principles,
+                and crafting code that scales, stays maintainable, and stands the test of time.
               </motion.p>
 
-              <motion.div variants={fadeUp} className="flex flex-wrap gap-3">
-                <Button
-                  size="lg"
-                  className="relative overflow-hidden text-white font-semibold shadow-glow px-7 transition-all duration-300 hover:shadow-glow-lg hover:scale-[1.03]"
-                  style={{ background: "linear-gradient(135deg, hsl(262 83% 64%), hsl(230 68% 60%))" }}
-                  onClick={() => setCvModalOpen(true)}
-                >
-                  <Download className="mr-2 h-4 w-4" />
-                  Download CV
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-violet/40 text-violet hover:bg-violet/10 hover:border-violet/70 font-semibold px-7 transition-all duration-200 hover:shadow-[0_0_20px_hsl(262_83%_68%/0.15)]"
-                  onClick={() => setContactFormOpen(true)}
-                >
-                  <Mail className="mr-2 h-4 w-4" />
-                  Get in Touch
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-violet/30 text-muted-foreground hover:text-violet hover:bg-violet/8 hover:border-violet/50 font-semibold px-7 transition-all duration-200"
-                  onClick={() => setSkillsMatrixOpen(true)}
-                >
-                  <Shield className="mr-2 h-4 w-4" />
-                  Skills Matrix
-                </Button>
+              {/* Current position — inline, no card */}
+              <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-x-2.5 gap-y-2">
+                <span className="relative flex items-center justify-center w-2 h-2 shrink-0">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400/40 animate-ping" />
+                  <span className="relative w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                </span>
+                <span className="text-xs text-muted-foreground/50 font-mono tracking-wide">currently at</span>
+                <span className="text-sm font-semibold text-foreground/90">ContinuousNet</span>
+                <span className="text-muted-foreground/25 select-none text-sm leading-none">—</span>
+                <span className="text-sm text-muted-foreground/65 font-medium">Full-Stack Mobile Developer</span>
+                <span className="flex items-center gap-1.5">
+                  {TECH_STACK.map((tech) => (
+                    <span key={tech} className="badge-tech">{tech}</span>
+                  ))}
+                </span>
               </motion.div>
 
+              {/* CTA buttons */}
+              <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-3">
+
+                {/* Primary — Download CV */}
+                <motion.button
+                  onClick={() => setCvModalOpen(true)}
+                  className="group relative flex items-center gap-2.5 px-7 py-3.5 rounded-full text-sm font-semibold text-white overflow-hidden"
+                  style={{
+                    background: "linear-gradient(135deg, hsl(262 83% 64%) 0%, hsl(230 68% 58%) 100%)",
+                    boxShadow: "0 0 22px hsl(262 83% 68% / 0.3), inset 0 1px 0 hsl(0 0% 100% / 0.12)",
+                  }}
+                  whileHover={{ scale: 1.04, boxShadow: "0 0 36px hsl(262 83% 68% / 0.5), inset 0 1px 0 hsl(0 0% 100% / 0.15)" }}
+                  whileTap={{ scale: 0.96 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
+                  <Download className="relative h-4 w-4 transition-transform duration-200 group-hover:scale-110 group-hover:-translate-y-px" />
+                  <span className="relative">Download CV</span>
+                </motion.button>
+
+                {/* Secondary — Get in Touch with flowing border glow */}
+                <motion.button
+                  onClick={() => setContactFormOpen(true)}
+                  className="group relative flex items-center gap-2.5 px-7 py-3.5 rounded-full text-sm font-semibold text-violet overflow-hidden"
+                  style={{
+                    background: "hsl(240 25% 7%)",
+                    boxShadow: "0 0 0 1.5px hsl(262 83% 68% / 0.35)",
+                  }}
+                  whileHover={{
+                    scale: 1.04,
+                    boxShadow: "0 0 0 1.5px hsl(262 83% 68% / 0.7), 0 0 24px hsl(262 83% 68% / 0.2)",
+                  }}
+                  whileTap={{ scale: 0.96 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <span
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                    style={{ background: "radial-gradient(ellipse 80% 60% at 50% 50%, hsl(262 83% 68% / 0.1) 0%, transparent 70%)" }}
+                  />
+                  <Mail className="relative h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-px" />
+                  <span className="relative">Get in Touch</span>
+                </motion.button>
+
+                {/* Tertiary — Skills Matrix: terminal-flavored */}
+                <motion.button
+                  onClick={() => setSkillsMatrixOpen(true)}
+                  className="group relative flex items-center gap-1.5 px-4 py-3.5 text-sm font-mono text-muted-foreground/70 hover:text-emerald-400 transition-colors duration-200"
+                  whileHover={{ x: 3 }}
+                  whileTap={{ scale: 0.96 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <span className="text-emerald-400/50 group-hover:text-emerald-400 transition-colors duration-200 select-none">$</span>
+                  <span>view-skills</span>
+                  <span className="w-px h-3.5 bg-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity duration-100 animate-pulse" />
+                  <span
+                    className="absolute bottom-2.5 left-4 right-4 h-px"
+                    style={{ background: "linear-gradient(to right, transparent, hsl(152 76% 50% / 0), hsl(152 76% 50% / 0))" }}
+                  >
+                    <span
+                      className="absolute inset-0 transition-all duration-300 opacity-0 group-hover:opacity-100"
+                      style={{ background: "linear-gradient(to right, transparent, hsl(152 76% 50% / 0.5), transparent)" }}
+                    />
+                  </span>
+                </motion.button>
+
+              </motion.div>
+
+              {/* Social links */}
               <motion.div variants={fadeUp} className="flex items-center gap-1">
                 <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-violet hover:bg-violet/10 rounded-xl" asChild>
                   <a href="https://github.com/walidmz" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
@@ -165,8 +260,11 @@ const HeroSection = () => {
               {!prefersReduced && (
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <svg viewBox="0 0 440 440" className="absolute w-[440px] h-[440px] opacity-60">
+                    {/* Static dashed outer ring */}
                     <circle cx="220" cy="220" r="213" fill="none" stroke="hsl(262 83% 68% / 0.12)" strokeWidth="1" strokeDasharray="5 8" />
+                    {/* Static inner ring */}
                     <circle cx="220" cy="220" r="178" fill="none" stroke="hsl(230 68% 62% / 0.07)" strokeWidth="1" />
+                    {/* Clockwise spinning arc — violet */}
                     <circle
                       cx="220" cy="220" r="213"
                       fill="none"
@@ -175,6 +273,15 @@ const HeroSection = () => {
                       strokeDasharray="68 348"
                       className="animate-spin-slow"
                       style={{ transformOrigin: "220px 220px" }}
+                    />
+                    {/* Counter-clockwise spinning arc — indigo */}
+                    <circle
+                      cx="220" cy="220" r="178"
+                      fill="none"
+                      stroke="hsl(230 68% 62% / 0.45)"
+                      strokeWidth="1"
+                      strokeDasharray="40 278"
+                      style={{ transformOrigin: "220px 220px", animation: "spin-slow 15s linear infinite reverse" }}
                     />
                   </svg>
                 </div>
@@ -196,51 +303,119 @@ const HeroSection = () => {
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
               />
 
-              {/* Floating stat: internships */}
+              {/* ── Floating card: Apps Deployed (bottom-left) ── */}
               <motion.div
-                className="absolute bottom-8 -left-4 lg:-left-10 glass rounded-2xl px-4 py-3 shadow-elevated border border-violet/20"
+                className="absolute bottom-8 -left-4 lg:-left-12 glass rounded-2xl px-4 py-3 shadow-elevated border border-violet/20"
                 initial={{ opacity: 0, x: -24 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 1, duration: 0.6 }}
+                whileHover={{ scale: 1.06, boxShadow: "0 0 24px hsl(262 83% 68% / 0.2)" }}
               >
-                <p className="text-[10px] text-muted-foreground font-mono tracking-wider uppercase mb-0.5">Internships</p>
-                <p className="text-xl font-display font-bold text-gradient leading-none">6+</p>
+                <div className="flex items-center gap-1.5 mb-1">
+                  <Rocket className="h-3 w-3 text-violet/80" />
+                  <span className="text-[10px] text-muted-foreground font-mono tracking-wider uppercase">Apps Deployed</span>
+                </div>
+                <AnimatedCounter
+                  value={3}
+                  label="Apps Deployed"
+                  labelClassName="sr-only"
+                  numberClassName="text-xl font-display font-bold text-gradient leading-none"
+                  className="block"
+                />
               </motion.div>
 
-              {/* Floating stat: projects */}
+              {/* ── Floating card: Servers Hosted (top-right) ── */}
               <motion.div
-                className="absolute top-8 -right-4 lg:-right-10 glass rounded-2xl px-4 py-3 shadow-elevated border border-violet/20"
+                className="absolute top-8 -right-4 lg:-right-12 glass rounded-2xl px-4 py-3 shadow-elevated border border-violet/20"
                 initial={{ opacity: 0, x: 24 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 1.2, duration: 0.6 }}
+                whileHover={{ scale: 1.06, boxShadow: "0 0 24px hsl(262 83% 68% / 0.2)" }}
               >
-                <p className="text-[10px] text-muted-foreground font-mono tracking-wider uppercase mb-0.5">Projects</p>
-                <p className="text-xl font-display font-bold text-gradient leading-none">20+</p>
+                <div className="flex items-center gap-1.5 mb-1">
+                  <Server className="h-3 w-3 text-violet/80" />
+                  <span className="text-[10px] text-muted-foreground font-mono tracking-wider uppercase">Servers Hosted</span>
+                </div>
+                <AnimatedCounter
+                  value={5}
+                  label="Servers Hosted"
+                  labelClassName="sr-only"
+                  numberClassName="text-xl font-display font-bold text-gradient leading-none"
+                  className="block"
+                />
+              </motion.div>
+
+              {/* ── Floating card: Active Users (top-left) — desktop only ── */}
+              <motion.div
+                className="absolute top-8 -left-4 lg:-left-12 glass rounded-2xl px-4 py-3 shadow-elevated border border-violet/20 hidden lg:block"
+                initial={{ opacity: 0, x: -24 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 1.4, duration: 0.6 }}
+                whileHover={{ scale: 1.06, boxShadow: "0 0 24px hsl(262 83% 68% / 0.2)" }}
+              >
+                <div className="flex items-center gap-1.5 mb-1">
+                  <Users2 className="h-3 w-3 text-violet/80" />
+                  <span className="text-[10px] text-muted-foreground font-mono tracking-wider uppercase">Active Users</span>
+                </div>
+                <AnimatedCounter
+                  value={1}
+                  suffix="K+"
+                  label="Active Users"
+                  labelClassName="sr-only"
+                  numberClassName="text-xl font-display font-bold text-gradient leading-none"
+                  className="block"
+                />
+              </motion.div>
+
+              {/* ── Floating card: Technologies (bottom-right) — desktop only ── */}
+              <motion.div
+                className="absolute bottom-8 -right-4 lg:-right-12 glass rounded-2xl px-4 py-3 shadow-elevated border border-violet/20 hidden lg:block"
+                initial={{ opacity: 0, x: 24 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 1.6, duration: 0.6 }}
+                whileHover={{ scale: 1.06, boxShadow: "0 0 24px hsl(262 83% 68% / 0.2)" }}
+              >
+                <div className="flex items-center gap-1.5 mb-1">
+                  <Code2 className="h-3 w-3 text-violet/80" />
+                  <span className="text-[10px] text-muted-foreground font-mono tracking-wider uppercase">Technologies</span>
+                </div>
+                <AnimatedCounter
+                  value={15}
+                  suffix="+"
+                  label="Technologies"
+                  labelClassName="sr-only"
+                  numberClassName="text-xl font-display font-bold text-gradient leading-none"
+                  className="block"
+                />
               </motion.div>
             </motion.div>
           </div>
 
-          {/* ── Stats Bar ── */}
-          <motion.div
-            className="grid grid-cols-2 md:grid-cols-4 gap-8 py-12 border-t border-border/50"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.4, duration: 0.6 }}
-          >
-            <AnimatedCounter value={20} suffix="+" label="Projects Completed" />
-            <AnimatedCounter value={6} suffix="+" label="Internships" />
-            <AnimatedCounter value={10} suffix="K+" label="Active Users" />
-            <AnimatedCounter value={15} suffix="+" label="Technologies" />
-          </motion.div>
         </div>
 
+        {/* Bottom vignette — bleeds hero into next section */}
+        <div
+          className="absolute bottom-0 inset-x-0 h-32 pointer-events-none"
+          style={{ background: "linear-gradient(to bottom, transparent, hsl(240 25% 4%))" }}
+        />
+
+        {/* Scroll indicator — mouse icon with animated wheel */}
         <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground"
-          animate={prefersReduced ? {} : { y: [0, 6, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2.5 z-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2.2, duration: 0.8 }}
         >
-          <span className="text-xs font-mono tracking-widest uppercase">Scroll</span>
-          <ChevronDown className="h-4 w-4" />
+          <div className="relative w-5 h-[30px] rounded-full border border-muted-foreground/30 flex items-start justify-center pt-1">
+            <motion.div
+              className="w-px h-[9px] rounded-full bg-muted-foreground/55"
+              animate={prefersReduced ? {} : { y: [0, 7, 0], opacity: [1, 0.2, 1] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </div>
+          <span className="text-[8px] font-mono tracking-[0.3em] uppercase text-muted-foreground/35 select-none">
+            scroll
+          </span>
         </motion.div>
       </section>
 

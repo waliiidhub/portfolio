@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const navItems = [
   { icon: User,         label: "About",       href: "#about",       id: "about"       },
   { icon: Briefcase,    label: "Projects",    href: "#projects",    id: "projects"    },
-  { icon: Briefcase,    label: "Internships", href: "#internships", id: "internships" },
+  { icon: Briefcase,    label: "Experience",  href: "#internships", id: "internships" },
   { icon: GraduationCap,label: "Education",   href: "#education",   id: "education"   },
   { icon: Wrench,       label: "Toolkit",     href: "#languages",   id: "languages"   },
   { icon: Heart,        label: "Values",      href: "#motivation",  id: "motivation"  },
