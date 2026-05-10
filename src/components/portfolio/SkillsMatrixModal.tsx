@@ -4,11 +4,12 @@ import { X, BookOpen, Monitor, Server, Smartphone, GitBranch, Sparkles } from 'l
 import {
   Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer,
 } from 'recharts';
+import { useTranslation } from 'react-i18next';
 
-const categories = [
+const CATEGORY_ICONS = [BookOpen, Monitor, Server, Smartphone, GitBranch, Sparkles];
+
+const CATEGORIES_DATA = [
   {
-    name: "Foundational",
-    icon: BookOpen,
     skills: [
       { name: "Algorithms & DS", value: 70 },
       { name: "OOP", value: 80 },
@@ -19,8 +20,6 @@ const categories = [
     ],
   },
   {
-    name: "Frontend",
-    icon: Monitor,
     skills: [
       { name: "React", value: 65 },
       { name: "Angular", value: 60 },
@@ -30,8 +29,6 @@ const categories = [
     ],
   },
   {
-    name: "Backend",
-    icon: Server,
     skills: [
       { name: "NestJS", value: 85 },
       { name: "Node.js / Express", value: 80 },
@@ -42,8 +39,6 @@ const categories = [
     ],
   },
   {
-    name: "Mobile",
-    icon: Smartphone,
     skills: [
       { name: "Flutter", value: 90 },
       { name: "React Native", value: 60 },
@@ -53,20 +48,16 @@ const categories = [
     ],
   },
   {
-    name: "DevOps",
-    icon: GitBranch,
     skills: [
       { name: "Docker / Compose", value: 75 },
       { name: "CI/CD (GitLab)", value: 90 },
       { name: "Linux & Shell", value: 75 },
       { name: "Grafana / Prometheus", value: 60 },
       { name: "Git", value: 90 },
-      { name: "Cloud Deployment", value: 60},
+      { name: "Cloud Deployment", value: 60 },
     ],
   },
   {
-    name: "AI & Automation",
-    icon: Sparkles,
     skills: [
       { name: "Python Automation", value: 75 },
       { name: "Agent Orchestration", value: 75 },
@@ -78,21 +69,31 @@ const categories = [
   },
 ];
 
-function getTier(value: number) {
-  if (value >= 80) return { label: "Expert", cls: "text-violet-300 bg-violet-500/15 border-violet-400/40" };
-  if (value >= 65) return { label: "Proficient", cls: "text-blue-300 bg-blue-500/10 border-blue-400/30" };
-  return { label: "Familiar", cls: "text-muted-foreground bg-muted/30 border-border/60" };
-}
-
 interface SkillsMatrixModalProps {
   onClose: () => void;
 }
 
 const SkillsMatrixModal: React.FC<SkillsMatrixModalProps> = ({ onClose }) => {
+  const { t } = useTranslation();
   const [activeIndex, setActiveIndex] = useState(2);
+
+  const categoryNames = t('skills.categoryNames', { returnObjects: true }) as string[];
+
+  const categories = CATEGORIES_DATA.map((cat, i) => ({
+    ...cat,
+    name: categoryNames[i] ?? categoryNames[i],
+    icon: CATEGORY_ICONS[i],
+  }));
+
   const category = categories[activeIndex];
   const avg = Math.round(category.skills.reduce((s, sk) => s + sk.value, 0) / category.skills.length);
   const radarData = category.skills.map(s => ({ subject: s.name, A: s.value, fullMark: 100 }));
+
+  const getTier = (value: number) => {
+    if (value >= 80) return { label: t('skills.expert'), cls: "text-violet-300 bg-violet-500/15 border-violet-400/40" };
+    if (value >= 65) return { label: t('skills.proficient'), cls: "text-blue-300 bg-blue-500/10 border-blue-400/30" };
+    return { label: t('skills.familiar'), cls: "text-muted-foreground bg-muted/30 border-border/60" };
+  };
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
@@ -118,7 +119,7 @@ const SkillsMatrixModal: React.FC<SkillsMatrixModalProps> = ({ onClose }) => {
         {/* ── Header ── */}
         <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-border/40 shrink-0">
           <div>
-            <h2 className="text-xl font-display font-bold text-foreground tracking-tight">Skills Matrix</h2>
+            <h2 className="text-xl font-display font-bold text-foreground tracking-tight">{t('skills.title')}</h2>
             <p className="text-xs text-muted-foreground font-mono mt-0.5 tracking-wider">
               {category.skills.length} skills · {category.name}
             </p>
@@ -190,7 +191,7 @@ const SkillsMatrixModal: React.FC<SkillsMatrixModalProps> = ({ onClose }) => {
 
                 <div className="text-center mt-1">
                   <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-[0.18em]">
-                    Avg. Proficiency
+                    {t('skills.avgProficiency')}
                   </p>
                   <p className="text-4xl font-display font-bold text-gradient leading-none mt-1">
                     {avg}

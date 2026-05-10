@@ -1,68 +1,9 @@
 import { Heart, Target, Lightbulb, Shield, Globe, Users, Zap, BookOpen } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
-const motivations = [
-  {
-    icon: Lightbulb,
-    title: "Building Meaningful Digital Experiences",
-    description:
-      "What motivates me most is creating products that genuinely help people. Whether it's improving communication for thousands of travelers or optimizing an internal tool used every day by companies, I thrive when my work has a real and measurable impact.",
-  },
-  {
-    icon: Zap,
-    title: "Turning Ideas Into Scalable Systems",
-    description:
-      "I love transforming abstract ideas into fully functional, scalable solutions. From mobile apps to backend architectures, I enjoy designing systems that are clean, efficient, and engineered for long-term growth.",
-  },
-  {
-    icon: Globe,
-    title: "Solving Real-World Problems Through Technology",
-    description:
-      "Technology is a universal language. I'm driven by the possibility of building software that makes everyday life easier — smarter communication, faster workflows, richer user experiences, and more connected communities.",
-  },
-  {
-    icon: Users,
-    title: "Empowering Teams & Clients",
-    description:
-      "I value collaboration and knowledge-sharing. Whether it's designing UI for a client, building an SDK for multiple applications, or helping teammates overcome challenges, I enjoy contributing to environments where everyone grows together.",
-  },
-];
-
-const values = [
-  {
-    icon: Heart,
-    title: "User-Centered Mindset",
-    description:
-      "Every feature I build starts with one question: does this improve the user's experience? Great products are born from empathy, clarity, and a deep understanding of how people interact with software.",
-  },
-  {
-    icon: Target,
-    title: "Continuous Improvement",
-    description:
-      "I am committed to learning every day — new frameworks, new architectures, new tools, new design principles. Technology evolves quickly, and I love growing with it.",
-  },
-  {
-    icon: Shield,
-    title: "Security & Reliability First",
-    description:
-      "From secure authentication to encrypted messaging, I prioritize building systems that protect users and ensure high reliability. Quality isn't an option — it's a responsibility.",
-  },
-  {
-    icon: BookOpen,
-    title: "Knowledge Sharing",
-    description:
-      "I believe in giving back: documenting solutions, mentoring, and helping teams adopt better practices. Sharing knowledge creates stronger teams and better products.",
-  },
-];
-
-const personalStory = {
-  title: "My Journey Into Software Engineering",
-  paragraphs: [
-    "My passion for software started with a simple curiosity: how something written on a screen could come to life and impact people. As I learned and grew, I explored mobile development, backend engineering, cloud tools, and UX design, and with every step I discovered new ways technology can make life easier, more connected, or simply more enjoyable.",
-    "What shaped me the most wasn't a single project, but the continuous journey of improvement — the late nights spent learning a new concept, the challenges that forced me to rethink my approach, the small wins that slowly built confidence, and the satisfaction of turning ideas into something real and useful.",
-    "Today, what drives me is the desire to build software that feels natural, dependable, and thoughtful. I love creating systems that people enjoy using, codebases that teams enjoy maintaining, and experiences that blend functionality and emotion. For me, being a developer is not just about writing code — it's about growing, adapting, understanding humans, and building technology that genuinely matters.",
-  ],
-};
+const MOTIVATION_ICONS = [Lightbulb, Zap, Globe, Users];
+const VALUE_ICONS = [Heart, Target, Shield, BookOpen];
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -74,6 +15,16 @@ const cardVariants = {
 };
 
 const MotivationSection = () => {
+  const { t } = useTranslation();
+
+  const paragraphs = t("motivation.paragraphs", { returnObjects: true }) as string[];
+  const motivations = (t("motivation.motivations", { returnObjects: true }) as Array<{ title: string; description: string }>).map(
+    (item, i) => ({ ...item, icon: MOTIVATION_ICONS[i] })
+  );
+  const values = (t("motivation.values", { returnObjects: true }) as Array<{ title: string; description: string }>).map(
+    (item, i) => ({ ...item, icon: VALUE_ICONS[i] })
+  );
+
   return (
     <motion.section
       id="motivation"
@@ -89,19 +40,19 @@ const MotivationSection = () => {
           <div className="flex justify-center mb-4">
             <span className="section-label">
               <Heart className="h-3.5 w-3.5" />
-              What Drives Me
+              {t("motivation.label")}
             </span>
           </div>
           <h2 className="text-4xl font-display font-bold mb-3 tracking-tight">
-            Motivation & Values
+            {t("motivation.title")}
           </h2>
           <div className="section-heading-line" />
           <p className="text-base text-muted-foreground max-w-xl mx-auto mt-5 leading-relaxed">
-            The passion and principles that guide my engineering journey.
+            {t("motivation.subtitle")}
           </p>
         </div>
 
-        {/* Personal story — with decorative quote mark */}
+        {/* Personal story */}
         <motion.div
           className="relative overflow-hidden rounded-2xl bg-card border border-border/60 mb-10 md:mb-16 max-w-4xl mx-auto"
           initial={{ opacity: 0, y: 24 }}
@@ -109,7 +60,6 @@ const MotivationSection = () => {
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.6, ease: [0, 0, 0.2, 1] }}
         >
-          {/* Decorative quote mark */}
           <div
             className="absolute top-4 left-6 font-display font-bold leading-none pointer-events-none select-none"
             style={{
@@ -120,7 +70,6 @@ const MotivationSection = () => {
           >
             "
           </div>
-          {/* Top accent */}
           <div
             className="absolute inset-x-0 top-0 h-[1.5px]"
             style={{
@@ -131,10 +80,10 @@ const MotivationSection = () => {
 
           <div className="relative z-10 p-5 sm:p-8">
             <h3 className="text-xl font-display font-bold text-foreground mb-5">
-              {personalStory.title}
+              {t("motivation.storyTitle")}
             </h3>
             <div className="space-y-4">
-              {personalStory.paragraphs.map((para, i) => (
+              {paragraphs.map((para, i) => (
                 <p key={i} className="text-sm text-muted-foreground leading-relaxed">
                   {para}
                 </p>
@@ -146,7 +95,7 @@ const MotivationSection = () => {
         {/* What Motivates Me */}
         <div className="mb-10 md:mb-14 max-w-4xl mx-auto">
           <h3 className="text-xl font-display font-semibold text-center mb-8">
-            What Motivates Me
+            {t("motivation.whatMotivatesMe")}
           </h3>
           <div className="grid md:grid-cols-2 gap-5">
             {motivations.map((item, i) => (
@@ -181,7 +130,7 @@ const MotivationSection = () => {
         {/* Core Values */}
         <div className="mb-10 md:mb-14 max-w-4xl mx-auto">
           <h3 className="text-xl font-display font-semibold text-center mb-8">
-            Core Values
+            {t("motivation.coreValues")}
           </h3>
           <div className="grid md:grid-cols-2 gap-5">
             {values.map((item, i) => (
@@ -236,11 +185,10 @@ const MotivationSection = () => {
               }}
             />
             <p className="text-base font-display font-medium italic text-foreground/85 mb-3 leading-relaxed">
-              "Progress happens step by step. I believe in improving consistently,
-              learning constantly, and building things that make a real difference."
+              "{t("motivation.quote")}"
             </p>
             <span className="text-xs font-mono font-semibold text-violet tracking-wider uppercase">
-              — My Personal Philosophy
+              {t("motivation.quoteAuthor")}
             </span>
           </div>
         </motion.div>

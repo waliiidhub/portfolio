@@ -1,0 +1,345 @@
+{
+  "nav": {
+    "about": "À propos",
+    "projects": "Projets",
+    "experience": "Expérience",
+    "education": "Formation",
+    "toolkit": "Compétences",
+    "values": "Valeurs",
+    "toggleMenu": "Ouvrir le menu"
+  },
+  "hero": {
+    "available": "Disponible pour de nouvelles opportunités",
+    "bio": "Je conçois et livre des produits web et mobiles full-stack — des interfaces soignées aux APIs prêtes pour la production. Je me soucie profondément d'une architecture propre, des principes SOLID, et de créer du code qui monte en charge, reste maintenable et résiste à l'épreuve du temps.",
+    "currentlyAt": "actuellement chez",
+    "role": "Développeur Mobile Full-Stack",
+    "downloadCv": "Télécharger le CV",
+    "getInTouch": "Me Contacter",
+    "viewSkills": "voir-compétences",
+    "appsDeployed": "Applications déployées",
+    "serversHosted": "Serveurs hébergés",
+    "activeUsers": "Utilisateurs actifs",
+    "monthsExperience": "Mois d'expérience",
+    "scroll": "défiler",
+    "typing": ["Ingénieur Full-Stack", "Développeur Mobile", "Expert Backend"],
+    "aria": {
+      "github": "Profil GitHub",
+      "linkedin": "Profil LinkedIn",
+      "phone": "Appeler Walid",
+      "email": "Envoyer un email",
+      "photo": "Walid Marzouk — Ingénieur Logiciel"
+    }
+  },
+  "experience": {
+    "label": "Expérience",
+    "title": "Parcours Professionnel",
+    "subtitle": "Des fondations académiques aux systèmes d'IA en production — un bilan de ce que j'ai livré.",
+    "workGroup": "Expérience Professionnelle",
+    "internGroup": "Expériences de Stage",
+    "workChip": "Poste actuel",
+    "internChip": "Stages",
+    "badgeWork": "EMPLOI",
+    "badgeIntern": "STAGIAIRE",
+    "badgeCurrent": "EN COURS",
+    "badgeEos": "Fin d'études",
+    "badgeInternship": "Stage",
+    "badgeWorkExp": "Expérience Professionnelle",
+    "keyHighlights": "Points Clés",
+    "impact": "Impact",
+    "techStack": "Technologies",
+    "demoPreview": "Aperçu de la Démo",
+    "projectShowcase": "Présentation du Projet",
+    "clickDemo": "Cliquez pour voir la démo",
+    "youtube": "YouTube",
+    "downloadMobile": "Télécharger sur mobile",
+    "liveDemo": "Démo en direct",
+    "github": "GitHub",
+    "showLess": "Voir moins",
+    "readMore": "Voir plus",
+    "moreCount": "+{{count}} autres",
+    "playing": "en lecture",
+    "tapToPlay": "appuyer pour lire",
+    "close": "Fermer ✕",
+    "entries": {
+      "continuousnet": {
+        "role": "Développeur Mobile Full-Stack",
+        "period": "Janv. 2026 - Présent",
+        "duration": "9+ mois",
+        "location": "Sousse, Tunisie",
+        "description": "Continuant à temps plein après mon stage de fin d'études, je pilote le développement de fonctionnalités sur deux axes. Côté mobile, je conçois et livre des fonctionnalités Flutter pour les voyageurs, guides, chauffeurs et agents — chat en temps réel, système de fidélité, recherche de vols et réservation d'activités — en gérant la conception UI et l'optimisation des performances de bout en bout. Côté backend NestJS, je dirige le moteur de réservation de chambres d'hôtel et maintiens la couche d'intégrations qui normalise les APIs de fournisseurs tiers de vols, hôtels et activités vers un contrat interne unifié.",
+        "highlights": [
+          "Conçu et livré des fonctionnalités Flutter sur 4 rôles utilisateurs — chat en temps réel, fidélité, vols et réservation d'activités avec une UI axée performance",
+          "Dirigé le moteur de réservation de chambres NestJS de la logique métier jusqu'au contrat API",
+          "Construit et maintenu la couche d'intégrations qui normalise les APIs de fournisseurs tiers en interface interne unifiée, découplant la plateforme des évolutions API externes"
+        ],
+        "metricLabels": ["Agences", "Applications livrées", "Mois"],
+        "storeLinkLabels": ["TunisiePromo", "Sunshine Vacances"]
+      },
+      "continuousnet-intern": {
+        "role": "Développeur Mobile Full-Stack (Stagiaire)",
+        "period": "Mars – Oct. 2025",
+        "duration": "8 mois",
+        "location": "Sousse, Tunisie",
+        "description": "Conçu et développé l'écosystème de messagerie complet pour la plateforme ZenifyTrip sur trois agences de voyages. Développé le backend intégral — un serveur NestJS multi-tenant, un homeserver Matrix Synapse avec PostgreSQL pour la communication chiffrée E2E en temps réel, et des microservices AI FastAPI pour la traduction, la synthèse et l'assistance voyage intelligente. Créé un SDK Flutter de messagerie réutilisable déployé sur 3 applications mobiles avec support hors ligne, appels audio/vidéo, géolocalisation et capacités IA. Le système complet a été conteneurisé et automatisé avec GitLab CI/CD, Docker Compose, Portainer, et surveillé avec Grafana/Prometheus.",
+        "highlights": [
+          "Architecturé et déployé un backend de messagerie NestJS + Matrix Synapse multi-tenant avec chiffrement E2E sur 3 agences",
+          "Développé des microservices AI FastAPI pour la traduction, la synthèse et l'assistance voyage en temps réel",
+          "Créé un SDK Flutter de messagerie réutilisable couvrant 3 applications mobiles avec appels audio/vidéo, géolocalisation et support hors ligne",
+          "Conteneurisé et automatisé le système complet avec GitLab CI/CD, Docker Compose, Portainer, Grafana et Prometheus"
+        ],
+        "metricLabels": ["Applications", "Agences", "Mois"]
+      },
+      "codingoat": {
+        "role": "Développeur Mobile Frontend (Stagiaire)",
+        "period": "Juil. – Sept. 2024",
+        "location": "Mahdia, Tunisie",
+        "description": "Dirigé la conception UI sur Figma et développé le frontend Flutter d'une application e-commerce basée sur des rôles, en utilisant Clean Architecture et Riverpod. Implémenté le paiement en ligne sécurisé, la gestion des stocks, et la communication et synchronisation Firebase en temps réel.",
+        "highlights": [
+          "Dirigé la conception UI sur Figma et développé le frontend Flutter complet depuis zéro",
+          "Intégré le paiement en ligne sécurisé et la synchronisation Firebase en temps réel",
+          "Appliqué Clean Architecture avec Riverpod sur une application e-commerce basée sur des rôles"
+        ]
+      },
+      "esprit": {
+        "role": "Développeur Full-Stack (Stagiaire)",
+        "period": "Juil. – Sept. 2023",
+        "location": "Tunis, Tunisie",
+        "description": "Conçu et livré une plateforme de gestion de stages full-stack pour ESPRIT — l'une des plus grandes écoles d'ingénieurs de Tunisie. Développé une SPA Angular réactive consommant une API REST Spring Boot sécurisée avec JWT, couvrant tout le cycle de vie étudiant de la candidature à l'évaluation finale. Implémenté des tableaux de bord basés sur les rôles pour étudiants, encadrants et administrateurs, avec gestion documentaire, notifications email automatisées et suivi en temps réel pour plus de 2 000 étudiants.",
+        "highlights": [
+          "Développé une SPA Angular 16 réactive avec routage basé sur les rôles pour étudiants, encadrants et administrateurs",
+          "Conçu une API REST Spring Boot avec Spring Security + JWT couvrant l'authentification, les flux d'évaluation et la gestion documentaire",
+          "Implémenté des notifications email automatisées et des tableaux de bord de progression en temps réel pour plus de 2 000 étudiants",
+          "Écrit des tests unitaires et d'intégration avec Jasmine/Karma côté frontend et JUnit côté backend"
+        ],
+        "metricLabels": ["Utilisateurs", "Rôles", "Mois"]
+      },
+      "mbm-lab": {
+        "role": "Développeur Web Full-Stack (Stagiaire)",
+        "period": "Juil. – Août 2022",
+        "location": "Tunis, Tunisie",
+        "description": "Conçu et développé une plateforme RH & recrutement de niveau production pour MBM LAB avec Symfony 6 et un frontend Twig/Bootstrap. Livré un système complet de suivi des candidatures couvrant la publication d'offres d'emploi, les pipelines de candidats multi-étapes, la planification des entretiens et le contrôle d'accès basé sur les rôles pour les responsables RH et les chefs de département. Sécurisé la plateforme avec Symfony Security, implémenté la gestion des fichiers CV avec scan antivirus, et optimisé les performances des requêtes avec le chargement anticipé Doctrine — réduisant le temps de chargement moyen de 40%.",
+        "highlights": [
+          "Architecturé une application MVC Symfony 6 avec Doctrine ORM couvrant tout le cycle de recrutement — de la publication au recrutement",
+          "Implémenté Symfony Security avec contrôle d'accès basé sur les rôles pour responsables RH, chefs de département et candidats",
+          "Développé la gestion des CV et documents avec validation côté serveur et requêtes Doctrine optimisées — réduisant le temps de chargement de 40%",
+          "Écrit des suites de tests PHPUnit pour les couches service et contrôleur, atteignant plus de 80% de couverture sur la logique métier principale"
+        ],
+        "metricLabels": ["Entités", "Couverture", "Gain Perf."]
+      }
+    }
+  },
+  "projects": {
+    "label": "Travaux Sélectionnés",
+    "titleMain": "Construit avec",
+    "titleHighlight": "Intention",
+    "subtitle": "Une sélection de projets illustrant l'impact réel et la profondeur technique.",
+    "liveServers": "Serveurs Live",
+    "liveOn": "Live sur",
+    "finished": "Terminé",
+    "stopped": "Arrêté",
+    "inProgress": "En cours",
+    "getApp": "Télécharger",
+    "code": "Code",
+    "watchDemo": "Voir la démo",
+    "demoPreview": "Aperçu",
+    "clickToPlay": "Cliquer pour voir la démo",
+    "aiWalkthrough": "IA · Démonstration",
+    "playing": "en lecture",
+    "clickCardToPlay": "cliquer pour lire",
+    "tapToWatch": "appuyer pour regarder",
+    "showLess": "voir moins",
+    "moreTech": "+{{count}} autres",
+    "prevProject": "Projet précédent",
+    "nextProject": "Projet suivant",
+    "entries": [
+      {
+        "category": "Agence de Voyage · Application Mobile",
+        "description": "Application mobile pour l'agence Sunshine Vacances, permettant aux clients de découvrir les voyages et de contacter l'agence depuis une expérience mobile soignée.",
+        "award": null
+      },
+      {
+        "category": "Agence de Voyage · Application Mobile",
+        "description": "Application de promotions et voyages pour le marché tunisien — connectant les utilisateurs aux meilleures offres de voyage via une interface rapide et minimaliste conçue pour des décisions rapides.",
+        "award": null
+      },
+      {
+        "category": "Tech Voyage · API Backend",
+        "description": "API REST d'entreprise alimentant une plateforme multi-tenant de gestion de voyages — orchestrant des voyages de groupe de bout en bout (vols, hôtels, transferts, activités), avec coordination WebSocket en temps réel, notifications push multi-canaux et rapports Excel automatisés.",
+        "award": null
+      },
+      {
+        "category": "Restauration · Application Mobile · Freelance",
+        "description": "Application mobile moderne avec une forte identité visuelle, conçue pour être évolutive et accueillir de futures fonctionnalités comme la fidélité et la commande.",
+        "award": null
+      },
+      {
+        "category": "Construction · Application Mobile · Freelance",
+        "description": "Application mobile conçue pour les entrepreneurs, offrant un accès rapide aux services avec une expérience utilisateur mobile-first.",
+        "award": null
+      },
+      {
+        "category": "IA · Full-Stack · Projet Académique",
+        "description": "Plateforme de recrutement propulsée par l'IA combinant web, mobile et ML pour fluidifier le recrutement — gérant offres d'emploi, candidatures, évaluations intelligentes et workflows recruteur de bout en bout.",
+        "award": "2ème Place · Salon de Projets ESPRIT 2024"
+      }
+    ]
+  },
+  "education": {
+    "label": "Parcours Académique",
+    "title": "Formation",
+    "subtitle": "Cinq ans à ESPRIT — des bases fondamentales aux systèmes prêts pour la production.",
+    "espritConnector": "ESPRIT · Ariana, Tunisie",
+    "keyFocus": "Domaines Clés",
+    "highlights": "Points forts",
+    "graduated": "Diplômé",
+    "entries": [
+      {
+        "degree": "Étudiant en Ingénierie Logicielle",
+        "institutionFull": "École Supérieure Privée d'Ingénierie et de Technologie",
+        "period": "2023 – 2025",
+        "description": "Formation complète en génie logiciel axée sur le Développement Mobile, les Technologies Backend, le DevSecOps et les tests QA.",
+        "coursework": [
+          "Architecture Logicielle",
+          "Développement Mobile",
+          "Intelligence Artificielle",
+          "Technologies Backend",
+          "Développement Web",
+          "UI/UX",
+          "Blockchain",
+          "DevSecOps"
+        ],
+        "achievements": [
+          "Diplômé avec mention très honorable — 19/20",
+          "AiRecruit — 2ème place au Salon de Projets ESPRIT 2024"
+        ]
+      },
+      {
+        "degree": "Cycle Préparatoire Intégré",
+        "institutionFull": "École Supérieure Privée d'Ingénierie et de Technologie",
+        "period": "2020 – 2022",
+        "description": "Études fondamentales en ingénierie préparant aux sciences informatiques avancées et au développement logiciel.",
+        "coursework": [
+          "Mathématiques",
+          "Unix",
+          "Fondamentaux Informatique",
+          "Principes d'Ingénierie",
+          "Résolution de Problèmes",
+          "Algorithmes & Structures de Données",
+          "Systèmes de Bases de Données",
+          "Programmation Orientée Objet",
+          "Projets d'Équipe"
+        ],
+        "achievements": [
+          "Major de promotion les deux années",
+          "Solides bases en fondamentaux de l'informatique"
+        ]
+      }
+    ]
+  },
+  "languages": {
+    "label": "Expertise Technique",
+    "titleMain": "Arsenal",
+    "titleHighlight": "Technique",
+    "subtitle": "Un arsenal d'ingénierie full-stack couvrant mobile, backend, DevOps et IA — éprouvé en production, en expansion continue.",
+    "viewSkillsMatrix": "Voir la Matrice de Compétences",
+    "currentlyGrowing": "En cours d'apprentissage",
+    "currentlyGrowingTitle": "DevSecOps & IA Appliquée",
+    "devsecops": "DevSecOps",
+    "appliedAi": "IA Appliquée",
+    "footerText": "Renforcement des pipelines de livraison sécurisés et des workflows assistés par IA — pour des produits fiables et intelligents de bout en bout.",
+    "stats": {
+      "technologies": "Technologies",
+      "skillDomains": "Domaines de Compétences",
+      "yearsBuilding": "Années d'expérience"
+    },
+    "groups": {
+      "mobile": "Mobile",
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "devops": "DevOps & Outils",
+      "databases": "Bases de données",
+      "apis": "APIs & Protocoles",
+      "design": "Design & Sécurité"
+    }
+  },
+  "motivation": {
+    "label": "Ce Qui Me Motive",
+    "title": "Motivation & Valeurs",
+    "subtitle": "La passion et les principes qui guident mon parcours en ingénierie.",
+    "storyTitle": "Mon Parcours dans l'Ingénierie Logicielle",
+    "whatMotivatesMe": "Ce Qui Me Motive",
+    "coreValues": "Valeurs Fondamentales",
+    "quote": "Le progrès se fait pas à pas. Je crois en l'amélioration constante, l'apprentissage continu, et la création de choses qui font une vraie différence.",
+    "quoteAuthor": "— Ma Philosophie Personnelle",
+    "paragraphs": [
+      "Ma passion pour le logiciel a commencé par une simple curiosité : comment quelque chose d'écrit sur un écran pouvait prendre vie et impacter les gens. En apprenant et en progressant, j'ai exploré le développement mobile, l'ingénierie backend, les outils cloud et la conception UX, et à chaque étape j'ai découvert de nouvelles façons dont la technologie peut rendre la vie plus facile, plus connectée ou simplement plus agréable.",
+      "Ce qui m'a le plus façonné n'est pas un seul projet, mais le chemin continu d'amélioration — les nuits à apprendre un nouveau concept, les défis qui m'ont forcé à repenser mon approche, les petites victoires qui ont progressivement construit la confiance, et la satisfaction de transformer des idées en quelque chose de réel et utile.",
+      "Aujourd'hui, ce qui me motive est le désir de créer des logiciels qui se sentent naturels, fiables et réfléchis. J'aime créer des systèmes que les gens apprécient d'utiliser, des bases de code que les équipes apprécient de maintenir, et des expériences qui mêlent fonctionnalité et émotion. Pour moi, être développeur ne se résume pas à écrire du code — c'est grandir, s'adapter, comprendre les humains, et construire des technologies qui comptent vraiment."
+    ],
+    "motivations": [
+      {
+        "title": "Créer des Expériences Numériques Significatives",
+        "description": "Ce qui me motive le plus, c'est de créer des produits qui aident vraiment les gens. Qu'il s'agisse d'améliorer la communication pour des milliers de voyageurs ou d'optimiser un outil interne utilisé quotidiennement par des entreprises, je m'épanouis quand mon travail a un impact réel et mesurable."
+      },
+      {
+        "title": "Transformer des Idées en Systèmes Évolutifs",
+        "description": "J'aime transformer des idées abstraites en solutions pleinement fonctionnelles et évolutives. Des applications mobiles aux architectures backend, j'apprécie concevoir des systèmes propres, efficaces et pensés pour une croissance à long terme."
+      },
+      {
+        "title": "Résoudre des Problèmes Réels par la Technologie",
+        "description": "La technologie est un langage universel. Je suis motivé par la possibilité de créer des logiciels qui simplifient la vie quotidienne — communication plus intelligente, flux de travail plus rapides, expériences utilisateur plus riches et communautés plus connectées."
+      },
+      {
+        "title": "Renforcer les Équipes & les Clients",
+        "description": "Je valorise la collaboration et le partage des connaissances. Que ce soit concevoir une UI pour un client, développer un SDK pour plusieurs applications, ou aider des coéquipiers à surmonter des défis, j'apprécie contribuer à des environnements où chacun grandit ensemble."
+      }
+    ],
+    "values": [
+      {
+        "title": "Approche Centrée sur l'Utilisateur",
+        "description": "Chaque fonctionnalité que je développe commence par une question : cela améliore-t-il l'expérience utilisateur ? Les grands produits naissent de l'empathie, de la clarté et d'une compréhension profonde de la façon dont les gens interagissent avec les logiciels."
+      },
+      {
+        "title": "Amélioration Continue",
+        "description": "Je m'engage à apprendre chaque jour — nouveaux frameworks, nouvelles architectures, nouveaux outils, nouveaux principes de conception. La technologie évolue rapidement, et j'aime grandir avec elle."
+      },
+      {
+        "title": "Sécurité & Fiabilité en Priorité",
+        "description": "De l'authentification sécurisée à la messagerie chiffrée, je priorise la construction de systèmes qui protègent les utilisateurs et garantissent une haute fiabilité. La qualité n'est pas une option — c'est une responsabilité."
+      },
+      {
+        "title": "Partage de Connaissances",
+        "description": "Je crois au partage : documenter les solutions, accompagner, aider les équipes à adopter de meilleures pratiques. Partager les connaissances crée des équipes plus solides et de meilleurs produits."
+      }
+    ]
+  },
+  "skills": {
+    "title": "Matrice de Compétences",
+    "avgProficiency": "Compétence Moy.",
+    "expert": "Expert",
+    "proficient": "Confirmé",
+    "familiar": "Initié",
+    "categoryNames": [
+      "Fondamental",
+      "Frontend",
+      "Backend",
+      "Mobile",
+      "DevOps",
+      "IA & Automatisation"
+    ]
+  },
+  "contact": {
+    "title": "Me Contacter",
+    "namePlaceholder": "Votre Nom",
+    "emailPlaceholder": "Votre Email",
+    "messagePlaceholder": "Votre Message",
+    "sendButton": "Envoyer le Message",
+    "successMessage": "Message envoyé avec succès !",
+    "errorMessage": "Échec de l'envoi du message, veuillez réessayer."
+  },
+  "cv": {
+    "title": "Télécharger le CV",
+    "fullstack": "Télécharger le CV (Fullstack)",
+    "flutter": "Télécharger le CV (Flutter)"
+  }
+}

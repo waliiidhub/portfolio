@@ -1,20 +1,22 @@
 import { useState, useEffect } from "react";
 import { Menu, X, User, Briefcase, GraduationCap, Wrench, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
-const navItems = [
-  { icon: User,         label: "About",       href: "#about",       id: "about"       },
-  { icon: Briefcase,    label: "Projects",    href: "#projects",    id: "projects"    },
-  { icon: Briefcase,    label: "Experience",  href: "#internships", id: "internships" },
-  { icon: GraduationCap,label: "Education",   href: "#education",   id: "education"   },
-  { icon: Wrench,       label: "Toolkit",     href: "#languages",   id: "languages"   },
-  { icon: Heart,        label: "Values",      href: "#motivation",  id: "motivation"  },
-];
+import { useTranslation } from "react-i18next";
 
 const Navigation = () => {
+  const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeSection, setActiveSection] = useState("about");
+
+  const navItems = [
+    { icon: User,          label: t("nav.about"),      href: "#about",       id: "about"       },
+    { icon: Briefcase,     label: t("nav.projects"),   href: "#projects",    id: "projects"    },
+    { icon: Briefcase,     label: t("nav.experience"), href: "#internships", id: "internships" },
+    { icon: GraduationCap, label: t("nav.education"),  href: "#education",   id: "education"   },
+    { icon: Wrench,        label: t("nav.toolkit"),    href: "#languages",   id: "languages"   },
+    { icon: Heart,         label: t("nav.values"),     href: "#motivation",  id: "motivation"  },
+  ];
 
   useEffect(() => {
     const onScroll = () => {
@@ -40,12 +42,18 @@ const Navigation = () => {
       observers.push(obs);
     });
     return () => observers.forEach((o) => o.disconnect());
-  }, []);
+  }, [navItems]);
 
   const scrollTo = (href: string) => {
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
     setIsOpen(false);
   };
+
+  const toggleLanguage = () => {
+    i18n.changeLanguage(i18n.language === "en" ? "fr" : "en");
+  };
+
+  const isFr = i18n.language === "fr";
 
   return (
     <>
@@ -98,14 +106,28 @@ const Navigation = () => {
               })}
             </div>
 
-            {/* Mobile toggle */}
-            <button
-              className="md:hidden p-2 text-muted-foreground hover:text-violet hover:bg-violet/10 rounded-lg transition-all duration-150"
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label="Toggle menu"
-            >
-              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </button>
+            {/* Right side: language toggle + mobile toggle */}
+            <div className="flex items-center gap-2">
+              {/* Language toggle */}
+              <button
+                onClick={toggleLanguage}
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[11px] font-mono font-semibold border border-border/50 bg-surface-elevated/30 hover:border-violet/50 hover:bg-violet/10 transition-all duration-200"
+                aria-label={isFr ? "Switch to English" : "Passer en français"}
+              >
+                <span className={!isFr ? "text-violet" : "text-muted-foreground/50"}>EN</span>
+                <span className="text-muted-foreground/30 text-[10px]">|</span>
+                <span className={isFr ? "text-violet" : "text-muted-foreground/50"}>FR</span>
+              </button>
+
+              {/* Mobile toggle */}
+              <button
+                className="md:hidden p-2 text-muted-foreground hover:text-violet hover:bg-violet/10 rounded-lg transition-all duration-150"
+                onClick={() => setIsOpen(!isOpen)}
+                aria-label={t("nav.toggleMenu")}
+              >
+                {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </button>
+            </div>
           </div>
         </div>
 

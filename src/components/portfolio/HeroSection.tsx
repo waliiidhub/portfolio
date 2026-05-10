@@ -5,16 +5,17 @@ import {
   Download, Mail, Github, Linkedin, Phone,
   Rocket, Server, Users2, Code2,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import ContactForm from "./ContactForm";
 import CvDownloadModal from "./CvDownloadModal";
 import SkillsMatrixModal from "./SkillsMatrixModal";
 import ParticleBackground from "./ParticleBackground";
 import AnimatedCounter from "./AnimatedCounter";
 
-const TYPING_WORDS = ["Full-Stack Engineer", "Mobile Developer","Backend Expert"];
 const TECH_STACK = ["Flutter", "NestJs"];
 
 const HeroSection = () => {
+  const { t } = useTranslation();
   const [isContactFormOpen, setContactFormOpen] = useState(false);
   const [isCvModalOpen, setCvModalOpen] = useState(false);
   const [isSkillsMatrixOpen, setSkillsMatrixOpen] = useState(false);
@@ -22,6 +23,14 @@ const HeroSection = () => {
   const [displayed, setDisplayed] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const prefersReduced = useReducedMotion();
+
+  const TYPING_WORDS = t("hero.typing", { returnObjects: true }) as string[];
+
+  useEffect(() => {
+    setDisplayed("");
+    setIsDeleting(false);
+    setTypingIndex(0);
+  }, [TYPING_WORDS[0]]);
 
   useEffect(() => {
     if (prefersReduced) { setDisplayed(TYPING_WORDS[0]); return; }
@@ -40,7 +49,7 @@ const HeroSection = () => {
     }
 
     return () => clearTimeout(timeout);
-  }, [displayed, isDeleting, typingIndex, prefersReduced]);
+  }, [displayed, isDeleting, typingIndex, prefersReduced, TYPING_WORDS]);
 
   const stagger = {
     hidden: {},
@@ -59,7 +68,6 @@ const HeroSection = () => {
       >
         <ParticleBackground />
 
-        {/* Ambient glows: violet top-right + indigo bottom-left + secondary hint top-left */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -71,7 +79,6 @@ const HeroSection = () => {
           }}
         />
 
-        {/* Dot grid — radial-masked to center, adds texture without noise */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -112,7 +119,7 @@ const HeroSection = () => {
                     <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400/40 animate-ping" />
                     <span className="relative w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_hsl(152_76%_50%/0.8)]" />
                   </span>
-                  Available for opportunities
+                  {t("hero.available")}
                 </motion.span>
               </motion.div>
 
@@ -137,21 +144,19 @@ const HeroSection = () => {
                 variants={fadeUp}
                 className="text-base text-muted-foreground max-w-md leading-relaxed"
               >
-                I build and ship full-stack web and mobile products — from polished UIs to
-                production-grade APIs. I care deeply about clean architecture, SOLID principles,
-                and crafting code that scales, stays maintainable, and stands the test of time.
+                {t("hero.bio")}
               </motion.p>
 
-              {/* Current position — inline, no card */}
+              {/* Current position */}
               <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-x-2.5 gap-y-2">
                 <span className="relative flex items-center justify-center w-2 h-2 shrink-0">
                   <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400/40 animate-ping" />
                   <span className="relative w-1.5 h-1.5 rounded-full bg-emerald-400" />
                 </span>
-                <span className="text-xs text-muted-foreground/50 font-mono tracking-wide">currently at</span>
+                <span className="text-xs text-muted-foreground/50 font-mono tracking-wide">{t("hero.currentlyAt")}</span>
                 <span className="text-sm font-semibold text-foreground/90">ContinuousNet</span>
                 <span className="text-muted-foreground/25 select-none text-sm leading-none">—</span>
-                <span className="text-sm text-muted-foreground/65 font-medium">Full-Stack Mobile Developer</span>
+                <span className="text-sm text-muted-foreground/65 font-medium">{t("hero.role")}</span>
                 <span className="flex items-center gap-1.5">
                   {TECH_STACK.map((tech) => (
                     <span key={tech} className="badge-tech">{tech}</span>
@@ -176,10 +181,10 @@ const HeroSection = () => {
                 >
                   <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
                   <Download className="relative h-4 w-4 transition-transform duration-200 group-hover:scale-110 group-hover:-translate-y-px" />
-                  <span className="relative">Download CV</span>
+                  <span className="relative">{t("hero.downloadCv")}</span>
                 </motion.button>
 
-                {/* Secondary — Get in Touch with flowing border glow */}
+                {/* Secondary — Get in Touch */}
                 <motion.button
                   onClick={() => setContactFormOpen(true)}
                   className="group relative flex items-center gap-2.5 px-5 sm:px-7 py-3 sm:py-3.5 rounded-full text-sm font-semibold text-violet overflow-hidden"
@@ -199,10 +204,10 @@ const HeroSection = () => {
                     style={{ background: "radial-gradient(ellipse 80% 60% at 50% 50%, hsl(262 83% 68% / 0.1) 0%, transparent 70%)" }}
                   />
                   <Mail className="relative h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-px" />
-                  <span className="relative">Get in Touch</span>
+                  <span className="relative">{t("hero.getInTouch")}</span>
                 </motion.button>
 
-                {/* Tertiary — Skills Matrix: terminal-flavored */}
+                {/* Tertiary — Skills Matrix */}
                 <motion.button
                   onClick={() => setSkillsMatrixOpen(true)}
                   className="group relative flex items-center gap-1.5 px-4 py-3.5 text-sm font-mono text-muted-foreground/70 hover:text-emerald-400 transition-colors duration-200"
@@ -211,7 +216,7 @@ const HeroSection = () => {
                   transition={{ duration: 0.15 }}
                 >
                   <span className="text-emerald-400/50 group-hover:text-emerald-400 transition-colors duration-200 select-none">$</span>
-                  <span>view-skills</span>
+                  <span>{t("hero.viewSkills")}</span>
                   <span className="w-px h-3.5 bg-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity duration-100 animate-pulse" />
                   <span
                     className="absolute bottom-2.5 left-4 right-4 h-px"
@@ -229,21 +234,21 @@ const HeroSection = () => {
               {/* Social links */}
               <motion.div variants={fadeUp} className="flex items-center gap-1">
                 <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-violet hover:bg-violet/10 rounded-xl" asChild>
-                  <a href="https://github.com/walidmz" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
+                  <a href="https://github.com/walidmz" target="_blank" rel="noopener noreferrer" aria-label={t("hero.aria.github")}>
                     <Github className="h-5 w-5" />
                   </a>
                 </Button>
                 <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-violet hover:bg-violet/10 rounded-xl" asChild>
-                  <a href="https://www.linkedin.com/in/walidmarzouk/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
+                  <a href="https://www.linkedin.com/in/walidmarzouk/" target="_blank" rel="noopener noreferrer" aria-label={t("hero.aria.linkedin")}>
                     <Linkedin className="h-5 w-5" />
                   </a>
                 </Button>
                 <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-violet hover:bg-violet/10 rounded-xl" asChild>
-                  <a href="tel:+21699054535" aria-label="Call Walid">
+                  <a href="tel:+21699054535" aria-label={t("hero.aria.phone")}>
                     <Phone className="h-5 w-5" />
                   </a>
                 </Button>
-                <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-violet hover:bg-violet/10 rounded-xl" onClick={() => setContactFormOpen(true)} aria-label="Send email">
+                <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-violet hover:bg-violet/10 rounded-xl" onClick={() => setContactFormOpen(true)} aria-label={t("hero.aria.email")}>
                   <Mail className="h-5 w-5" />
                 </Button>
               </motion.div>
@@ -260,11 +265,8 @@ const HeroSection = () => {
               {!prefersReduced && (
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <svg viewBox="0 0 440 440" className="absolute w-[260px] h-[260px] sm:w-[360px] sm:h-[360px] lg:w-[440px] lg:h-[440px] opacity-60">
-                    {/* Static dashed outer ring */}
                     <circle cx="220" cy="220" r="213" fill="none" stroke="hsl(262 83% 68% / 0.12)" strokeWidth="1" strokeDasharray="5 8" />
-                    {/* Static inner ring */}
                     <circle cx="220" cy="220" r="178" fill="none" stroke="hsl(230 68% 62% / 0.07)" strokeWidth="1" />
-                    {/* Clockwise spinning arc — violet */}
                     <circle
                       cx="220" cy="220" r="213"
                       fill="none"
@@ -274,7 +276,6 @@ const HeroSection = () => {
                       className="animate-spin-slow"
                       style={{ transformOrigin: "220px 220px" }}
                     />
-                    {/* Counter-clockwise spinning arc — indigo */}
                     <circle
                       cx="220" cy="220" r="178"
                       fill="none"
@@ -287,23 +288,21 @@ const HeroSection = () => {
                 </div>
               )}
 
-              {/* Ambient glow */}
               <div
                 className="absolute inset-0 rounded-full blur-3xl opacity-25"
                 style={{ background: "radial-gradient(circle, hsl(262 83% 68%) 0%, transparent 65%)" }}
               />
 
-              {/* Photo */}
               <motion.img
                 src="/walid-hero-image.png"
-                alt="Walid Marzouk — Software Engineer"
+                alt={t("hero.aria.photo")}
                 className="relative w-44 h-44 sm:w-60 sm:h-60 lg:w-[22rem] lg:h-[22rem] rounded-full object-cover shadow-glow-lg"
                 style={{ border: "2.5px solid hsl(262 83% 68% / 0.4)" }}
                 animate={prefersReduced ? {} : { y: [0, -10, 0] }}
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
               />
 
-              {/* ── Floating card: Apps Deployed (bottom-left) ── */}
+              {/* Floating card: Apps Deployed */}
               <motion.div
                 className="hidden sm:block absolute bottom-8 -left-4 lg:-left-12 glass rounded-2xl px-4 py-3 shadow-elevated border border-violet/20"
                 initial={{ opacity: 0, x: -24 }}
@@ -313,18 +312,18 @@ const HeroSection = () => {
               >
                 <div className="flex items-center gap-1.5 mb-1">
                   <Rocket className="h-3 w-3 text-violet/80" />
-                  <span className="text-[10px] text-muted-foreground font-mono tracking-wider uppercase">Apps Deployed</span>
+                  <span className="text-[10px] text-muted-foreground font-mono tracking-wider uppercase">{t("hero.appsDeployed")}</span>
                 </div>
                 <AnimatedCounter
                   value={3}
-                  label="Apps Deployed"
+                  label={t("hero.appsDeployed")}
                   labelClassName="sr-only"
                   numberClassName="text-xl font-display font-bold text-gradient leading-none"
                   className="block"
                 />
               </motion.div>
 
-              {/* ── Floating card: Servers Hosted (top-right) ── */}
+              {/* Floating card: Servers Hosted */}
               <motion.div
                 className="hidden sm:block absolute top-8 -right-4 lg:-right-12 glass rounded-2xl px-4 py-3 shadow-elevated border border-violet/20"
                 initial={{ opacity: 0, x: 24 }}
@@ -334,18 +333,18 @@ const HeroSection = () => {
               >
                 <div className="flex items-center gap-1.5 mb-1">
                   <Server className="h-3 w-3 text-violet/80" />
-                  <span className="text-[10px] text-muted-foreground font-mono tracking-wider uppercase">Servers Hosted</span>
+                  <span className="text-[10px] text-muted-foreground font-mono tracking-wider uppercase">{t("hero.serversHosted")}</span>
                 </div>
                 <AnimatedCounter
                   value={5}
-                  label="Servers Hosted"
+                  label={t("hero.serversHosted")}
                   labelClassName="sr-only"
                   numberClassName="text-xl font-display font-bold text-gradient leading-none"
                   className="block"
                 />
               </motion.div>
 
-              {/* ── Floating card: Active Users (top-left) — desktop only ── */}
+              {/* Floating card: Active Users */}
               <motion.div
                 className="absolute top-8 -left-4 lg:-left-12 glass rounded-2xl px-4 py-3 shadow-elevated border border-violet/20 hidden lg:block"
                 initial={{ opacity: 0, x: -24 }}
@@ -355,19 +354,19 @@ const HeroSection = () => {
               >
                 <div className="flex items-center gap-1.5 mb-1">
                   <Users2 className="h-3 w-3 text-violet/80" />
-                  <span className="text-[10px] text-muted-foreground font-mono tracking-wider uppercase">Active Users</span>
+                  <span className="text-[10px] text-muted-foreground font-mono tracking-wider uppercase">{t("hero.activeUsers")}</span>
                 </div>
                 <AnimatedCounter
                   value={1}
                   suffix="K+"
-                  label="Active Users"
+                  label={t("hero.activeUsers")}
                   labelClassName="sr-only"
                   numberClassName="text-xl font-display font-bold text-gradient leading-none"
                   className="block"
                 />
               </motion.div>
 
-              {/* ── Floating card: Technologies (bottom-right) — desktop only ── */}
+              {/* Floating card: Months of Experience */}
               <motion.div
                 className="absolute bottom-8 -right-4 lg:-right-12 glass rounded-2xl px-4 py-3 shadow-elevated border border-violet/20 hidden lg:block"
                 initial={{ opacity: 0, x: 24 }}
@@ -377,12 +376,12 @@ const HeroSection = () => {
               >
                 <div className="flex items-center gap-1.5 mb-1">
                   <Code2 className="h-3 w-3 text-violet/80" />
-                  <span className="text-[10px] text-muted-foreground font-mono tracking-wider uppercase">Months of Experience</span>
+                  <span className="text-[10px] text-muted-foreground font-mono tracking-wider uppercase">{t("hero.monthsExperience")}</span>
                 </div>
                 <AnimatedCounter
                   value={9}
                   suffix="+"
-                  label="Months of Experience"
+                  label={t("hero.monthsExperience")}
                   labelClassName="sr-only"
                   numberClassName="text-xl font-display font-bold text-gradient leading-none"
                   className="block"
@@ -393,13 +392,12 @@ const HeroSection = () => {
 
         </div>
 
-        {/* Bottom vignette — bleeds hero into next section */}
         <div
           className="absolute bottom-0 inset-x-0 h-32 pointer-events-none"
           style={{ background: "linear-gradient(to bottom, transparent, hsl(240 25% 4%))" }}
         />
 
-        {/* Scroll indicator — mouse icon with animated wheel */}
+        {/* Scroll indicator */}
         <motion.div
           className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2.5 z-10"
           initial={{ opacity: 0 }}
@@ -414,7 +412,7 @@ const HeroSection = () => {
             />
           </div>
           <span className="text-[8px] font-mono tracking-[0.3em] uppercase text-muted-foreground/35 select-none">
-            scroll
+            {t("hero.scroll")}
           </span>
         </motion.div>
       </section>

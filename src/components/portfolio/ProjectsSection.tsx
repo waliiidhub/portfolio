@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Github, Server, Play } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface Project {
   title: string;
@@ -42,109 +43,106 @@ function getAppStoreLink(project: Project): string | null {
   return project.playStoreUrl ?? project.appStoreUrl ?? null;
 }
 
-const projects: Project[] = [
+const PROJECTS_STATIC = [
   {
     title: "Sunshine Vacances",
-    category: "Travel Agency · Mobile App",
-    description:
-      "Travel agency app for Sunshine Vacances, helping customers browse trips and reach the agency from a polished mobile experience.",
     technologies: ["Flutter", "Dio", "Riverpod", "GoRouter", "flutter_flavor","Websockets","FCM","Firebase","Matrix","Design Systems", "Figma","SOLID principles","Clean Architecture","Unit & Integration Testing","CI/CD","Agile Methodologies", "Git"],
     github: "",
     playStoreUrl:
       "https://play.google.com/store/apps/details?id=com.zenifytrip.sunshinevacances.app&hl=en-US",
     appStoreUrl: "https://apps.apple.com/us/app/sunshine-vacances/id6761716491",
     imageUrl: "/sunshine_demo.png",
-    visualMode: "wide-pan",
-    status: "live",
+    visualMode: "wide-pan" as const,
+    status: "live" as const,
     duration: 8500,
   },
   {
     title: "TunisiePromo",
-    category: "Travel Agency · Mobile App",
-    description:
-      "A curated deals and voyage promotions app for the Tunisian market — connecting users with the best travel offers through a fast, minimal interface built for quick decisions.",
     technologies: ["Flutter", "Dio", "Riverpod", "GoRouter", "flutter_flavor","Websockets","FCM","Firebase","Matrix","Design Systems", "Figma","SOLID principles","Clean Architecture","Unit & Integration Testing","CI/CD","Agile Methodologies", "Git"],
     github: "",
     playStoreUrl:
       "https://play.google.com/store/apps/details?id=com.zenifytrip.tunisiepromo.app",
     appStoreUrl: "https://apps.apple.com/us/app/tunisie-promo-deals-voyage/id6758765132",
     imageUrl: "/tunisiepormo_demo.png",
-    visualMode: "wide-pan",
-    status: "live",
+    visualMode: "wide-pan" as const,
+    status: "live" as const,
     duration: 8500,
   },
   {
     title: "ZenifyTrip Backend",
-    category: "Travel Tech · Backend API",
-    description:
-      "Enterprise REST API powering a multi-tenant travel management platform — orchestrating end-to-end group journeys across flights, hotels, transfers, and activities, with real-time WebSocket coordination, multi-channel push notifications, and automated Excel reporting across agencies, guides, and operators.",
     technologies: ["NestJS", "TypeScript", "PostgreSQL", "Socket.io", "Firebase FCM", "JWT", "Passport", "Docker", "Swagger", "Jest", "Sequelize", "ExcelJS","Synapse", "Git", "Agile Methodologies", "CI/CD","SOLID principles","Modular Monolith Architecture"],
     imageUrl: "/zenifytrip_backend_demo.png",
-    visualMode: "tall-pan",
-    platform: "servers",
-    status: "live",
+    visualMode: "tall-pan" as const,
+    platform: "servers" as const,
+    status: "live" as const,
     duration: 7000,
   },
   {
     title: "Bisou",
-    category: "Food & Beverage · Mobile App · Freelance",
-    description:
-      "Modern mobile app with strong branding, designed for scalability and future features like loyalty and ordering.",
     technologies: ["Team Management","Flutter", "Git","Figma","UI/UX Design","flutter_bloc","animations"],
     github: "",
     videoId: "qRSv_clT194",
     imageUrl: "/bisou.png",
-    visualMode: "cover",
+    visualMode: "cover" as const,
     phoneFrame: true,
-    status: "in-progress",
+    status: "in-progress" as const,
     duration: 9000,
   },
   {
     title: "Mouqawel.tn",
-    category: "Construction · Mobile App · Freelance",
-    description:
-      "Mobile application designed for contractors, delivering fast access to services with a mobile-first UX.",
     technologies: ["Flutter", "MVVM", "Provider", "Figma"],
     github: "https://github.com/walidmz/Mouqawel-app",
     imageUrl: "/image.png",
-    visualMode: "cover",
-    status: "stopped",
+    visualMode: "cover" as const,
+    status: "stopped" as const,
     duration: 5500,
   },
   {
     title: "AiRecruit Platform",
-    category: "AI · Full-Stack · Academic Project",
-    description:
-      "AI-powered recruitment platform combining web, mobile, and ML to streamline hiring — managing job offers, candidate applications, intelligent assessments, and recruiter workflows end-to-end.",
     technologies: ["React.js", "TypeScript", "Python", "Machine Learning", "Flutter", "Figma", "REST APIs", "Git"],
     videoEmbedUrl: "https://drive.google.com/file/d/1UkhCBSk97n5u746UANV6P1crr8pApDP2/preview",
     demoUrl: "https://drive.google.com/file/d/1UkhCBSk97n5u746UANV6P1crr8pApDP2/view",
-    award: "2nd Place · Esprit Project Fair 2024",
     imageUrl: "/airecruit_demo.png",
-    visualMode: "cover",
+    visualMode: "cover" as const,
     phoneFrame: true,
-    frameTheme: "ai",
-    status: "finished",
+    frameTheme: "ai" as const,
+    status: "finished" as const,
     duration: 12000,
   },
 ];
 
 const LOOP_COPIES = 5;
 const MIDDLE_COPY = Math.floor(LOOP_COPIES / 2);
-const FIRST_SAFE = projects.length;
-const LAST_SAFE = projects.length * (LOOP_COPIES - 1);
+const FIRST_SAFE = PROJECTS_STATIC.length;
+const LAST_SAFE = PROJECTS_STATIC.length * (LOOP_COPIES - 1);
 
 // SVG progress ring geometry (r=7, viewBox 20×20, origin at center 10,10)
 const RING_R = 7;
 const RING_C = parseFloat((2 * Math.PI * RING_R).toFixed(2)); // 43.98
 
 const ProjectsSection = () => {
+  const { t, i18n } = useTranslation();
+
+  const projects = useMemo<Project[]>(() => {
+    const entries = t("projects.entries", { returnObjects: true }) as Array<{
+      category: string;
+      description: string;
+      award: string | null;
+    }>;
+    return PROJECTS_STATIC.map((p, i) => ({
+      ...p,
+      category: entries[i]?.category ?? "",
+      description: entries[i]?.description ?? "",
+      award: entries[i]?.award ?? undefined,
+    }));
+  }, [i18n.language]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
   const scrollFrameRef = useRef<number | null>(null);
 
-  const [activeLoopIndex, setActiveLoopIndex] = useState(projects.length * MIDDLE_COPY);
+  const [activeLoopIndex, setActiveLoopIndex] = useState(PROJECTS_STATIC.length * MIDDLE_COPY);
   const [isPaused, setIsPaused] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
   const [isInView, setIsInView] = useState(false);
@@ -164,11 +162,11 @@ const ProjectsSection = () => {
 
   const loopedProjects = useMemo(
     () => Array.from({ length: LOOP_COPIES }, () => projects).flat(),
-    []
+    [i18n.language] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
-  const activeProjectIndex = activeLoopIndex % projects.length;
-  const currentDuration = projects[activeProjectIndex].duration;
+  const activeProjectIndex = activeLoopIndex % PROJECTS_STATIC.length;
+  const currentDuration = projects[activeProjectIndex]?.duration ?? 8000;
 
   // ── Navigation helpers ──────────────────────────────────────────────
   const scrollToSlide = useCallback(
@@ -188,7 +186,7 @@ const ProjectsSection = () => {
     (projectIndex: number) => {
       const safeCopies = Array.from(
         { length: LOOP_COPIES },
-        (_, i) => i * projects.length + projectIndex
+        (_, i) => i * PROJECTS_STATIC.length + projectIndex
       ).filter((idx) => idx >= FIRST_SAFE && idx < LAST_SAFE);
       const closest = safeCopies.reduce((a, b) =>
         Math.abs(a - activeLoopIndex) < Math.abs(b - activeLoopIndex) ? a : b
@@ -211,7 +209,7 @@ const ProjectsSection = () => {
 
   // ── Initial position ────────────────────────────────────────────────
   useEffect(() => {
-    scrollToSlide(projects.length * MIDDLE_COPY, "auto");
+    scrollToSlide(PROJECTS_STATIC.length * MIDDLE_COPY, "auto");
   }, [scrollToSlide]);
 
   // ── Auto-advance: per-card duration, resets on every card change ────
@@ -240,8 +238,8 @@ const ProjectsSection = () => {
 
     const keepCentered = (idx: number) => {
       if (idx < FIRST_SAFE || idx >= LAST_SAFE) {
-        const norm = idx % projects.length;
-        const reset = projects.length * MIDDLE_COPY + norm;
+        const norm = idx % PROJECTS_STATIC.length;
+        const reset = PROJECTS_STATIC.length * MIDDLE_COPY + norm;
         setActiveLoopIndex(reset);
         scrollToSlide(reset, "auto");
         return;
@@ -305,13 +303,13 @@ const ProjectsSection = () => {
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className="mb-10 md:mb-16 text-center relative z-10"
       >
-        <span className="section-label mb-5 inline-flex">Featured Work</span>
+        <span className="section-label mb-5 inline-flex">{t("projects.label")}</span>
         <h2 className="text-4xl md:text-5xl font-display font-bold mt-5 mb-3 tracking-tight">
-          Built With <span className="text-gradient">Purpose</span>
+          {t("projects.titleMain")} <span className="text-gradient">{t("projects.titleHighlight")}</span>
         </h2>
         <div className="section-heading-line" />
         <p className="text-muted-foreground/80 max-w-lg mx-auto mt-5 text-sm md:text-base leading-relaxed">
-          A curated selection of projects showcasing real-world impact and engineering depth.
+          {t("projects.subtitle")}
         </p>
       </motion.div>
 
@@ -431,7 +429,7 @@ const ProjectsSection = () => {
                                     boxShadow: "0 0 6px hsl(262 83% 68% / 0.2)",
                                   }}
                                 >
-                                  +{overflow} more
+                                  {t("projects.moreTech", { count: overflow })}
                                 </motion.button>
                               )}
                               {isExpanded && overflow > 0 && (
@@ -450,7 +448,7 @@ const ProjectsSection = () => {
                                     color: "hsl(262 83% 68% / 0.65)",
                                   }}
                                 >
-                                  show less
+                                  {t("projects.showLess")}
                                 </motion.button>
                               )}
                             </AnimatePresence>
@@ -519,7 +517,7 @@ const ProjectsSection = () => {
                             whileTap={{ scale: 0.95 }}
                             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border border-violet-500/40 bg-violet-500/10 text-violet-300 hover:bg-violet-500/20 hover:border-violet-400/60 hover:text-violet-200 transition-all duration-200"
                           >
-                            <Github size={15} /> Code
+                            <Github size={15} /> {t("projects.code")}
                           </motion.a>
                         )}
                         {(project.playStoreUrl || project.appStoreUrl) && (() => {
@@ -557,7 +555,7 @@ const ProjectsSection = () => {
                                   <path d="M18.4395 5.5586c-.675 1.1664-1.352 2.3318-2.0274 3.498-.0366-.0155-.0742-.0286-.1113-.043-1.8249-.6957-3.484-.8-4.42-.787-1.8551.0185-3.3544.4643-4.2597.8203-.084-.1494-1.7526-3.021-2.0215-3.4864a1.1451 1.1451 0 0 0-.1406-.1914c-.3312-.364-.9054-.4859-1.379-.203-.475.282-.7136.9361-.3886 1.5019 1.9466 3.3696-.0966-.2158 1.9473 3.3593.0172.031-.4946.2642-1.3926 1.0177C2.8987 12.176.452 14.772 0 18.9902h24c-.119-1.1108-.3686-2.099-.7461-3.0683-.7438-1.9118-1.8435-3.2928-2.7402-4.1836a12.1048 12.1048 0 0 0-2.1309-1.6875c.6594-1.122 1.312-2.2559 1.9649-3.3848.2077-.3615.1886-.7956-.0079-1.1191a1.1001 1.1001 0 0 0-.8515-.5332c-.5225-.0536-.9392.3128-1.0488.5449zm-.0391 8.461c.3944.5926.324 1.3306-.1563 1.6503-.4799.3197-1.188.0985-1.582-.4941-.3944-.5927-.324-1.3307.1563-1.6504.4727-.315 1.1812-.1086 1.582.4941zM7.207 13.5273c.4803.3197.5506 1.0577.1563 1.6504-.394.5926-1.1038.8138-1.584.4941-.48-.3197-.5503-1.0577-.1563-1.6504.4008-.6021 1.1087-.8106 1.584-.4941z" />
                                 </svg>
                               </span>
-                              <span className="relative tracking-wide">Get the App</span>
+                              <span className="relative tracking-wide">{t("projects.getApp")}</span>
                             </motion.a>
                           );
                         })()}
@@ -593,13 +591,12 @@ const ProjectsSection = () => {
                             </span>
                             {project.platform === "servers" ? (
                               <>
-                                <span className="tracking-wide">Live</span> 
-                                <span className="tracking-wide">Servers</span>
-                                 <Server size={13} />
+                                <span className="tracking-wide">{t("projects.liveServers")}</span>
+                                <Server size={13} />
                               </>
                             ) : (
                               <>
-                                <span className="tracking-wide">Live on</span>
+                                <span className="tracking-wide">{t("projects.liveOn")}</span>
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-label="Apple">
                                   <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701" />
                                 </svg>
@@ -616,7 +613,7 @@ const ProjectsSection = () => {
                               <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#a5b4fc" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
                                 <polyline points="2,6 5,9 10,3" />
                               </svg>
-                              Finished
+                              {t("projects.finished")}
                             </>
                           ) : project.status === "stopped" ? (
                             <>
@@ -624,7 +621,7 @@ const ProjectsSection = () => {
                                 className="relative inline-flex h-2 w-2 rounded-full shrink-0"
                                 style={{ background: "#ef4444" }}
                               />
-                              Stopped
+                              {t("projects.stopped")}
                             </>
                           ) : (
                             <>
@@ -635,7 +632,7 @@ const ProjectsSection = () => {
                                   animation: "pulse 2.4s cubic-bezier(0.4,0,0.6,1) infinite",
                                 }}
                               />
-                              In Progress
+                              {t("projects.inProgress")}
                             </>
                           )
                         )}
@@ -722,7 +719,7 @@ const ProjectsSection = () => {
                                 }}
                               >
                                 <Play size={14} style={{ fill: "currentColor" }} />
-                                Watch Demo
+                                {t("projects.watchDemo")}
                               </motion.a>
                             </div>
                           )}
@@ -792,7 +789,7 @@ const ProjectsSection = () => {
                                   )}
                                   <div className="absolute bottom-2.5 inset-x-0 flex justify-center">
                                     <span className="font-mono text-[9px] uppercase tracking-[0.24em] text-teal-400/50 select-none">
-                                      {isActive ? "Click to play demo" : "Demo Preview"}
+                                      {isActive ? t("projects.clickToPlay") : t("projects.demoPreview")}
                                     </span>
                                   </div>
                                 </div>
@@ -803,10 +800,10 @@ const ProjectsSection = () => {
                           {/* Label row below video */}
                           <div className="absolute bottom-0 inset-x-2 h-5 sm:inset-x-4 sm:h-12 flex items-center justify-between pointer-events-none select-none">
                             <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-teal-400/35">
-                              AI · Walkthrough
+                              {t("projects.aiWalkthrough")}
                             </span>
                             <span className="font-mono text-[9px] text-white/20">
-                              {isActive ? "playing" : "click card to play"}
+                              {isActive ? t("projects.playing") : t("projects.clickCardToPlay")}
                             </span>
                           </div>
 
@@ -869,7 +866,7 @@ const ProjectsSection = () => {
                           </div>
                           {!isActive && (
                             <p className="absolute bottom-3 left-1/2 -translate-x-1/2 font-mono text-[9px] uppercase tracking-[0.22em] text-white/20 select-none whitespace-nowrap">
-                              tap to watch
+                              {t("projects.tapToWatch")}
                             </p>
                           )}
                         </div>
@@ -1012,7 +1009,7 @@ const ProjectsSection = () => {
               whileTap={{ scale: 0.9 }}
               onClick={goPrev}
               className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-violet hover:bg-violet/10 transition-all duration-150"
-              aria-label="Previous project"
+              aria-label={t("projects.prevProject")}
             >
               <ChevronLeft size={14} />
             </motion.button>
@@ -1027,7 +1024,7 @@ const ProjectsSection = () => {
                   <button
                     key={i}
                     onClick={() => goToProject(i)}
-                    aria-label={`Go to ${proj.title}`}
+                    aria-label={`${proj.title}`}
                     className="flex items-center justify-center transition-transform duration-200 hover:scale-110 focus:outline-none"
                     style={{ width: 20, height: 20 }}
                   >
@@ -1079,7 +1076,7 @@ const ProjectsSection = () => {
               whileTap={{ scale: 0.9 }}
               onClick={goNext}
               className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-violet hover:bg-violet/10 transition-all duration-150"
-              aria-label="Next project"
+              aria-label={t("projects.nextProject")}
             >
               <ChevronRight size={14} />
             </motion.button>

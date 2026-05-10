@@ -4,64 +4,26 @@ import {
   Smartphone, Monitor, Server, Database, GitBranch,
   Globe, Shield, BookOpen, Sparkles, ChevronRight,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import SkillsMatrixModal from "./SkillsMatrixModal";
 
-const skillGroups = [
-  {
-    id: "mobile",
-    label: "Mobile",
-    icon: Smartphone,
-    lgSpan: 1,
-    skills: ["Flutter", "Dart", "Kotlin (Android)", "Swift & SwiftUI", "React Native", "KMP"],
-  },
-  {
-    id: "frontend",
-    label: "Frontend",
-    icon: Monitor,
-    lgSpan: 1,
-    skills: ["React.js", "TypeScript", "JavaScript", "Next.js", "HTML", "CSS", "Tailwind"],
-  },
-  {
-    id: "backend",
-    label: "Backend",
-    icon: Server,
-    lgSpan: 2,
-    skills: ["Java", "Spring Boot", "Node.js", "NestJS", "PHP", "Symfony", "Python", "FastAPI", "ASP .NET"],
-  },
-  {
-    id: "devops",
-    label: "DevOps & Tools",
-    icon: GitBranch,
-    lgSpan: 2,
-    skills: ["Docker", "Docker Compose", "Kubernetes", "GitLab CI/CD", "Git", "Bash", "Grafana", "Prometheus", "Linux"],
-  },
-  {
-    id: "databases",
-    label: "Databases",
-    icon: Database,
-    lgSpan: 1,
-    skills: ["PostgreSQL", "SQL", "Oracle", "MongoDB"],
-  },
-  {
-    id: "apis",
-    label: "APIs & Protocols",
-    icon: Globe,
-    lgSpan: 1,
-    skills: ["REST APIs", "WebSockets", "Matrix / Synapse", "JWT", "OAuth"],
-  },
-  {
-    id: "design",
-    label: "Design & Security",
-    icon: Shield,
-    lgSpan: 2,
-    skills: ["Figma", "Mobile UI/UX", "Secure CI/CD", "SAST & DAST", "Threat Modeling"],
-  },
+const SKILL_DATA = [
+  { id: "mobile",    icon: Smartphone, lgSpan: 1, skills: ["Flutter", "Dart", "Kotlin (Android)", "Swift & SwiftUI", "React Native", "KMP"] },
+  { id: "frontend",  icon: Monitor,    lgSpan: 1, skills: ["React.js", "TypeScript", "JavaScript", "Next.js", "HTML", "CSS", "Tailwind"] },
+  { id: "backend",   icon: Server,     lgSpan: 2, skills: ["Java", "Spring Boot", "Node.js", "NestJS", "PHP", "Symfony", "Python", "FastAPI", "ASP .NET"] },
+  { id: "devops",    icon: GitBranch,  lgSpan: 2, skills: ["Docker", "Docker Compose", "Kubernetes", "GitLab CI/CD", "Git", "Bash", "Grafana", "Prometheus", "Linux"] },
+  { id: "databases", icon: Database,   lgSpan: 1, skills: ["PostgreSQL", "SQL", "Oracle", "MongoDB"] },
+  { id: "apis",      icon: Globe,      lgSpan: 1, skills: ["REST APIs", "WebSockets", "Matrix / Synapse", "JWT", "OAuth"] },
+  { id: "design",    icon: Shield,     lgSpan: 2, skills: ["Figma", "Mobile UI/UX", "Secure CI/CD", "SAST & DAST", "Threat Modeling"] },
 ];
 
-const stats = [
-  { value: "35+", label: "Technologies" },
-  { value: "7", label: "Skill Domains" },
-  { value: "5", label: "Years Building" },
+const DEVSECOPS_SKILLS = ["Secure CI/CD", "SAST & DAST", "Container Security", "Threat Modeling"];
+const APPLIED_AI_SKILLS = ["LLMs & Automation", "Agent Orchestration", "Prompt Engineering", "AI Features"];
+
+const stats_keys = [
+  { value: "35+", key: "technologies" },
+  { value: "7",   key: "skillDomains" },
+  { value: "5",   key: "yearsBuilding" },
 ];
 
 const tileVariants = {
@@ -70,7 +32,13 @@ const tileVariants = {
 };
 
 const LanguagesSection = () => {
+  const { t } = useTranslation();
   const [isSkillsMatrixOpen, setSkillsMatrixOpen] = useState(false);
+
+  const skillGroups = SKILL_DATA.map(g => ({
+    ...g,
+    label: t(`languages.groups.${g.id}`),
+  }));
 
   return (
     <>
@@ -97,14 +65,14 @@ const LanguagesSection = () => {
           >
             <span className="section-label mb-5 inline-flex gap-2">
               <Sparkles className="h-3.5 w-3.5" />
-              Technical Expertise
+              {t("languages.label")}
             </span>
             <h2 className="text-4xl md:text-5xl font-display font-bold mt-5 mb-3 tracking-tight">
-              Technical <span className="text-gradient">Arsenal</span>
+              {t("languages.titleMain")} <span className="text-gradient">{t("languages.titleHighlight")}</span>
             </h2>
             <div className="section-heading-line" />
             <p className="text-muted-foreground/80 max-w-lg mx-auto mt-5 text-sm md:text-base leading-relaxed">
-              A full-stack engineering toolkit spanning mobile, backend, DevOps and AI — battle-tested in production, continuously expanding.
+              {t("languages.subtitle")}
             </p>
           </motion.div>
 
@@ -116,9 +84,9 @@ const LanguagesSection = () => {
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
             className="flex flex-wrap items-center justify-center gap-3 mb-10"
           >
-            {stats.map((stat) => (
+            {stats_keys.map((stat) => (
               <div
-                key={stat.label}
+                key={stat.key}
                 className="flex items-center gap-2.5 px-4 py-2 rounded-full"
                 style={{
                   background: "hsl(262 83% 68% / 0.07)",
@@ -137,7 +105,7 @@ const LanguagesSection = () => {
                   {stat.value}
                 </span>
                 <span className="text-xs text-muted-foreground/70 font-mono tracking-wider">
-                  {stat.label}
+                  {t(`languages.stats.${stat.key}`)}
                 </span>
               </div>
             ))}
@@ -156,9 +124,8 @@ const LanguagesSection = () => {
                 boxShadow: "0 0 18px hsl(262 83% 68% / 0.28)",
               }}
             >
-              {/* Shimmer sweep */}
               <span className="absolute inset-0 translate-x-[-110%] group-hover:translate-x-[110%] transition-transform duration-600 ease-in-out bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
-              <span className="relative">View Skills Matrix</span>
+              <span className="relative">{t("languages.viewSkillsMatrix")}</span>
               <ChevronRight className="relative h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
             </motion.button>
           </motion.div>
@@ -174,7 +141,6 @@ const LanguagesSection = () => {
             viewport={{ once: true, margin: "-60px" }}
             className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto"
           >
-            {/* Skill group tiles */}
             {skillGroups.map((group) => (
               <motion.div
                 key={group.id}
@@ -195,13 +161,11 @@ const LanguagesSection = () => {
                 }}
               >
                 <div className="card-top-accent" />
-                {/* Left accent spine */}
                 <div
                   className="absolute left-0 inset-y-0 w-[3px] rounded-r-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                   style={{ background: "linear-gradient(to bottom, hsl(262 83% 68%), hsl(230 68% 62%))" }}
                 />
 
-                {/* Icon + label */}
                 <div className="flex items-center gap-3">
                   <div
                     className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
@@ -216,7 +180,6 @@ const LanguagesSection = () => {
                   <span className="skill-category-label">{group.label}</span>
                 </div>
 
-                {/* Skill badges */}
                 <div className="flex flex-wrap gap-1.5">
                   {group.skills.map((skill) => (
                     <span key={skill} className="badge-tech">{skill}</span>
@@ -243,7 +206,6 @@ const LanguagesSection = () => {
             >
               <div className="card-top-accent" />
 
-              {/* Header */}
               <div className="flex items-center gap-3">
                 <div
                   className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
@@ -260,15 +222,14 @@ const LanguagesSection = () => {
                     className="text-[9px] font-mono font-semibold uppercase tracking-[0.22em] mb-0.5"
                     style={{ color: "hsl(262 83% 72%)" }}
                   >
-                    Currently Growing
+                    {t("languages.currentlyGrowing")}
                   </div>
                   <div className="font-display font-bold text-sm text-foreground">
-                    DevSecOps & Applied AI
+                    {t("languages.currentlyGrowingTitle")}
                   </div>
                 </div>
               </div>
 
-              {/* Two mini tracks */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {/* DevSecOps */}
                 <div
@@ -284,11 +245,11 @@ const LanguagesSection = () => {
                       className="text-[9px] font-mono font-semibold uppercase tracking-wider"
                       style={{ color: "hsl(262 83% 72%)" }}
                     >
-                      DevSecOps
+                      {t("languages.devsecops")}
                     </span>
                   </div>
                   <div className="flex flex-wrap gap-1">
-                    {["Secure CI/CD", "SAST & DAST", "Container Security", "Threat Modeling"].map((s) => (
+                    {DEVSECOPS_SKILLS.map((s) => (
                       <span key={s} className="badge-tech" style={{ fontSize: "0.6rem" }}>{s}</span>
                     ))}
                   </div>
@@ -308,11 +269,11 @@ const LanguagesSection = () => {
                       className="text-[9px] font-mono font-semibold uppercase tracking-wider"
                       style={{ color: "hsl(230 68% 72%)" }}
                     >
-                      Applied AI
+                      {t("languages.appliedAi")}
                     </span>
                   </div>
                   <div className="flex flex-wrap gap-1">
-                    {["LLMs & Automation", "Agent Orchestration", "Prompt Engineering", "AI Features"].map((s) => (
+                    {APPLIED_AI_SKILLS.map((s) => (
                       <span key={s} className="badge-tech" style={{ fontSize: "0.6rem" }}>{s}</span>
                     ))}
                   </div>
@@ -320,7 +281,7 @@ const LanguagesSection = () => {
               </div>
 
               <p className="text-xs text-muted-foreground/65 leading-relaxed">
-                Reinforcing secure delivery pipelines and AI-assisted workflows — building reliable, intelligent products end-to-end.
+                {t("languages.footerText")}
               </p>
             </motion.div>
           </motion.div>

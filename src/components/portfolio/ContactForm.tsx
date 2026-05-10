@@ -4,12 +4,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React, { useRef } from "react";
 import emailjs from "@emailjs/browser";
+import { useTranslation } from "react-i18next";
 
 interface ContactFormProps {
   onClose: () => void;
 }
 
 const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
+  const { t } = useTranslation();
   const formRef = useRef<HTMLFormElement>(null);
 
   const sendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -18,11 +20,6 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
     if (!formRef.current) return;
 
     try {
-      // Optional: debug env vars once
-      console.log("SERVICE:", import.meta.env.VITE_EMAILJS_SERVICE_ID);
-      console.log("TEMPLATE:", import.meta.env.VITE_EMAILJS_TEMPLATE_ID);
-      console.log("PUBLIC KEY:", import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
-
       const result = await emailjs.sendForm(
         import.meta.env.VITE_EMAILJS_SERVICE_ID as string,
         import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string,
@@ -33,12 +30,12 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
       );
 
       console.log("EmailJS success:", result.text);
-      alert("Message sent successfully!");
+      alert(t("contact.successMessage"));
       formRef.current.reset();
       onClose();
     } catch (error) {
       console.error("EmailJS error:", error);
-      alert("Failed to send message, please try again.");
+      alert(t("contact.errorMessage"));
     }
   };
 
@@ -47,7 +44,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
       <Card className="w-full max-w-lg mx-4">
         <CardHeader>
           <div className="flex justify-between items-center">
-            <CardTitle>Contact Me</CardTitle>
+            <CardTitle>{t("contact.title")}</CardTitle>
             <Button variant="ghost" size="icon" onClick={onClose}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -68,11 +65,11 @@ const ContactForm: React.FC<ContactFormProps> = ({ onClose }) => {
         </CardHeader>
         <CardContent>
           <form ref={formRef} onSubmit={sendEmail} className="space-y-4">
-            <Input placeholder="Your Name" name="user_name" required />
-            <Input type="email" placeholder="Your Email" name="user_email" required />
-            <Textarea placeholder="Your Message" name="message" required />
+            <Input placeholder={t("contact.namePlaceholder")} name="user_name" required />
+            <Input type="email" placeholder={t("contact.emailPlaceholder")} name="user_email" required />
+            <Textarea placeholder={t("contact.messagePlaceholder")} name="message" required />
             <Button type="submit" className="w-full">
-              Send Message
+              {t("contact.sendButton")}
             </Button>
           </form>
         </CardContent>

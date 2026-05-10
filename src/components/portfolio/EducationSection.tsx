@@ -1,58 +1,6 @@
 import { GraduationCap, MapPin, Award, Star, BookOpen } from "lucide-react";
 import { motion } from "framer-motion";
-
-const education = [
-  {
-    index: "01",
-    degree: "Software Engineering Student",
-    institution: "ESPRIT",
-    institutionFull: "High Private School of Engineering and Technology",
-    location: "Ariana, Tunisia",
-    period: "2023 – 2025",
-    status: "Graduated",
-    description:
-      "Comprehensive software engineering education with focus on Mobile Development, Backend Technologies, DevSecOps and QA testing.",
-    coursework: [
-      "Software Architecture",
-      "Mobile Development",
-      "AI",
-      "Backend Technologies",
-      "Web Development","UI/UX",
-      "Blockchain Technology",
-      "DevSecOps",
-    ],
-    achievements: [
-      { text: "Graduated with top honors — 19/20", featured: true },
-      { text: "AiRecruit got 2nd place — ESPRIT Project Fair 2024", featured: true },
-    ],
-  },
-  {
-    index: "02",
-    degree: "Integrated Preparatory Cycle",
-    institution: "ESPRIT",
-    institutionFull: "High Private School of Engineering and Technology",
-    location: "Ariana, Tunisia",
-    period: "2020 – 2022",
-    status: "Graduated",
-    description:
-      "Foundational engineering studies preparing for advanced computer science and software development.",
-    coursework: [
-      "Mathematics",
-      "Unix",
-      "CS Fundamentals",
-      "Engineering Principles",
-      "Problem Solving",
-      "Algorithms & Data Structures",
-      "Database Systems",
-      "Object-Oriented Programming",
-      "Team Projects",
-    ],
-    achievements: [
-      { text: "Top of class in both years", featured: true },
-      { text: "Strong foundation in computer science fundamentals", featured: true },
-    ],
-  },
-];
+import { useTranslation } from "react-i18next";
 
 const cardVariants = {
   hidden: (i: number) => ({ opacity: 0, x: i === 0 ? -48 : 48 }),
@@ -64,6 +12,25 @@ const cardVariants = {
 };
 
 const EducationSection = () => {
+  const { t } = useTranslation();
+
+  const entries = t("education.entries", { returnObjects: true }) as Array<{
+    degree: string;
+    institutionFull: string;
+    period: string;
+    description: string;
+    coursework: string[];
+    achievements: string[];
+  }>;
+
+  const education = entries.map((entry, i) => ({
+    ...entry,
+    index: String(i + 1).padStart(2, "0"),
+    institution: "ESPRIT",
+    location: "Ariana, Tunisia",
+    status: t("education.graduated"),
+  }));
+
   return (
     <section id="education" className="py-24 relative overflow-hidden">
       {/* Background ambiance */}
@@ -74,7 +41,6 @@ const EducationSection = () => {
             "radial-gradient(ellipse 55% 55% at 50% 0%, hsl(262 83% 68% / 0.065) 0%, transparent 65%)",
         }}
       />
-      {/* Dot grid texture */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -90,7 +56,7 @@ const EducationSection = () => {
       />
 
       <div className="section-container">
-        {/* ── Header ─────────────────────────────────────────────────── */}
+        {/* ── Header ── */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -100,18 +66,18 @@ const EducationSection = () => {
         >
           <span className="section-label mb-5 inline-flex gap-2">
             <GraduationCap className="h-3.5 w-3.5" />
-            Academic Background
+            {t("education.label")}
           </span>
           <h2 className="text-4xl md:text-5xl font-display font-bold mt-5 mb-3 tracking-tight">
-            Education
+            {t("education.title")}
           </h2>
           <div className="section-heading-line" />
           <p className="text-muted-foreground/80 max-w-lg mx-auto mt-5 text-sm md:text-base leading-relaxed">
-            Five years at ESPRIT — from first principles to production-grade systems.
+            {t("education.subtitle")}
           </p>
         </motion.div>
 
-        {/* ── Institution connector ───────────────────────────────────── */}
+        {/* ── Institution connector ── */}
         <motion.div
           initial={{ opacity: 0, scaleX: 0.5 }}
           whileInView={{ opacity: 1, scaleX: 1 }}
@@ -136,7 +102,7 @@ const EducationSection = () => {
           >
             <GraduationCap className="h-3.5 w-3.5 shrink-0" />
             <span className="text-xs font-semibold tracking-wide font-display">
-              ESPRIT · Ariana, Tunisia
+              {t("education.espritConnector")}
             </span>
           </div>
           <div
@@ -148,7 +114,7 @@ const EducationSection = () => {
           />
         </motion.div>
 
-        {/* ── Cards grid ─────────────────────────────────────────────── */}
+        {/* ── Cards grid ── */}
         <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {education.map((edu, index) => (
             <motion.div
@@ -173,7 +139,6 @@ const EducationSection = () => {
                 boxShadow: "0 8px 40px rgba(0,0,0,0.4)",
               }}
             >
-              {/* Card top accent (CSS hover via .group) */}
               <div className="card-top-accent" />
 
               {/* Left accent spine */}
@@ -232,7 +197,7 @@ const EducationSection = () => {
                   </div>
                 </div>
 
-                {/* Degree + institution full name */}
+                {/* Degree + institution */}
                 <div>
                   <h3 className="text-xl font-display font-bold leading-tight mb-1.5 group-hover:text-violet transition-colors duration-200">
                     {edu.degree}
@@ -259,7 +224,7 @@ const EducationSection = () => {
                 {/* Key Focus */}
                 <div>
                   <div className="skill-category-label gap-1.5 mb-3">
-                    <BookOpen className="h-3 w-3" /> Key Focus
+                    <BookOpen className="h-3 w-3" /> {t("education.keyFocus")}
                   </div>
                   <div className="flex flex-wrap gap-1.5">
                     {edu.coursework.map((course) => (
@@ -273,42 +238,29 @@ const EducationSection = () => {
                 {/* Highlights */}
                 <div>
                   <div className="skill-category-label gap-1.5 mb-3">
-                    <Award className="h-3 w-3" /> Highlights
+                    <Award className="h-3 w-3" /> {t("education.highlights")}
                   </div>
                   <ul className="space-y-2.5">
                     {edu.achievements.map((ach, i) => (
                       <li key={i} className="flex items-start gap-2.5">
-                        {ach.featured ? (
-                          <span
-                            className="mt-0.5 shrink-0 inline-flex items-center justify-center w-[18px] h-[18px] rounded-full"
-                            style={{
-                              background:
-                                "linear-gradient(135deg, hsl(45 100% 60% / 0.2), hsl(35 100% 55% / 0.1))",
-                              border: "1px solid hsl(45 100% 60% / 0.4)",
-                            }}
-                          >
-                            <Star
-                              className="h-2.5 w-2.5"
-                              style={{
-                                color: "hsl(45 100% 65%)",
-                                fill: "hsl(45 100% 65%)",
-                              }}
-                            />
-                          </span>
-                        ) : (
-                          <span
-                            className="mt-[6px] shrink-0 h-1.5 w-1.5 rounded-full"
-                            style={{ background: "hsl(262 83% 68% / 0.55)" }}
-                          />
-                        )}
                         <span
-                          className={`text-sm leading-snug ${
-                            ach.featured
-                              ? "text-foreground/90 font-medium"
-                              : "text-muted-foreground/75"
-                          }`}
+                          className="mt-0.5 shrink-0 inline-flex items-center justify-center w-[18px] h-[18px] rounded-full"
+                          style={{
+                            background:
+                              "linear-gradient(135deg, hsl(45 100% 60% / 0.2), hsl(35 100% 55% / 0.1))",
+                            border: "1px solid hsl(45 100% 60% / 0.4)",
+                          }}
                         >
-                          {ach.text}
+                          <Star
+                            className="h-2.5 w-2.5"
+                            style={{
+                              color: "hsl(45 100% 65%)",
+                              fill: "hsl(45 100% 65%)",
+                            }}
+                          />
+                        </span>
+                        <span className="text-sm leading-snug text-foreground/90 font-medium">
+                          {ach}
                         </span>
                       </li>
                     ))}

@@ -1,10 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import {
   Briefcase, MapPin, Calendar, Github, ExternalLink, Play,
   CheckCircle2, Code2, GraduationCap, Building2, Smartphone, ArrowDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 interface Experience {
   id: string;
@@ -29,60 +30,29 @@ interface Experience {
   isLive?: boolean;
 }
 
-const experiences: Experience[] = [
+const EXPERIENCE_STATIC = [
   {
     id: "continuousnet",
-    type: "work",
+    type: "work" as const,
     company: "ContinuousNet & ZenifyTrip",
-    role: "Full-Stack Mobile Developer",
-    period: "Jan 2026 - Present",
     year: "2026",
-    duration: "9+ months",
-    location: "Sousse, Tunisia",
-    description:
-      "Continuing full-time after my end-of-studies internship, I drive feature development across two tracks. On mobile, I design and ship Flutter features serving travellers, guides, drivers, and agency staff — real-time chat, a loyalty rewards system, flight search, and activity booking — while owning UI design and performance optimization end-to-end. On the NestJS backend, I own the hotel room booking engine and maintain the integrations layer: the architecture that normalises third-party flight, hotel, and activity provider APIs into a unified internal contract, keeping the rest of the platform decoupled from external API churn.",
     tech: ["NestJS", "Flutter", "FastAPI", "Matrix/Synapse", "Docker", "GitLab CI/CD", "Grafana", "Python", "WebRTC"],
-    highlights: [
-      "Designed and shipped Flutter features across 4 user roles — real-time chat, loyalty rewards, flights, and activity booking with performance-first UI",
-      "Owned the NestJS hotel room booking engine from business logic through to API contract",
-      "Built and maintained the integrations layer that normalises third-party provider APIs into a unified internal interface, decoupling the platform from external API changes",
-    ],
-    metrics: [
-      { label: "Agencies", value: "3" },
-      { label: "Apps Shipped", value: "3" },
-      { label: "Months", value: "9+" },
-    ],
+    metricValues: ["3", "3", "9+"],
     logoUrl: "continuousnet.png",
-    storeLinks: [
-      { label: "TunisiePromo", url: "https://play.google.com/store/apps/details?id=com.zenifytrip.tunisiepromo.app" },
-      { label: "Sunshine Vacances", url: "https://play.google.com/store/apps/details?id=com.zenifytrip.sunshinevacances.app&hl=en-US" },
+    storeLinkUrls: [
+      "https://play.google.com/store/apps/details?id=com.zenifytrip.tunisiepromo.app",
+      "https://play.google.com/store/apps/details?id=com.zenifytrip.sunshinevacances.app&hl=en-US",
     ],
     isGraduation: true,
     isLive: true,
   },
   {
     id: "continuousnet-intern",
-    type: "internship",
+    type: "internship" as const,
     company: "ContinuousNet & ZenifyTrip",
-    role: "Full-Stack Mobile Developer Intern",
-    period: "Mar – Oct 2025",
     year: "2025",
-    duration: "8 months",
-    location: "Sousse, Tunisia",
-    description:
-      "Designed and built the complete messaging ecosystem powering the ZenifyTrip platform across three travel agencies. Developed the full backend — a multi-tenant NestJS server, a Matrix Synapse homeserver with PostgreSQL for E2E-encrypted real-time communication, and FastAPI AI microservices for translation, summarization, and intelligent travel assistance. Created a reusable Flutter messaging SDK deployed across 3 mobile apps featuring offline support, audio/video calls, geolocation, and AI capabilities. The entire system was containerized and automated with GitLab CI/CD, Docker Compose, Portainer, and monitored with Grafana/Prometheus.",
     tech: ["NestJS", "Matrix/Synapse", "FastAPI", "Flutter", "PostgreSQL", "Docker", "GitLab CI/CD", "Portainer", "Grafana", "Prometheus", "WebRTC", "Python"],
-    highlights: [
-      "Architected and deployed a multi-tenant NestJS + Matrix Synapse messaging backend with E2E encryption across 3 agencies",
-      "Built FastAPI AI microservices for real-time translation, summarization, and intelligent travel assistance",
-      "Created a reusable Flutter messaging SDK spanning 3 mobile apps with audio/video calls, geolocation, and offline support",
-      "Containerized and automated the full system with GitLab CI/CD, Docker Compose, Portainer, Grafana, and Prometheus",
-    ],
-    metrics: [
-      { label: "Apps", value: "3" },
-      { label: "Agencies", value: "3" },
-      { label: "Months", value: "8" },
-    ],
+    metricValues: ["3", "3", "8"],
     logoUrl: "continuousnet.png",
     videoId: "2jSBJhhQPk0",
     videoPhoneCrop: true,
@@ -91,74 +61,90 @@ const experiences: Experience[] = [
   },
   {
     id: "codingoat",
-    type: "internship",
+    type: "internship" as const,
     company: "CodinGoat",
-    role: "Frontend Mobile Developer Intern",
-    period: "Jul – Sep 2024",
     year: "2024",
-    location: "Mahdia, Tunisia",
-    description:
-      "Led UI design in Figma and built the Flutter frontend for a role-based e-commerce app using Clean Architecture and Riverpod. Implemented secure online payment, stock management, and real-time Firebase communication and synchronization.",
     tech: ["Flutter", "Dart", "Riverpod", "Firebase", "Figma", "Clean Architecture"],
-    highlights: [
-      "Led Figma UI design and implemented the full Flutter frontend from scratch",
-      "Integrated secure online payment and real-time Firebase sync",
-      "Applied Clean Architecture with Riverpod across a role-based e-commerce app",
-    ],
+    metricValues: [] as string[],
     logoUrl: "codingoat.png",
     github: "https://github.com/walidmz/CodinGoat",
+    isGraduation: false,
+    isLive: false,
   },
   {
     id: "esprit",
-    type: "internship",
+    type: "internship" as const,
     company: "ESPRIT",
-    role: "Full-Stack Developer Intern",
-    period: "Jul – Sep 2023",
     year: "2023",
-    location: "Tunis, Tunisia",
-    description:
-      "Designed and delivered a full-stack internship management platform for ESPRIT — one of Tunisia's largest engineering schools. Built a reactive Angular SPA consuming a Spring Boot REST API secured with JWT, covering the entire student lifecycle from application to final evaluation. Implemented role-based dashboards for students, supervisors, and administrators, complete with document management, automated email notifications, and real-time progress tracking across 2 000+ students.",
     tech: ["Angular", "TypeScript", "RxJS", "Angular Material", "Java", "Spring Boot", "Spring Security", "JWT", "REST API", "MySQL", "Maven", "Jasmine"],
-    highlights: [
-      "Built a reactive Angular 16 SPA with role-based routing for students, supervisors, and administrators",
-      "Designed a Spring Boot REST API with Spring Security + JWT covering auth, evaluation workflows, and document management",
-      "Implemented automated email notifications and real-time progress dashboards serving 2 000+ students",
-      "Wrote unit and integration tests with Jasmine/Karma on the frontend and JUnit on the backend",
-    ],
-    metrics: [
-      { label: "Users", value: "2k+" },
-      { label: "Roles", value: "3" },
-      { label: "Months", value: "3" },
-    ],
+    metricValues: ["2k+", "3", "3"],
     logoUrl: "esprit.png",
+    isGraduation: false,
+    isLive: false,
   },
   {
     id: "mbm-lab",
-    type: "internship",
+    type: "internship" as const,
     company: "MBM LAB",
-    role: "Full-Stack Web Developer Intern",
-    period: "Jul – Aug 2022",
     year: "2022",
-    location: "Tunis, Tunisia",
-    description:
-      "Designed and built a production-grade HR & recruitment platform for MBM LAB using Symfony 6 and a Twig/Bootstrap frontend. Delivered a complete applicant tracking system covering job offer publication, multi-stage candidate pipelines, interview scheduling, and role-based access control for HR managers and department heads. Secured the platform with Symfony Security, implemented file handling for CV uploads with virus scanning, and optimised query performance with Doctrine eager loading — cutting average page load by 40%.",
     tech: ["Symfony 6", "PHP 8", "Doctrine ORM", "Twig", "Bootstrap 5", "MySQL", "Webpack Encore", "REST API", "PHPUnit", "Composer"],
-    highlights: [
-      "Architected a Symfony 6 MVC application with Doctrine ORM covering the full recruitment lifecycle — from job posting to hire",
-      "Implemented Symfony Security with role-based access control for HR managers, department heads, and candidates",
-      "Built CV upload and document management with server-side validation and optimised Doctrine queries — reducing page load by 40%",
-      "Wrote PHPUnit test suites for service and controller layers, achieving 80%+ coverage on core business logic",
-    ],
-    metrics: [
-      { label: "Entities", value: "12" },
-      { label: "Coverage", value: "80%" },
-      { label: "Perf Gain", value: "40%" },
-    ],
+    metricValues: ["12", "80%", "40%"],
     logoUrl: "mbm-lab.png",
+    isGraduation: false,
+    isLive: false,
   },
 ];
 
 const ExperienceSection = () => {
+  const { t } = useTranslation();
+
+  const experiences = useMemo<Experience[]>(() =>
+    EXPERIENCE_STATIC.map((s) => {
+      const entry = t(`experience.entries.${s.id}`, { returnObjects: true }) as {
+        role: string;
+        period: string;
+        duration?: string;
+        location: string;
+        description: string;
+        highlights: string[];
+        metricLabels?: string[];
+        storeLinkLabels?: string[];
+      };
+
+      const metrics =
+        s.metricValues.length > 0 && entry.metricLabels
+          ? s.metricValues.map((value, i) => ({ value, label: entry.metricLabels![i] ?? "" }))
+          : undefined;
+
+      const storeLinkUrls = "storeLinkUrls" in s ? (s as { storeLinkUrls: string[] }).storeLinkUrls : undefined;
+      const storeLinks =
+        storeLinkUrls && entry.storeLinkLabels
+          ? storeLinkUrls.map((url, i) => ({ url, label: entry.storeLinkLabels![i] ?? url }))
+          : undefined;
+
+      return {
+        id: s.id,
+        type: s.type,
+        company: s.company,
+        year: s.year,
+        tech: s.tech,
+        logoUrl: s.logoUrl,
+        github: "github" in s ? (s as { github?: string }).github : undefined,
+        videoId: "videoId" in s ? (s as { videoId?: string }).videoId : undefined,
+        videoPhoneCrop: "videoPhoneCrop" in s ? (s as { videoPhoneCrop?: boolean }).videoPhoneCrop : undefined,
+        isGraduation: s.isGraduation,
+        isLive: s.isLive,
+        role: entry.role,
+        period: entry.period,
+        duration: entry.duration,
+        location: entry.location,
+        description: entry.description,
+        highlights: entry.highlights,
+        metrics,
+        storeLinks,
+      };
+    }), [t]);
+
   const [selectedId, setSelectedId] = useState<string>("continuousnet");
   const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
   const navigatorRef = useRef<HTMLDivElement>(null);
@@ -181,7 +167,7 @@ const ExperienceSection = () => {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedId]);
+  }, [selectedId, experiences]);
 
 
   return (
@@ -211,13 +197,13 @@ const ExperienceSection = () => {
           <div className="flex justify-center mb-4">
             <span className="section-label">
               <Briefcase className="h-3.5 w-3.5" />
-              Experience
+              {t("experience.label")}
             </span>
           </div>
-          <h2 className="text-4xl font-display font-bold mb-3 tracking-tight">Professional Journey</h2>
+          <h2 className="text-4xl font-display font-bold mb-3 tracking-tight">{t("experience.title")}</h2>
           <div className="section-heading-line" />
           <p className="text-base text-muted-foreground max-w-xl mx-auto mt-5 leading-relaxed">
-            From academic foundations to production AI systems — a record of what I've shipped.
+            {t("experience.subtitle")}
           </p>
         </div>
 
@@ -271,7 +257,7 @@ const ExperienceSection = () => {
               onClick={() => setActiveVideoId(null)}
               className="absolute -top-10 right-0 text-sm text-white/80 hover:text-white px-3 py-1 rounded-full border border-white/30 bg-black/50 backdrop-blur-sm transition-colors"
             >
-              Close ✕
+              {t("experience.close")}
             </button>
             <iframe
               className="w-full h-full"
@@ -296,127 +282,131 @@ const ExperienceNavigator = React.forwardRef<
     onSelect: (id: string) => void;
     isInView: boolean;
   }
->(({ experiences, selectedId, onSelect, isInView }, ref) => (
-  <div ref={ref}>
-    <div className="relative pl-14" role="tablist" aria-label="Experience entries">
+>(({ experiences, selectedId, onSelect, isInView }, ref) => {
+  const { t } = useTranslation();
 
-      {/* ── Spine ── */}
-      <motion.div
-        className="absolute left-[7px] top-[20px] w-[2px] rounded-full pointer-events-none"
-        style={{
-          bottom: "20px",
-          background: "linear-gradient(180deg, hsl(262 83% 78%), hsl(262 83% 68% / 0.25) 80%, transparent)",
-          boxShadow: "0 0 8px hsl(262 83% 68% / 0.3)",
-          transformOrigin: "top",
-        }}
-        initial={{ scaleY: 0 }}
-        animate={isInView ? { scaleY: 1 } : {}}
-        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-      />
+  return (
+    <div ref={ref}>
+      <div className="relative pl-14" role="tablist" aria-label="Experience entries">
 
-      {/* ── Entries ── */}
-      {experiences.map((exp, index) => {
-        const isSelected = exp.id === selectedId;
-        const startsGroup = index === 0 || experiences[index - 1].type !== exp.type;
-        return (
-          <React.Fragment key={exp.id}>
-            {startsGroup && (
-              <div className={`ml-1 ${index === 0 ? "mb-2" : "mt-6 mb-2"}`}>
-                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-violet/55">
-                  {exp.type === "work" ? "Current Work Experience" : "Internship Experience"}
-                </p>
-              </div>
-            )}
+        {/* ── Spine ── */}
+        <motion.div
+          className="absolute left-[7px] top-[20px] w-[2px] rounded-full pointer-events-none"
+          style={{
+            bottom: "20px",
+            background: "linear-gradient(180deg, hsl(262 83% 78%), hsl(262 83% 68% / 0.25) 80%, transparent)",
+            boxShadow: "0 0 8px hsl(262 83% 68% / 0.3)",
+            transformOrigin: "top",
+          }}
+          initial={{ scaleY: 0 }}
+          animate={isInView ? { scaleY: 1 } : {}}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+        />
 
-            <motion.div
-              className="relative mb-3 last:mb-0"
-              initial={{ opacity: 0, x: -12 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ delay: 0.3 + index * 0.12, duration: 0.45, ease: [0, 0, 0.2, 1] }}
-            >
-            {/* Year label — left of the spine */}
-            <div
-              className="absolute top-[14px] font-mono text-[10px] font-bold leading-none select-none"
-              style={{
-                left: "-46px",
-                width: "40px",
-                textAlign: "right",
-                color: isSelected ? "hsl(262 83% 78%)" : "hsl(262 83% 68% / 0.45)",
-                transition: "color 0.2s ease",
-              }}
-            >
-              {exp.year}
-            </div>
+        {/* ── Entries ── */}
+        {experiences.map((exp, index) => {
+          const isSelected = exp.id === selectedId;
+          const startsGroup = index === 0 || experiences[index - 1].type !== exp.type;
+          return (
+            <React.Fragment key={exp.id}>
+              {startsGroup && (
+                <div className={`ml-1 ${index === 0 ? "mb-2" : "mt-6 mb-2"}`}>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-violet/55">
+                    {exp.type === "work" ? t("experience.workGroup") : t("experience.internGroup")}
+                  </p>
+                </div>
+              )}
 
-            {/* Node dot — centered on the spine */}
-            <div
-              className="absolute left-[-8px] top-[18px] w-4 h-4 rounded-full border-2 z-10 flex items-center justify-center pointer-events-none"
-              style={{
-                background: isSelected ? "hsl(248 28% 10%)" : "hsl(243 22% 6%)",
-                borderColor: isSelected ? "hsl(262 83% 80%)" : "hsl(262 83% 68% / 0.38)",
-                boxShadow: isSelected
-                  ? "0 0 18px hsl(262 83% 68% / 0.85), 0 0 6px hsl(262 83% 68% / 0.6), 0 0 32px hsl(262 83% 68% / 0.2)"
-                  : "0 0 6px hsl(262 83% 68% / 0.2)",
-                transition: "all 0.25s ease",
-              }}
-            >
-              <div
-                className="rounded-full"
-                style={{
-                  width: isSelected ? "7px" : "6px",
-                  height: isSelected ? "7px" : "6px",
-                  background: isSelected ? "hsl(262 83% 82%)" : "hsl(262 83% 68%)",
-                  opacity: isSelected ? 1 : 0.45,
-                  transition: "all 0.25s ease",
-                  boxShadow: isSelected ? "0 0 6px hsl(262 83% 78%)" : "none",
-                }}
-              />
-            </div>
-
-            {/* Short horizontal connector from dot to card */}
-            <div
-              className="absolute left-[8px] top-[24px] h-[1px] w-6 pointer-events-none"
-              style={{ background: "linear-gradient(90deg, hsl(262 83% 68% / 0.4), transparent)" }}
-            />
-
-            {/* Graduation cap — floats above the node for end-of-studies entries */}
-            {exp.isGraduation && exp.type === "internship" && (
               <motion.div
-                className="absolute z-20 pointer-events-none"
-                style={{ left: "-20px", top: "-10px" }}
-                initial={{ opacity: 0, y: -18, rotate: -35, scale: 0.4 }}
-                animate={isInView ? { opacity: 1, y: 0, rotate: 0, scale: 1 } : {}}
-                transition={{ delay: 0.5 + index * 0.12, duration: 0.55, ease: [0.34, 1.56, 0.64, 1] }}
+                className="relative mb-3 last:mb-0"
+                initial={{ opacity: 0, x: -12 }}
+                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ delay: 0.3 + index * 0.12, duration: 0.45, ease: [0, 0, 0.2, 1] }}
               >
+              {/* Year label — left of the spine */}
+              <div
+                className="absolute top-[14px] font-mono text-[10px] font-bold leading-none select-none"
+                style={{
+                  left: "-46px",
+                  width: "40px",
+                  textAlign: "right",
+                  color: isSelected ? "hsl(262 83% 78%)" : "hsl(262 83% 68% / 0.45)",
+                  transition: "color 0.2s ease",
+                }}
+              >
+                {exp.year}
+              </div>
+
+              {/* Node dot — centered on the spine */}
+              <div
+                className="absolute left-[-8px] top-[18px] w-4 h-4 rounded-full border-2 z-10 flex items-center justify-center pointer-events-none"
+                style={{
+                  background: isSelected ? "hsl(248 28% 10%)" : "hsl(243 22% 6%)",
+                  borderColor: isSelected ? "hsl(262 83% 80%)" : "hsl(262 83% 68% / 0.38)",
+                  boxShadow: isSelected
+                    ? "0 0 18px hsl(262 83% 68% / 0.85), 0 0 6px hsl(262 83% 68% / 0.6), 0 0 32px hsl(262 83% 68% / 0.2)"
+                    : "0 0 6px hsl(262 83% 68% / 0.2)",
+                  transition: "all 0.25s ease",
+                }}
+              >
+                <div
+                  className="rounded-full"
+                  style={{
+                    width: isSelected ? "7px" : "6px",
+                    height: isSelected ? "7px" : "6px",
+                    background: isSelected ? "hsl(262 83% 82%)" : "hsl(262 83% 68%)",
+                    opacity: isSelected ? 1 : 0.45,
+                    transition: "all 0.25s ease",
+                    boxShadow: isSelected ? "0 0 6px hsl(262 83% 78%)" : "none",
+                  }}
+                />
+              </div>
+
+              {/* Short horizontal connector from dot to card */}
+              <div
+                className="absolute left-[8px] top-[24px] h-[1px] w-6 pointer-events-none"
+                style={{ background: "linear-gradient(90deg, hsl(262 83% 68% / 0.4), transparent)" }}
+              />
+
+              {/* Graduation cap — floats above the node for end-of-studies entries */}
+              {exp.isGraduation && exp.type === "internship" && (
                 <motion.div
-                  animate={{ y: [0, -5, 0], rotate: [-8, 8, -8] }}
-                  transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut", delay: 1.4 }}
+                  className="absolute z-20 pointer-events-none"
+                  style={{ left: "-20px", top: "-10px" }}
+                  initial={{ opacity: 0, y: -18, rotate: -35, scale: 0.4 }}
+                  animate={isInView ? { opacity: 1, y: 0, rotate: 0, scale: 1 } : {}}
+                  transition={{ delay: 0.5 + index * 0.12, duration: 0.55, ease: [0.34, 1.56, 0.64, 1] }}
                 >
-                  <GraduationCap
-                    className="w-4 h-4"
-                    style={{
-                      color: "hsl(45 100% 65%)",
-                      filter: "drop-shadow(0 0 6px hsl(45 100% 60% / 0.85)) drop-shadow(0 0 12px hsl(45 100% 60% / 0.4))",
-                    }}
-                  />
+                  <motion.div
+                    animate={{ y: [0, -5, 0], rotate: [-8, 8, -8] }}
+                    transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut", delay: 1.4 }}
+                  >
+                    <GraduationCap
+                      className="w-4 h-4"
+                      style={{
+                        color: "hsl(45 100% 65%)",
+                        filter: "drop-shadow(0 0 6px hsl(45 100% 60% / 0.85)) drop-shadow(0 0 12px hsl(45 100% 60% / 0.4))",
+                      }}
+                    />
+                  </motion.div>
                 </motion.div>
+              )}
+
+              {/* Selector card */}
+              <NavigatorCard
+                exp={exp}
+                isSelected={isSelected}
+                onClick={() => onSelect(exp.id)}
+              />
               </motion.div>
-            )}
+            </React.Fragment>
+          );
+        })}
 
-            {/* Selector card */}
-            <NavigatorCard
-              exp={exp}
-              isSelected={isSelected}
-              onClick={() => onSelect(exp.id)}
-            />
-            </motion.div>
-          </React.Fragment>
-        );
-      })}
-
+      </div>
     </div>
-  </div>
-));
+  );
+});
 
 ExperienceNavigator.displayName = "ExperienceNavigator";
 
@@ -428,105 +418,109 @@ const NavigatorCard = ({
   exp: Experience;
   isSelected: boolean;
   onClick: () => void;
-}) => (
-  <button
-    onClick={onClick}
-    role="tab"
-    aria-selected={isSelected}
-    aria-label={`${exp.role} at ${exp.company}`}
-    className="relative w-full overflow-hidden rounded-xl border text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet/60 focus-visible:ring-offset-1 focus-visible:ring-offset-[#0c0c18]"
-    style={{
-      borderColor: isSelected
-        ? "hsl(262 83% 68% / 0.44)"
-        : "hsl(262 83% 68% / 0.10)",
-      background: isSelected
-        ? "linear-gradient(135deg, hsl(262 83% 68% / 0.12) 0%, hsl(243 22% 6%) 100%)"
-        : "hsl(243 22% 5%)",
-      boxShadow: isSelected
-        ? "0 4px 28px rgba(0,0,0,0.45), 0 0 0 1px hsl(262 83% 68% / 0.08), inset 0 1px 0 hsl(262 83% 78% / 0.07)"
-        : "none",
-      transition: "all 0.22s ease",
-    }}
-  >
-    {/* Left accent bar — animates in when selected */}
-    <motion.div
-      className="absolute left-0 inset-y-0 w-[3px] rounded-l-xl pointer-events-none"
-      initial={false}
-      animate={{
-        opacity: isSelected ? 1 : 0,
-        scaleY: isSelected ? 1 : 0.4,
-      }}
-      transition={{ duration: 0.2, ease: [0, 0, 0.2, 1] }}
+}) => {
+  const { t } = useTranslation();
+
+  return (
+    <button
+      onClick={onClick}
+      role="tab"
+      aria-selected={isSelected}
+      aria-label={`${exp.role} at ${exp.company}`}
+      className="relative w-full overflow-hidden rounded-xl border text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet/60 focus-visible:ring-offset-1 focus-visible:ring-offset-[#0c0c18]"
       style={{
-        background: "linear-gradient(180deg, hsl(262 83% 78%), hsl(230 68% 62%))",
-        transformOrigin: "center",
+        borderColor: isSelected
+          ? "hsl(262 83% 68% / 0.44)"
+          : "hsl(262 83% 68% / 0.10)",
+        background: isSelected
+          ? "linear-gradient(135deg, hsl(262 83% 68% / 0.12) 0%, hsl(243 22% 6%) 100%)"
+          : "hsl(243 22% 5%)",
+        boxShadow: isSelected
+          ? "0 4px 28px rgba(0,0,0,0.45), 0 0 0 1px hsl(262 83% 68% / 0.08), inset 0 1px 0 hsl(262 83% 78% / 0.07)"
+          : "none",
+        transition: "all 0.22s ease",
       }}
-    />
+    >
+      {/* Left accent bar — animates in when selected */}
+      <motion.div
+        className="absolute left-0 inset-y-0 w-[3px] rounded-l-xl pointer-events-none"
+        initial={false}
+        animate={{
+          opacity: isSelected ? 1 : 0,
+          scaleY: isSelected ? 1 : 0.4,
+        }}
+        transition={{ duration: 0.2, ease: [0, 0, 0.2, 1] }}
+        style={{
+          background: "linear-gradient(180deg, hsl(262 83% 78%), hsl(230 68% 62%))",
+          transformOrigin: "center",
+        }}
+      />
 
-    <div className="pl-4 pr-3 py-3">
+      <div className="pl-4 pr-3 py-3">
 
-      {/* Logo + role + meta */}
-      <div className="flex items-start gap-2.5">
+        {/* Logo + role + meta */}
+        <div className="flex items-start gap-2.5">
 
-        {/* Company logo */}
-        <div
-          className={`shrink-0 w-8 h-8 rounded-lg border flex items-center justify-center p-1.5 mt-0.5 transition-colors duration-200 ${exp.id === "esprit" ? "bg-white/15" : "bg-black/40"}`}
-          style={{
-            borderColor: isSelected
-              ? "hsl(262 83% 68% / 0.28)"
-              : "hsl(262 83% 68% / 0.10)",
-          }}
-        >
-          <img
-            src={exp.logoUrl}
-            alt={exp.company}
-            className="w-full h-full object-contain"
-            style={{ filter: "grayscale(0.15) brightness(1.05)" }}
-          />
-        </div>
-
-        {/* Text stack */}
-        <div className="flex-1 min-w-0">
-          <p
-            className="font-display font-semibold text-sm leading-snug truncate transition-colors duration-200"
-            style={{ color: isSelected ? "hsl(0 0% 90%)" : "hsl(0 0% 52%)" }}
+          {/* Company logo */}
+          <div
+            className={`shrink-0 w-8 h-8 rounded-lg border flex items-center justify-center p-1.5 mt-0.5 transition-colors duration-200 ${exp.id === "esprit" ? "bg-white/15" : "bg-black/40"}`}
+            style={{
+              borderColor: isSelected
+                ? "hsl(262 83% 68% / 0.28)"
+                : "hsl(262 83% 68% / 0.10)",
+            }}
           >
-            {exp.role}
-          </p>
-          <p className="font-mono text-[10px] text-white/35 mt-0.5 truncate">
-            {exp.company}
-          </p>
-          <p className="font-mono text-[10px] text-white/25 mt-0.5">
-            {exp.period}
-          </p>
+            <img
+              src={exp.logoUrl}
+              alt={exp.company}
+              className="w-full h-full object-contain"
+              style={{ filter: "grayscale(0.15) brightness(1.05)" }}
+            />
+          </div>
+
+          {/* Text stack */}
+          <div className="flex-1 min-w-0">
+            <p
+              className="font-display font-semibold text-sm leading-snug truncate transition-colors duration-200"
+              style={{ color: isSelected ? "hsl(0 0% 90%)" : "hsl(0 0% 52%)" }}
+            >
+              {exp.role}
+            </p>
+            <p className="font-mono text-[10px] text-white/35 mt-0.5 truncate">
+              {exp.company}
+            </p>
+            <p className="font-mono text-[10px] text-white/25 mt-0.5">
+              {exp.period}
+            </p>
+          </div>
         </div>
+
+        {/* Badges row — always shown when flags are set */}
+        {(exp.type === "work" || exp.type === "internship" || exp.isLive) && (
+          <div className="flex gap-1.5 mt-2 ml-[42px]">
+            {exp.type === "work" && (
+              <span className="inline-flex items-center gap-1 rounded-full border border-violet/35 bg-violet/[0.08] px-1.5 py-0.5 font-mono text-[8px] font-bold text-violet-bright">
+                <Briefcase className="w-2.5 h-2.5" /> {t("experience.badgeWork")}
+              </span>
+            )}
+            {exp.type === "internship" && (
+              <span className="inline-flex items-center gap-1 rounded-full border border-blue-400/25 bg-blue-400/[0.07] px-1.5 py-0.5 font-mono text-[8px] font-bold text-blue-300/80">
+                <Building2 className="w-2.5 h-2.5" /> {t("experience.badgeIntern")}
+              </span>
+            )}
+            {exp.isLive && (
+              <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/35 bg-emerald-500/[0.08] px-1.5 py-0.5 font-mono text-[8px] font-bold text-emerald-400">
+                <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
+                {t("experience.badgeCurrent")}
+              </span>
+            )}
+          </div>
+        )}
+
       </div>
-
-      {/* Badges row — always shown when flags are set */}
-      {(exp.type === "work" || exp.type === "internship" || exp.isLive) && (
-        <div className="flex gap-1.5 mt-2 ml-[42px]">
-          {exp.type === "work" && (
-            <span className="inline-flex items-center gap-1 rounded-full border border-violet/35 bg-violet/[0.08] px-1.5 py-0.5 font-mono text-[8px] font-bold text-violet-bright">
-              <Briefcase className="w-2.5 h-2.5" /> WORK
-            </span>
-          )}
-          {exp.type === "internship" && (
-            <span className="inline-flex items-center gap-1 rounded-full border border-blue-400/25 bg-blue-400/[0.07] px-1.5 py-0.5 font-mono text-[8px] font-bold text-blue-300/80">
-              <Building2 className="w-2.5 h-2.5" /> INTERN
-            </span>
-          )}
-          {exp.isLive && (
-            <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/35 bg-emerald-500/[0.08] px-1.5 py-0.5 font-mono text-[8px] font-bold text-emerald-400">
-              <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
-              CURRENT
-            </span>
-          )}
-        </div>
-      )}
-
-    </div>
-  </button>
-);
+    </button>
+  );
+};
 
 const ExperienceDetail = ({
   experience,
@@ -550,11 +544,12 @@ const ExperienceDetail = ({
 
 const VideoPreview = ({ videoId, phoneCrop = false }: { videoId: string; phoneCrop?: boolean }) => {
   const [playing, setPlaying] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <div className="mb-6">
       <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-violet/55 mb-3 flex items-center gap-1.5">
-        <Play className="w-3 h-3" /> Demo Preview
+        <Play className="w-3 h-3" /> {t("experience.demoPreview")}
       </p>
 
       <div
@@ -687,15 +682,15 @@ const VideoPreview = ({ videoId, phoneCrop = false }: { videoId: string; phoneCr
                 <div className="absolute bottom-0 inset-x-0 px-4 py-3 flex items-end justify-between">
                   <div>
                     <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/35 mb-0.5">
-                      Project Showcase
+                      {t("experience.projectShowcase")}
                     </p>
                     <p className="font-display text-sm font-semibold text-white/75">
-                      Click to watch the demo
+                      {t("experience.clickDemo")}
                     </p>
                   </div>
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-white/12 bg-black/55 backdrop-blur-sm px-2.5 py-1 font-mono text-[9px] text-white/40">
                     <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                    YouTube
+                    {t("experience.youtube")}
                   </span>
                 </div>
               </motion.div>
@@ -708,13 +703,15 @@ const VideoPreview = ({ videoId, phoneCrop = false }: { videoId: string; phoneCr
 };
 
 const ActionBar = ({ exp }: { exp: Experience }) => {
+  const { t } = useTranslation();
+
   if (!exp.demo && !exp.github && !exp.storeLinks?.length) return null;
   return (
     <div className="flex flex-wrap gap-2">
       {exp.storeLinks?.length ? (
         <div className="flex flex-col gap-2">
           <span className="flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-[0.18em] text-white/30">
-            <Smartphone className="w-2.5 h-2.5" /> Download on mobile
+            <Smartphone className="w-2.5 h-2.5" /> {t("experience.downloadMobile")}
           </span>
           <div className="flex flex-wrap gap-2">
             {exp.storeLinks.map((link) => (
@@ -748,7 +745,7 @@ const ActionBar = ({ exp }: { exp: Experience }) => {
           style={{ background: "linear-gradient(135deg, hsl(262 83% 64%), hsl(230 68% 60%))" }}
           onClick={() => window.open(exp.demo, "_blank")}
         >
-          <ExternalLink className="w-3.5 h-3.5" /> Live Demo
+          <ExternalLink className="w-3.5 h-3.5" /> {t("experience.liveDemo")}
         </Button>
       )}
       {exp.github && (
@@ -758,7 +755,7 @@ const ActionBar = ({ exp }: { exp: Experience }) => {
           className="text-xs gap-1.5 border-violet/20 bg-black/15 text-white/60 hover:border-violet/45 hover:bg-violet/10 hover:text-white transition-all duration-200"
           onClick={() => window.open(exp.github, "_blank")}
         >
-          <Github className="w-3.5 h-3.5" /> GitHub
+          <Github className="w-3.5 h-3.5" /> {t("experience.github")}
         </Button>
       )}
     </div>
@@ -767,15 +764,15 @@ const ActionBar = ({ exp }: { exp: Experience }) => {
 
 const TechChips = ({ exp }: { exp: Experience }) => (
   <div className="flex flex-wrap gap-1.5">
-    {exp.tech.map((t, idx) => (
+    {exp.tech.map((tech, idx) => (
       <motion.span
-        key={`${exp.id}-${t}`}
+        key={`${exp.id}-${tech}`}
         className="inline-flex items-center rounded-md border border-violet/20 bg-violet/[0.06] px-2 py-1 font-mono text-[10px] font-medium text-white/65 transition-colors duration-200 hover:border-violet/45 hover:text-white/90 hover:bg-violet/[0.12]"
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.05 + Math.min(idx, 8) * 0.022, duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
       >
-        {t}
+        {tech}
       </motion.span>
     ))}
   </div>
@@ -789,6 +786,7 @@ const ExpandableDescription = ({
   className?: string;
 }) => {
   const [expanded, setExpanded] = useState(false);
+  const { t } = useTranslation();
   const isLong = text.length > 200;
 
   if (!isLong) return <p className={className}>{text}</p>;
@@ -835,7 +833,7 @@ const ExpandableDescription = ({
         >
           ↓
         </motion.span>
-        {expanded ? "Show less" : "Read more"}
+        {expanded ? t("experience.showLess") : t("experience.readMore")}
       </motion.button>
     </div>
   );
@@ -851,6 +849,7 @@ const ExpandableHighlights = ({
   highlights: string[];
 }) => {
   const [expanded, setExpanded] = useState(false);
+  const { t } = useTranslation();
   const visible = highlights.slice(0, HIGHLIGHTS_VISIBLE);
   const hidden = highlights.slice(HIGHLIGHTS_VISIBLE);
   const overflow = hidden.length;
@@ -901,7 +900,7 @@ const ExpandableHighlights = ({
           >
             ↓
           </motion.span>
-          {expanded ? "Show less" : `+${overflow} more`}
+          {expanded ? t("experience.showLess") : t("experience.moreCount", { count: overflow })}
         </motion.button>
       )}
     </ul>
@@ -916,6 +915,7 @@ const DetailCard = ({
   onWatchDemo: (id: string) => void;
 }) => {
   const [playing, setPlaying] = useState(false);
+  const { t } = useTranslation();
   const isEos = !!(exp.videoPhoneCrop && exp.videoId);
 
   /* ── shared decorative chrome ── */
@@ -970,7 +970,7 @@ const DetailCard = ({
               {/* Badges */}
               <div className="flex flex-wrap items-center gap-2 mb-2.5">
                 <span className="inline-flex items-center gap-1 rounded-full border border-amber-400/35 bg-amber-400/10 px-2.5 py-0.5 font-mono text-[10px] font-semibold text-amber-300">
-                  <GraduationCap className="w-3 h-3" /> End of Studies
+                  <GraduationCap className="w-3 h-3" /> {t("experience.badgeEos")}
                 </span>
                 {exp.duration && (
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-violet/35 bg-violet/[0.08] px-2.5 py-0.5 font-mono text-[10px] font-semibold text-violet-bright">
@@ -1019,7 +1019,7 @@ const DetailCard = ({
 
             {/* Highlights */}
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-violet/50 mb-3">Key Highlights</p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-violet/50 mb-3">{t("experience.keyHighlights")}</p>
               <ExpandableHighlights expId={exp.id} highlights={exp.highlights} />
             </div>
           </div>
@@ -1107,7 +1107,7 @@ const DetailCard = ({
 
             {/* Tap label */}
             <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-white/22 text-center select-none">
-              {playing ? "playing" : "tap to play"}
+              {playing ? t("experience.playing") : t("experience.tapToPlay")}
             </p>
           </div>
         </div>
@@ -1121,7 +1121,7 @@ const DetailCard = ({
           <div className="grid md:grid-cols-[auto_1fr] gap-5 md:gap-8 items-start">
             {exp.metrics && exp.metrics.length > 0 && (
               <div>
-                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-violet/50 mb-3">Impact</p>
+                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-violet/50 mb-3">{t("experience.impact")}</p>
                 <div className="flex gap-2">
                   {exp.metrics.map((m) => (
                     <div key={m.label} className="w-20 rounded-xl border border-violet/15 bg-violet/[0.05] p-2.5 text-center">
@@ -1134,7 +1134,7 @@ const DetailCard = ({
             )}
             <div>
               <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-violet/50 mb-3 flex items-center gap-1.5">
-                <Code2 className="w-3 h-3" /> Tech Stack
+                <Code2 className="w-3 h-3" /> {t("experience.techStack")}
               </p>
               <TechChips exp={exp} />
             </div>
@@ -1174,12 +1174,12 @@ const DetailCard = ({
             <div className="flex flex-wrap items-center gap-2 mb-2">
               {exp.isLive && (
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2.5 py-0.5 font-mono text-[10px] font-bold text-emerald-400">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> CURRENT
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> {t("experience.badgeCurrent")}
                 </span>
               )}
               {exp.type === "work" && (
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-violet/40 bg-violet/10 px-3 py-1 font-mono text-xs font-bold text-violet-bright">
-                  <Briefcase className="w-3 h-3" /> Work Experience
+                  <Briefcase className="w-3 h-3" /> {t("experience.badgeWorkExp")}
                 </span>
               )}
               {exp.duration && (
@@ -1189,12 +1189,12 @@ const DetailCard = ({
               )}
               {exp.type === "internship" && exp.isGraduation && (
                 <span className="inline-flex items-center gap-1 rounded-full border border-amber-400/30 bg-amber-400/10 px-2.5 py-0.5 font-mono text-[10px] text-amber-300">
-                  <GraduationCap className="w-3 h-3" /> End of Studies
+                  <GraduationCap className="w-3 h-3" /> {t("experience.badgeEos")}
                 </span>
               )}
               {exp.type === "internship" && !exp.isGraduation && (
                 <span className="inline-flex items-center gap-1 rounded-full border border-blue-400/25 bg-blue-400/[0.07] px-2.5 py-0.5 font-mono text-[10px] text-blue-300/80">
-                  <Building2 className="w-3 h-3" /> Internship
+                  <Building2 className="w-3 h-3" /> {t("experience.badgeInternship")}
                 </span>
               )}
             </div>
@@ -1223,13 +1223,13 @@ const DetailCard = ({
 
         <div className="grid md:grid-cols-[1fr_auto] gap-6 md:gap-8">
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-violet/55 mb-3">Key Highlights</p>
+            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-violet/55 mb-3">{t("experience.keyHighlights")}</p>
             <ExpandableHighlights expId={exp.id} highlights={exp.highlights} />
           </div>
           <div className="md:w-52 space-y-5">
             {exp.metrics && exp.metrics.length > 0 && (
               <div>
-                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-violet/55 mb-3">Impact</p>
+                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-violet/55 mb-3">{t("experience.impact")}</p>
                 <div className="grid grid-cols-3 gap-2">
                   {exp.metrics.map((m) => (
                     <div key={m.label} className="rounded-xl border border-violet/15 bg-violet/[0.05] p-2.5 text-center">
@@ -1242,7 +1242,7 @@ const DetailCard = ({
             )}
             <div>
               <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-violet/55 mb-3 flex items-center gap-1.5">
-                <Code2 className="w-3 h-3" /> Tech Stack
+                <Code2 className="w-3 h-3" /> {t("experience.techStack")}
               </p>
               <TechChips exp={exp} />
             </div>
@@ -1265,61 +1265,65 @@ const MobileExperienceChips = ({
   experiences: Experience[];
   selectedId: string;
   onSelect: (id: string) => void;
-}) => (
-  <div className="flex gap-5 overflow-x-auto pb-1 no-scrollbar">
-    {(["work", "internship"] as const).map((type) => {
-      const group = experiences.filter((exp) => exp.type === type);
-      if (!group.length) return null;
+}) => {
+  const { t } = useTranslation();
 
-      return (
-        <div key={type} className="shrink-0">
-          <p className="mb-2 font-mono text-[9px] uppercase tracking-[0.18em] text-violet/55">
-            {type === "work" ? "Current Work" : "Internships"}
-          </p>
-          <div className="flex gap-2">
-            {group.map((exp) => {
-              const isSelected = exp.id === selectedId;
-              return (
-                <motion.button
-                  key={exp.id}
-                  onClick={() => onSelect(exp.id)}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.96 }}
-                  className="shrink-0 flex items-center gap-2 rounded-full border px-3 py-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet/60"
-                  style={{
-                    borderColor: isSelected
-                      ? "hsl(262 83% 68% / 0.55)"
-                      : "hsl(262 83% 68% / 0.15)",
-                    background: isSelected
-                      ? "linear-gradient(135deg, hsl(262 83% 68% / 0.15), hsl(262 83% 68% / 0.07))"
-                      : "transparent",
-                    boxShadow: isSelected ? "0 0 14px hsl(262 83% 68% / 0.15)" : "none",
-                    transition: "border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease",
-                  }}
-                >
-                  <img
-                    src={exp.logoUrl}
-                    alt=""
-                    className="w-4 h-4 object-contain"
-                    style={{ filter: "grayscale(0.15) brightness(1.05)" }}
-                  />
-                  <span
-                    className="font-mono text-[11px] font-medium whitespace-nowrap"
-                    style={{ color: isSelected ? "hsl(0 0% 88%)" : "hsl(0 0% 48%)" }}
+  return (
+    <div className="flex gap-5 overflow-x-auto pb-1 no-scrollbar">
+      {(["work", "internship"] as const).map((type) => {
+        const group = experiences.filter((exp) => exp.type === type);
+        if (!group.length) return null;
+
+        return (
+          <div key={type} className="shrink-0">
+            <p className="mb-2 font-mono text-[9px] uppercase tracking-[0.18em] text-violet/55">
+              {type === "work" ? t("experience.workChip") : t("experience.internChip")}
+            </p>
+            <div className="flex gap-2">
+              {group.map((exp) => {
+                const isSelected = exp.id === selectedId;
+                return (
+                  <motion.button
+                    key={exp.id}
+                    onClick={() => onSelect(exp.id)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    className="shrink-0 flex items-center gap-2 rounded-full border px-3 py-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet/60"
+                    style={{
+                      borderColor: isSelected
+                        ? "hsl(262 83% 68% / 0.55)"
+                        : "hsl(262 83% 68% / 0.15)",
+                      background: isSelected
+                        ? "linear-gradient(135deg, hsl(262 83% 68% / 0.15), hsl(262 83% 68% / 0.07))"
+                        : "transparent",
+                      boxShadow: isSelected ? "0 0 14px hsl(262 83% 68% / 0.15)" : "none",
+                      transition: "border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease",
+                    }}
                   >
-                    {exp.company.split(" ")[0]}
-                  </span>
-                  {exp.isLive && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-                  )}
-                </motion.button>
-              );
-            })}
+                    <img
+                      src={exp.logoUrl}
+                      alt=""
+                      className="w-4 h-4 object-contain"
+                      style={{ filter: "grayscale(0.15) brightness(1.05)" }}
+                    />
+                    <span
+                      className="font-mono text-[11px] font-medium whitespace-nowrap"
+                      style={{ color: isSelected ? "hsl(0 0% 88%)" : "hsl(0 0% 48%)" }}
+                    >
+                      {exp.company.split(" ")[0]}
+                    </span>
+                    {exp.isLive && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+                    )}
+                  </motion.button>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      );
-    })}
-  </div>
-);
+        );
+      })}
+    </div>
+  );
+};
 
 export default ExperienceSection;

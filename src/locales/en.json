@@ -1,0 +1,345 @@
+{
+  "nav": {
+    "about": "About",
+    "projects": "Projects",
+    "experience": "Experience",
+    "education": "Education",
+    "toolkit": "Toolkit",
+    "values": "Values",
+    "toggleMenu": "Toggle menu"
+  },
+  "hero": {
+    "available": "Available for opportunities",
+    "bio": "I build and ship full-stack web and mobile products — from polished UIs to production-grade APIs. I care deeply about clean architecture, SOLID principles, and crafting code that scales, stays maintainable, and stands the test of time.",
+    "currentlyAt": "currently at",
+    "role": "Full-Stack Mobile Developer",
+    "downloadCv": "Download CV",
+    "getInTouch": "Get in Touch",
+    "viewSkills": "view-skills",
+    "appsDeployed": "Apps Deployed",
+    "serversHosted": "Servers Hosted",
+    "activeUsers": "Active Users",
+    "monthsExperience": "Months of Experience",
+    "scroll": "scroll",
+    "typing": ["Full-Stack Engineer", "Mobile Developer", "Backend Expert"],
+    "aria": {
+      "github": "GitHub profile",
+      "linkedin": "LinkedIn profile",
+      "phone": "Call Walid",
+      "email": "Send email",
+      "photo": "Walid Marzouk — Software Engineer"
+    }
+  },
+  "experience": {
+    "label": "Experience",
+    "title": "Professional Journey",
+    "subtitle": "From academic foundations to production AI systems — a record of what I've shipped.",
+    "workGroup": "Current Work Experience",
+    "internGroup": "Internship Experience",
+    "workChip": "Current Work",
+    "internChip": "Internships",
+    "badgeWork": "WORK",
+    "badgeIntern": "INTERN",
+    "badgeCurrent": "CURRENT",
+    "badgeEos": "End of Studies",
+    "badgeInternship": "Internship",
+    "badgeWorkExp": "Work Experience",
+    "keyHighlights": "Key Highlights",
+    "impact": "Impact",
+    "techStack": "Tech Stack",
+    "demoPreview": "Demo Preview",
+    "projectShowcase": "Project Showcase",
+    "clickDemo": "Click to watch the demo",
+    "youtube": "YouTube",
+    "downloadMobile": "Download on mobile",
+    "liveDemo": "Live Demo",
+    "github": "GitHub",
+    "showLess": "Show less",
+    "readMore": "Read more",
+    "moreCount": "+{{count}} more",
+    "playing": "playing",
+    "tapToPlay": "tap to play",
+    "close": "Close ✕",
+    "entries": {
+      "continuousnet": {
+        "role": "Full-Stack Mobile Developer",
+        "period": "Jan 2026 - Present",
+        "duration": "9+ months",
+        "location": "Sousse, Tunisia",
+        "description": "Continuing full-time after my end-of-studies internship, I drive feature development across two tracks. On mobile, I design and ship Flutter features serving travellers, guides, drivers, and agency staff — real-time chat, a loyalty rewards system, flight search, and activity booking — while owning UI design and performance optimization end-to-end. On the NestJS backend, I own the hotel room booking engine and maintain the integrations layer: the architecture that normalises third-party flight, hotel, and activity provider APIs into a unified internal contract, keeping the rest of the platform decoupled from external API churn.",
+        "highlights": [
+          "Designed and shipped Flutter features across 4 user roles — real-time chat, loyalty rewards, flights, and activity booking with performance-first UI",
+          "Owned the NestJS hotel room booking engine from business logic through to API contract",
+          "Built and maintained the integrations layer that normalises third-party provider APIs into a unified internal interface, decoupling the platform from external API changes"
+        ],
+        "metricLabels": ["Agencies", "Apps Shipped", "Months"],
+        "storeLinkLabels": ["TunisiePromo", "Sunshine Vacances"]
+      },
+      "continuousnet-intern": {
+        "role": "Full-Stack Mobile Developer Intern",
+        "period": "Mar – Oct 2025",
+        "duration": "8 months",
+        "location": "Sousse, Tunisia",
+        "description": "Designed and built the complete messaging ecosystem powering the ZenifyTrip platform across three travel agencies. Developed the full backend — a multi-tenant NestJS server, a Matrix Synapse homeserver with PostgreSQL for E2E-encrypted real-time communication, and FastAPI AI microservices for translation, summarization, and intelligent travel assistance. Created a reusable Flutter messaging SDK deployed across 3 mobile apps featuring offline support, audio/video calls, geolocation, and AI capabilities. The entire system was containerized and automated with GitLab CI/CD, Docker Compose, Portainer, and monitored with Grafana/Prometheus.",
+        "highlights": [
+          "Architected and deployed a multi-tenant NestJS + Matrix Synapse messaging backend with E2E encryption across 3 agencies",
+          "Built FastAPI AI microservices for real-time translation, summarization, and intelligent travel assistance",
+          "Created a reusable Flutter messaging SDK spanning 3 mobile apps with audio/video calls, geolocation, and offline support",
+          "Containerized and automated the full system with GitLab CI/CD, Docker Compose, Portainer, Grafana, and Prometheus"
+        ],
+        "metricLabels": ["Apps", "Agencies", "Months"]
+      },
+      "codingoat": {
+        "role": "Frontend Mobile Developer Intern",
+        "period": "Jul – Sep 2024",
+        "location": "Mahdia, Tunisia",
+        "description": "Led UI design in Figma and built the Flutter frontend for a role-based e-commerce app using Clean Architecture and Riverpod. Implemented secure online payment, stock management, and real-time Firebase communication and synchronization.",
+        "highlights": [
+          "Led Figma UI design and implemented the full Flutter frontend from scratch",
+          "Integrated secure online payment and real-time Firebase sync",
+          "Applied Clean Architecture with Riverpod across a role-based e-commerce app"
+        ]
+      },
+      "esprit": {
+        "role": "Full-Stack Developer Intern",
+        "period": "Jul – Sep 2023",
+        "location": "Tunis, Tunisia",
+        "description": "Designed and delivered a full-stack internship management platform for ESPRIT — one of Tunisia's largest engineering schools. Built a reactive Angular SPA consuming a Spring Boot REST API secured with JWT, covering the entire student lifecycle from application to final evaluation. Implemented role-based dashboards for students, supervisors, and administrators, complete with document management, automated email notifications, and real-time progress tracking across 2 000+ students.",
+        "highlights": [
+          "Built a reactive Angular 16 SPA with role-based routing for students, supervisors, and administrators",
+          "Designed a Spring Boot REST API with Spring Security + JWT covering auth, evaluation workflows, and document management",
+          "Implemented automated email notifications and real-time progress dashboards serving 2 000+ students",
+          "Wrote unit and integration tests with Jasmine/Karma on the frontend and JUnit on the backend"
+        ],
+        "metricLabels": ["Users", "Roles", "Months"]
+      },
+      "mbm-lab": {
+        "role": "Full-Stack Web Developer Intern",
+        "period": "Jul – Aug 2022",
+        "location": "Tunis, Tunisia",
+        "description": "Designed and built a production-grade HR & recruitment platform for MBM LAB using Symfony 6 and a Twig/Bootstrap frontend. Delivered a complete applicant tracking system covering job offer publication, multi-stage candidate pipelines, interview scheduling, and role-based access control for HR managers and department heads. Secured the platform with Symfony Security, implemented file handling for CV uploads with virus scanning, and optimised query performance with Doctrine eager loading — cutting average page load by 40%.",
+        "highlights": [
+          "Architected a Symfony 6 MVC application with Doctrine ORM covering the full recruitment lifecycle — from job posting to hire",
+          "Implemented Symfony Security with role-based access control for HR managers, department heads, and candidates",
+          "Built CV upload and document management with server-side validation and optimised Doctrine queries — reducing page load by 40%",
+          "Wrote PHPUnit test suites for service and controller layers, achieving 80%+ coverage on core business logic"
+        ],
+        "metricLabels": ["Entities", "Coverage", "Perf Gain"]
+      }
+    }
+  },
+  "projects": {
+    "label": "Featured Work",
+    "titleMain": "Built With",
+    "titleHighlight": "Purpose",
+    "subtitle": "A curated selection of projects showcasing real-world impact and engineering depth.",
+    "liveServers": "Live Servers",
+    "liveOn": "Live on",
+    "finished": "Finished",
+    "stopped": "Stopped",
+    "inProgress": "In Progress",
+    "getApp": "Get the App",
+    "code": "Code",
+    "watchDemo": "Watch Demo",
+    "demoPreview": "Demo Preview",
+    "clickToPlay": "Click to play demo",
+    "aiWalkthrough": "AI · Walkthrough",
+    "playing": "playing",
+    "clickCardToPlay": "click card to play",
+    "tapToWatch": "tap to watch",
+    "showLess": "show less",
+    "moreTech": "+{{count}} more",
+    "prevProject": "Previous project",
+    "nextProject": "Next project",
+    "entries": [
+      {
+        "category": "Travel Agency · Mobile App",
+        "description": "Travel agency app for Sunshine Vacances, helping customers browse trips and reach the agency from a polished mobile experience.",
+        "award": null
+      },
+      {
+        "category": "Travel Agency · Mobile App",
+        "description": "A curated deals and voyage promotions app for the Tunisian market — connecting users with the best travel offers through a fast, minimal interface built for quick decisions.",
+        "award": null
+      },
+      {
+        "category": "Travel Tech · Backend API",
+        "description": "Enterprise REST API powering a multi-tenant travel management platform — orchestrating end-to-end group journeys across flights, hotels, transfers, and activities, with real-time WebSocket coordination, multi-channel push notifications, and automated Excel reporting across agencies, guides, and operators.",
+        "award": null
+      },
+      {
+        "category": "Food & Beverage · Mobile App · Freelance",
+        "description": "Modern mobile app with strong branding, designed for scalability and future features like loyalty and ordering.",
+        "award": null
+      },
+      {
+        "category": "Construction · Mobile App · Freelance",
+        "description": "Mobile application designed for contractors, delivering fast access to services with a mobile-first UX.",
+        "award": null
+      },
+      {
+        "category": "AI · Full-Stack · Academic Project",
+        "description": "AI-powered recruitment platform combining web, mobile, and ML to streamline hiring — managing job offers, candidate applications, intelligent assessments, and recruiter workflows end-to-end.",
+        "award": "2nd Place · Esprit Project Fair 2024"
+      }
+    ]
+  },
+  "education": {
+    "label": "Academic Background",
+    "title": "Education",
+    "subtitle": "Five years at ESPRIT — from first principles to production-grade systems.",
+    "espritConnector": "ESPRIT · Ariana, Tunisia",
+    "keyFocus": "Key Focus",
+    "highlights": "Highlights",
+    "graduated": "Graduated",
+    "entries": [
+      {
+        "degree": "Software Engineering Student",
+        "institutionFull": "High Private School of Engineering and Technology",
+        "period": "2023 – 2025",
+        "description": "Comprehensive software engineering education with focus on Mobile Development, Backend Technologies, DevSecOps and QA testing.",
+        "coursework": [
+          "Software Architecture",
+          "Mobile Development",
+          "AI",
+          "Backend Technologies",
+          "Web Development",
+          "UI/UX",
+          "Blockchain Technology",
+          "DevSecOps"
+        ],
+        "achievements": [
+          "Graduated with top honors — 19/20",
+          "AiRecruit got 2nd place — ESPRIT Project Fair 2024"
+        ]
+      },
+      {
+        "degree": "Integrated Preparatory Cycle",
+        "institutionFull": "High Private School of Engineering and Technology",
+        "period": "2020 – 2022",
+        "description": "Foundational engineering studies preparing for advanced computer science and software development.",
+        "coursework": [
+          "Mathematics",
+          "Unix",
+          "CS Fundamentals",
+          "Engineering Principles",
+          "Problem Solving",
+          "Algorithms & Data Structures",
+          "Database Systems",
+          "Object-Oriented Programming",
+          "Team Projects"
+        ],
+        "achievements": [
+          "Top of class in both years",
+          "Strong foundation in computer science fundamentals"
+        ]
+      }
+    ]
+  },
+  "languages": {
+    "label": "Technical Expertise",
+    "titleMain": "Technical",
+    "titleHighlight": "Arsenal",
+    "subtitle": "A full-stack engineering toolkit spanning mobile, backend, DevOps and AI — battle-tested in production, continuously expanding.",
+    "viewSkillsMatrix": "View Skills Matrix",
+    "currentlyGrowing": "Currently Growing",
+    "currentlyGrowingTitle": "DevSecOps & Applied AI",
+    "devsecops": "DevSecOps",
+    "appliedAi": "Applied AI",
+    "footerText": "Reinforcing secure delivery pipelines and AI-assisted workflows — building reliable, intelligent products end-to-end.",
+    "stats": {
+      "technologies": "Technologies",
+      "skillDomains": "Skill Domains",
+      "yearsBuilding": "Years Building"
+    },
+    "groups": {
+      "mobile": "Mobile",
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "devops": "DevOps & Tools",
+      "databases": "Databases",
+      "apis": "APIs & Protocols",
+      "design": "Design & Security"
+    }
+  },
+  "motivation": {
+    "label": "What Drives Me",
+    "title": "Motivation & Values",
+    "subtitle": "The passion and principles that guide my engineering journey.",
+    "storyTitle": "My Journey Into Software Engineering",
+    "whatMotivatesMe": "What Motivates Me",
+    "coreValues": "Core Values",
+    "quote": "Progress happens step by step. I believe in improving consistently, learning constantly, and building things that make a real difference.",
+    "quoteAuthor": "— My Personal Philosophy",
+    "paragraphs": [
+      "My passion for software started with a simple curiosity: how something written on a screen could come to life and impact people. As I learned and grew, I explored mobile development, backend engineering, cloud tools, and UX design, and with every step I discovered new ways technology can make life easier, more connected, or simply more enjoyable.",
+      "What shaped me the most wasn't a single project, but the continuous journey of improvement — the late nights spent learning a new concept, the challenges that forced me to rethink my approach, the small wins that slowly built confidence, and the satisfaction of turning ideas into something real and useful.",
+      "Today, what drives me is the desire to build software that feels natural, dependable, and thoughtful. I love creating systems that people enjoy using, codebases that teams enjoy maintaining, and experiences that blend functionality and emotion. For me, being a developer is not just about writing code — it's about growing, adapting, understanding humans, and building technology that genuinely matters."
+    ],
+    "motivations": [
+      {
+        "title": "Building Meaningful Digital Experiences",
+        "description": "What motivates me most is creating products that genuinely help people. Whether it's improving communication for thousands of travelers or optimizing an internal tool used every day by companies, I thrive when my work has a real and measurable impact."
+      },
+      {
+        "title": "Turning Ideas Into Scalable Systems",
+        "description": "I love transforming abstract ideas into fully functional, scalable solutions. From mobile apps to backend architectures, I enjoy designing systems that are clean, efficient, and engineered for long-term growth."
+      },
+      {
+        "title": "Solving Real-World Problems Through Technology",
+        "description": "Technology is a universal language. I'm driven by the possibility of building software that makes everyday life easier — smarter communication, faster workflows, richer user experiences, and more connected communities."
+      },
+      {
+        "title": "Empowering Teams & Clients",
+        "description": "I value collaboration and knowledge-sharing. Whether it's designing UI for a client, building an SDK for multiple applications, or helping teammates overcome challenges, I enjoy contributing to environments where everyone grows together."
+      }
+    ],
+    "values": [
+      {
+        "title": "User-Centered Mindset",
+        "description": "Every feature I build starts with one question: does this improve the user's experience? Great products are born from empathy, clarity, and a deep understanding of how people interact with software."
+      },
+      {
+        "title": "Continuous Improvement",
+        "description": "I am committed to learning every day — new frameworks, new architectures, new tools, new design principles. Technology evolves quickly, and I love growing with it."
+      },
+      {
+        "title": "Security & Reliability First",
+        "description": "From secure authentication to encrypted messaging, I prioritize building systems that protect users and ensure high reliability. Quality isn't an option — it's a responsibility."
+      },
+      {
+        "title": "Knowledge Sharing",
+        "description": "I believe in giving back: documenting solutions, mentoring, and helping teams adopt better practices. Sharing knowledge creates stronger teams and better products."
+      }
+    ]
+  },
+  "skills": {
+    "title": "Skills Matrix",
+    "avgProficiency": "Avg. Proficiency",
+    "expert": "Expert",
+    "proficient": "Proficient",
+    "familiar": "Familiar",
+    "categoryNames": [
+      "Foundational",
+      "Frontend",
+      "Backend",
+      "Mobile",
+      "DevOps",
+      "AI & Automation"
+    ]
+  },
+  "contact": {
+    "title": "Contact Me",
+    "namePlaceholder": "Your Name",
+    "emailPlaceholder": "Your Email",
+    "messagePlaceholder": "Your Message",
+    "sendButton": "Send Message",
+    "successMessage": "Message sent successfully!",
+    "errorMessage": "Failed to send message, please try again."
+  },
+  "cv": {
+    "title": "Download CV",
+    "fullstack": "Download CV (Fullstack)",
+    "flutter": "Download CV (Flutter)"
+  }
+}
