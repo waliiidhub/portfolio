@@ -229,14 +229,18 @@ const ProjectsSection = () => {
     const projectIdx = slugMap[slug];
     if (projectIdx === undefined) return;
 
-    // Clean URL so refreshing the page restores default behaviour
-    window.history.replaceState(null, "", window.location.pathname);
-
     const targetLoopIdx = PROJECTS_STATIC.length * MIDDLE_COPY + projectIdx;
     const timer = setTimeout(() => {
+      // Instant section scroll — avoids a race between smooth-scroll animation
+      // and the carousel's getClosest() measuring slide positions mid-flight
+      sectionRef.current?.scrollIntoView({ behavior: "auto", block: "start" });
       setActiveLoopIndex(targetLoopIdx);
+      // Suppress auto-advance so the deep-linked project stays on screen
+      setHasInteracted(true);
       scrollToSlide(targetLoopIdx, "auto");
-      sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      // Clean URL here (inside the timer) so StrictMode's double-invoke
+      // doesn't strip the param before the second run can read it
+      window.history.replaceState(null, "", window.location.pathname);
     }, 500);
     return () => clearTimeout(timer);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
