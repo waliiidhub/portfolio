@@ -142,7 +142,24 @@ const ProjectsSection = () => {
   const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
   const scrollFrameRef = useRef<number | null>(null);
 
-  const [activeLoopIndex, setActiveLoopIndex] = useState(PROJECTS_STATIC.length * MIDDLE_COPY);
+  const [activeLoopIndex, setActiveLoopIndex] = useState(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const slug = params.get("project");
+      const slugMap: Record<string, number> = {
+        "sunshine-vacances": 0,
+        "tunisiepromo": 1,
+        "zenifytrip-backend": 2,
+        "bisou": 3,
+        "mouqawel": 4,
+        "airecruit": 5,
+      };
+      const offset = slugMap[slug ?? ""] ?? 0;
+      return PROJECTS_STATIC.length * MIDDLE_COPY + offset;
+    } catch {
+      return PROJECTS_STATIC.length * MIDDLE_COPY;
+    }
+  });
   const [isPaused, setIsPaused] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
   const [isInView, setIsInView] = useState(false);
@@ -209,8 +226,18 @@ const ProjectsSection = () => {
 
   // ── Initial position ────────────────────────────────────────────────
   useEffect(() => {
-    scrollToSlide(PROJECTS_STATIC.length * MIDDLE_COPY, "auto");
-  }, [scrollToSlide]);
+    scrollToSlide(activeLoopIndex, "auto");
+  }, [scrollToSlide]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Deep-link: ?project=<slug> → scroll section into view ──────────
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (!params.get("project")) return;
+    const timer = setTimeout(() => {
+      sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 600);
+    return () => clearTimeout(timer);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Auto-advance: per-card duration, resets on every card change ────
   useEffect(() => {

@@ -145,12 +145,31 @@ const ExperienceSection = () => {
       };
     }), [t]);
 
-  const [selectedId, setSelectedId] = useState<string>("continuousnet");
+  const [selectedId, setSelectedId] = useState<string>(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("experience");
+      const valid = new Set(["continuousnet", "continuousnet-intern", "codingoat", "esprit", "mbm-lab"]);
+      return valid.has(id ?? "") ? id! : "continuousnet";
+    } catch {
+      return "continuousnet";
+    }
+  });
   const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
   const navigatorRef = useRef<HTMLDivElement>(null);
   const isNavigatorInView = useInView(navigatorRef, { once: true, margin: "-60px" });
 
   const selectedExp = experiences.find((e) => e.id === selectedId)!;
+
+  // ── Deep-link: ?experience=<id> → scroll section into view ─────────
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (!params.get("experience")) return;
+    const timer = setTimeout(() => {
+      document.getElementById("internships")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 600);
+    return () => clearTimeout(timer);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
