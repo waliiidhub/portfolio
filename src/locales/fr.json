@@ -181,6 +181,11 @@
         "category": "IA · Full-Stack · Projet Académique",
         "description": "Plateforme de recrutement propulsée par l'IA combinant web, mobile et ML pour fluidifier le recrutement — gérant offres d'emploi, candidatures, évaluations intelligentes et workflows recruteur de bout en bout.",
         "award": "2ème Place · Salon de Projets ESPRIT 2024"
+      },
+      {
+        "category": "Tech Voyage · Messagerie · Fin d'études",
+        "description": "Écosystème de messagerie full-stack pour 3 agences de voyage — chat E2E chiffré en temps réel, appels audio/vidéo WebRTC, géolocalisation en direct et assistant IA, livré sous forme de SDK Flutter réutilisable sur 12 instances d'applications mobiles.",
+        "award": null
       }
     ]
   },

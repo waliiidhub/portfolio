@@ -181,6 +181,11 @@
         "category": "AI · Full-Stack · Academic Project",
         "description": "AI-powered recruitment platform combining web, mobile, and ML to streamline hiring — managing job offers, candidate applications, intelligent assessments, and recruiter workflows end-to-end.",
         "award": "2nd Place · Esprit Project Fair 2024"
+      },
+      {
+        "category": "Travel Tech · Messaging · End-of-Studies",
+        "description": "Full-stack messaging ecosystem serving 3 travel agencies — E2E-encrypted real-time chat, WebRTC audio/video calls, live geolocation, and an AI travel assistant, shipped as a reusable Flutter SDK across 12 mobile app instances.",
+        "award": null
       }
     ]
   },

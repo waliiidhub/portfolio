@@ -109,6 +109,16 @@ const PROJECTS_STATIC = [
     status: "finished" as const,
     duration: 12000,
   },
+  {
+    title: "ZenifyTrip Messaging",
+    technologies: ["NestJS", "Matrix/Synapse", "FastAPI", "Flutter", "PostgreSQL", "Docker", "GitLab CI/CD", "Portainer", "Grafana", "Prometheus", "WebRTC", "Python"],
+    videoId: "2jSBJhhQPk0",
+    imageUrl: "/continuousnet.png",
+    visualMode: "cover" as const,
+    phoneFrame: true,
+    status: "finished" as const,
+    duration: 9000,
+  },
 ];
 
 const LOOP_COPIES = 5;
@@ -225,6 +235,7 @@ const ProjectsSection = () => {
       "bisou": 3,
       "mouqawel": 4,
       "airecruit": 5,
+      "zenifytrip-messaging": 6,
     };
     const projectIdx = slugMap[slug];
     if (projectIdx === undefined) return;
