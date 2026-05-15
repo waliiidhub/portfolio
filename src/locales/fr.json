@@ -344,7 +344,7 @@
   },
   "cv": {
     "title": "Télécharger le CV",
-    "fullstack": "Français",
-    "flutter": "Anglais"
+    "fr": "Français",
+    "en": "Anglais"
   }
 }
